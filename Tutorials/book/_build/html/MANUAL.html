@@ -1,0 +1,1853 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>MAIT 1.0.0 Manual &#8212; How to use medical artificial intelligence toolbox (MAIT)</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'MANUAL';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MAIT 1.0.0 - Tutorial: Breast cancer prediction" href="MAIT_Tutorial_BreastCancer_pub.html" />
+    <link rel="prev" title="QuickStart - minimal configuration guide" href="QuickStart.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="How to use medical artificial intelligence toolbox (MAIT) - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="How to use medical artificial intelligence toolbox (MAIT) - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    How to use medical artificial intelligence toolbox (MAIT)
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">QuickStart - minimal configuration guide</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">MAIT 1.0.0 Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MAIT_Tutorial_BreastCancer_pub.html">MAIT 1.0.0 - Tutorial: Breast cancer prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MAIT_Tutorial_Dementia_pub.html">MAIT 1.0.0 - Tutorial: Dementia prediction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MAIT_Tutorial_Azithromycin_pub.html">MAIT 1.0.0 - Tutorial: Azithromycin antibiotic resistance prediction based on unitigs representing DNA variation in bacteria</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MAIT_Tutorial_Ciprofloxacin_pub.html">MAIT 1.0.0 - Tutorial: Ciprofloxacin antibiotic resistance prediction based on unitigs representing DNA variation in bacteria</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Executed_tutorials.html">Executed tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="function_reference.html">Function Reference</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/PERSIMUNE/MAIT" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/PERSIMUNE/MAIT/issues/new?title=Issue%20on%20page%20%2FMANUAL.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/MANUAL.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>MAIT 1.0.0 Manual</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-overview">Workflow Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data-and-libraries">Load Data and Libraries</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#user-defined-parameters">User-Defined Parameters:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#default-parameters">Default Parameters:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">Data Preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-split">Data Split</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-and-association-analysis">Feature Selection and Association Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-size-and-data-split-assessment">Sample Size and Data Split Assessment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-overview">Data Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-imputation">Data Imputation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-selective-operations-on-the-data">Other Selective Operations on the Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visual-inspection">Visual Inspection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-initialization">Model Initialization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#models-overview">Models Overview</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-model-evaluation">Binary Model Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-to-calculate-evaluation-metrics">Function to Calculate Evaluation Metrics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-definition">Function Definition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#measures-computed">Measures computed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-validation">Cross validation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Function Definition</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Parameters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-setup">Initial Setup</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-validation-loop">Cross-Validation Loop</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model-training-and-evaluation">Model Training and Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#randomforestclassifier">RandomForestClassifier</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#qlattice">QLattice</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#threshold-optimization-method">Threshold Optimization Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-uncertainty-reduction-mur">Model Uncertainty Reduction (MUR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-points">Key Points:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-sections">Additional sections</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stopping-condition">Stopping Condition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction-block">Prediction Block</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-interpretation">Model Interpretation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-significance-of-features">Statistical significance of features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-decision-plot-description">SHAP decision plot description</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-interactions-based-on-shap-method">Feature interactions based on SHAP method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-interactions-based-on-feature-permutation-method-for-feature-pairs">Feature interactions based on feature permutation method for feature pairs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-dependence-plots">SHAP dependence plots</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-clustering">SHAP clustering</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-confusion-matrix-for-clusters">Plotting Confusion Matrix for Clusters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#execution-based-on-model-type">Execution Based on Model Type</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-curve-analysis">Decision Curve Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-sensitive-model-evaluation">Cost-sensitive Model Evaluation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-sensitive-decision-curve-analysis">Cost-sensitive Decision Curve Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-calibration-and-conformal-predictions">Model calibration and conformal predictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#survival-models">Survival Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-survival-forest-rsf">Random Survival Forest (RSF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cox-proportional-hazards-model-cph">Cox Proportional Hazards Model (CPH)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-evaluation-of-the-survival-models">Training and evaluation of the survival models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concordance-index-ci-and-integrated-brier-score-ibs">Concordance Index (CI) and Integrated Brier Score (IBS)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#concordance-index-ci">Concordance Index (CI)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#integrated-brier-score-ibs">Integrated Brier Score (IBS)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-interpretation-using-shap-values">Model Interpretation Using SHAP Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-importance-using-permutation-importance">Feature Importance Using Permutation Importance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predicting-cumulative-hazard-function">Predicting cumulative hazard function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-of-predicted-survival-probabilities">Visualization of predicted survival probabilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-on-test-set">Evaluation on test set</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#translation-of-the-predicted-hazard-curves-to-binary-predictions">Translation of the Predicted Hazard Curves to Binary Predictions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-scores-analysis">Risk Scores Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-dependent-auc">Time-Dependent AUC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizations">Visualizations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-models">Regression Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-evaluation-and-interpretation">Model evaluation and interpretation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#report-the-python-environment">Report the Python Environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#save-the-executed-pipeline">Save the Executed Pipeline</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="mait-1-0-0-manual">
+<h1>MAIT 1.0.0 Manual<a class="headerlink" href="#mait-1-0-0-manual" title="Link to this heading">#</a></h1>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#introduction"><span class="xref myst">Introduction</span></a></p></li>
+<li><p><a class="reference internal" href="#workflow-overview"><span class="xref myst">Workflow overview</span></a></p></li>
+<li><p><a class="reference internal" href="#load-data-and-libraries"><span class="xref myst">Load data and libraries</span></a></p></li>
+<li><p><a class="reference internal" href="#data-preparation"><span class="xref myst">Data preparation</span></a></p></li>
+<li><p><a class="reference internal" href="#data-split"><span class="xref myst">Data split</span></a></p></li>
+<li><p><a class="reference internal" href="#feature-selection-and-association-analysis"><span class="xref myst">Feature selection and association analysis</span></a></p></li>
+<li><p><a class="reference internal" href="#sample-size-and-data-split-assessment"><span class="xref myst">Sample size and data split assessment</span></a></p></li>
+<li><p><a class="reference internal" href="#data-overview"><span class="xref myst">Data overview</span></a></p></li>
+<li><p><a class="reference internal" href="#data-imputation"><span class="xref myst">Data imputation</span></a></p></li>
+<li><p><a class="reference internal" href="#other-selective-operations-on-the-data"><span class="xref myst">Other selective operations on the Data</span></a></p></li>
+<li><p><a class="reference internal" href="#visual-inspection"><span class="xref myst">Visual inspection</span></a></p></li>
+<li><p><a class="reference internal" href="#model-initialization"><span class="xref myst">Model initialization</span></a></p></li>
+<li><p><a class="reference internal" href="#binary-model-evaluation"><span class="xref myst">Binary model evaluation</span></a></p></li>
+<li><p><a class="reference internal" href="#cross-validation"><span class="xref myst">Cross validation</span></a></p></li>
+<li><p><a class="reference internal" href="#stopping-condition"><span class="xref myst">Stopping condition</span></a></p></li>
+<li><p><a class="reference internal" href="#prediction-block"><span class="xref myst">Prediction block</span></a></p></li>
+<li><p><a class="reference internal" href="#model-interpretation"><span class="xref myst">Model interpretation</span></a></p></li>
+<li><p><a class="reference internal" href="#decision-curve-analysis"><span class="xref myst">Decision curve analysis</span></a></p></li>
+<li><p><a class="reference internal" href="#model-calibration-and-conformal-predictions"><span class="xref myst">Model calibration and conformal predictions</span></a></p></li>
+<li><p><a class="reference internal" href="#survival-models"><span class="xref myst">Survival models</span></a></p></li>
+<li><p><a class="reference internal" href="#regression-models"><span class="xref myst">Regression models</span></a></p></li>
+<li><p><a class="reference internal" href="#report-the-python-environment"><span class="xref myst">Report the Python environment</span></a></p></li>
+<li><p><a class="reference internal" href="#save-the-executed-pipeline"><span class="xref myst">Save the executed pipeline</span></a></p></li>
+</ol>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>This manual provides a detailed description of the methods and workflow of MAIT. This pipeline is designed to facilitate the end-to-end process of developing, evaluating, and deploying machine learning models for tabular data, focusing on binary classification but also supporting survival and regression models. The pipeline is implemented in Python using Jupyter Notebooks. This manual offers detailed instructions on using MAIT. For a more intuitive understanding of the pipeline, we recommend exploring the tutorials available on our GitHub page. Additionally, MAIT is discussed in a research paper for further insight.</p>
+<p>To navigate the pipeline more easily, you can use the “Outline” feature in VS Code. Alternatively, you can search for specific code segments related to the conditions described in “Load Data, Libraries, and Set Parameters.”</p>
+</section>
+<section id="workflow-overview">
+<h2>Workflow Overview<a class="headerlink" href="#workflow-overview" title="Link to this heading">#</a></h2>
+<p>The pipeline consists of scripts and functions to first prepare the datasets for binary classification followed by training, evaluation, and interpretation of those binary models. There are some optional operations that can be selected to be performed by the user. In addition, it is possible to develop survival and regression models when we approach the ending parts of the pipeline. All this is explained as follows.</p>
+</section>
+<section id="load-data-and-libraries">
+<h2>Load Data and Libraries<a class="headerlink" href="#load-data-and-libraries" title="Link to this heading">#</a></h2>
+<p>Load the necessary libraries and set parameters for the pipeline. Define the data file location, the variables to be used, and the computational resources (e.g., GPU and CPU).</p>
+<section id="user-defined-parameters">
+<h3>User-Defined Parameters:<a class="headerlink" href="#user-defined-parameters" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Data Loading and Processing:</strong></p>
+<ul class="simple">
+<li><p>Specify the dataset to be loaded: <code class="docutils literal notranslate"><span class="pre">mydata</span> <span class="pre">=</span> <span class="pre">pd.read_csv(&quot;combined_data_Azithromycin.csv&quot;)</span></code>.</p></li>
+<li><p>Set the name of the outcome variable: <code class="docutils literal notranslate"><span class="pre">outcome_var</span> <span class="pre">=</span> <span class="pre">&quot;azm_sr&quot;</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Model Selection and Configuration:</strong></p>
+<ul class="simple">
+<li><p>Choose the models to include in the analysis: <code class="docutils literal notranslate"><span class="pre">models_to_include</span> <span class="pre">=</span> <span class="pre">[...]</span></code>.</p></li>
+<li><p>Specify the number of features to select using feature selection: <code class="docutils literal notranslate"><span class="pre">num_features_sel</span> <span class="pre">=</span> <span class="pre">30</span></code>.</p></li>
+<li><p>Define categorical features, if any: <code class="docutils literal notranslate"><span class="pre">cat_features</span> <span class="pre">=</span> <span class="pre">[...]</span></code>.</p></li>
+<li><p>Set options for model design: <code class="docutils literal notranslate"><span class="pre">extra_option1</span> <span class="pre">=</span> <span class="pre">[...]</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Survival Analysis (Optional):</strong></p>
+<ul class="simple">
+<li><p>Specify parameters if conducting survival analysis: <code class="docutils literal notranslate"><span class="pre">survival_analysis</span> <span class="pre">=</span> <span class="pre">True</span></code>.</p></li>
+<li><p>Define the time-to-event column and backup data for survival analysis.</p></li>
+</ul>
+</li>
+<li><p><strong>Regression Analysis (Optional):</strong></p>
+<ul class="simple">
+<li><p>Specify parameters if conducting regression analysis: <code class="docutils literal notranslate"><span class="pre">regression_analysis</span> <span class="pre">=</span> <span class="pre">True</span></code>.</p></li>
+<li><p>Set the regression outcome variable and configure demo options.</p></li>
+</ul>
+</li>
+<li><p><strong>Reporting and Visualization:</strong></p>
+<ul class="simple">
+<li><p>Specify class labels for display: <code class="docutils literal notranslate"><span class="pre">class_labels_display</span> <span class="pre">=</span> <span class="pre">[...]</span></code>.</p></li>
+<li><p>Set the main folder name to save results: <code class="docutils literal notranslate"><span class="pre">main_folder_name</span> <span class="pre">=</span> <span class="pre">'results_Azithromycin'</span></code>.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="default-parameters">
+<h3>Default Parameters:<a class="headerlink" href="#default-parameters" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Resource Allocation:</strong></p>
+<ul class="simple">
+<li><p>Default settings for CPU allocation: <code class="docutils literal notranslate"><span class="pre">n_cpu_for_tuning</span> <span class="pre">=</span> <span class="pre">20</span></code>, <code class="docutils literal notranslate"><span class="pre">n_cpu_model_training</span> <span class="pre">=</span> <span class="pre">20</span></code>.</p></li>
+<li><p>Default settings for GPU availability: <code class="docutils literal notranslate"><span class="pre">GPU_avail</span> <span class="pre">=</span> <span class="pre">False</span></code>. If GPU is available, you can change it to True so that LightGBM model runs on GPU.</p></li>
+<li><p>Default settings for hyperparameter tuning and cross-validation: <code class="docutils literal notranslate"><span class="pre">hp_tuning</span> <span class="pre">=</span> <span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">n_iter_hptuning</span> <span class="pre">=</span> <span class="pre">10</span></code>, <code class="docutils literal notranslate"><span class="pre">cv_folds</span> <span class="pre">=</span> <span class="pre">5</span></code>, etc.</p></li>
+</ul>
+</li>
+<li><p><strong>Data Manipulation:</strong></p>
+<ul class="simple">
+<li><p>Default settings for data manipulation: <code class="docutils literal notranslate"><span class="pre">oversampling</span> <span class="pre">=</span> <span class="pre">False</span></code>, <code class="docutils literal notranslate"><span class="pre">scale_data</span> <span class="pre">=</span> <span class="pre">False</span></code>.</p></li>
+<li><p>Default settings for feature filtering and handling: <code class="docutils literal notranslate"><span class="pre">filter_highly_mis_feats</span> <span class="pre">=</span> <span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">shorten_feature_names</span> <span class="pre">=</span> <span class="pre">True</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Model Training and Validation:</strong></p>
+<ul class="simple">
+<li><p>Default settings for model training and validation: <code class="docutils literal notranslate"><span class="pre">tun_score</span> <span class="pre">=</span> <span class="pre">&quot;roc_auc&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">test_only_best_cvmodel</span> <span class="pre">=</span> <span class="pre">True</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Feature Selection:</strong></p>
+<ul class="simple">
+<li><p>Default settings for feature selection: <code class="docutils literal notranslate"><span class="pre">feat_sel</span> <span class="pre">=</span> <span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">train_size_perc</span> <span class="pre">=</span> <span class="pre">0.8</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Data Splitting:</strong></p>
+<ul class="simple">
+<li><p>Default settings for data splitting: <code class="docutils literal notranslate"><span class="pre">data_split</span> <span class="pre">=</span> <span class="pre">True</span></code>, <code class="docutils literal notranslate"><span class="pre">already_split</span> <span class="pre">=</span> <span class="pre">False</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Visualization Options:</strong></p>
+<ul class="simple">
+<li><p>Default settings for visualization formats: <code class="docutils literal notranslate"><span class="pre">fig_file_format</span> <span class="pre">=</span> <span class="pre">&quot;tif&quot;</span></code>.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="data-preparation">
+<h2>Data Preparation<a class="headerlink" href="#data-preparation" title="Link to this heading">#</a></h2>
+<p>Prepare the data by handling missing values, encoding categorical features, and defining feature types.</p>
+<ul class="simple">
+<li><p><strong>Using Data Dictionary:</strong> Feature names to be displayed on figures.</p></li>
+<li><p><strong>Data Types:</strong> Identify categorical and numerical features.</p></li>
+<li><p><strong>Shorten Feature Names:</strong> Shorten column names in the dataFrame (e.g., train set) for feature names for easier handling.</p></li>
+</ul>
+<p>This section manipulates the dataset and prepares it for analysis:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of data dictionary</span>
+<span class="n">data_dictionary</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;p_age&quot;</span><span class="p">:</span> <span class="s2">&quot;patient age&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Patient gender&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cd4_counts&quot;</span><span class="p">:</span> <span class="s2">&quot;CD4 counts&quot;</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Outlier removal:</strong>
+Outliers and anomalies can negatively affect models. Another optional but useful functionality of the pipeline (set by remove_outliers = True) is to detect and remove anomalies (outliers) from the data. It is done using isolation forest algorithm. It includes these steps:
+(1) Data Preparation:
+Separates the input features (X) and the target variable (y) from the original dataset (mydata).
+Encodes categorical features using one-hot encoding to convert them into numerical format, avoiding multicollinearity by dropping the first category.
+(2) Handling Missing Values:
+Imputes missing values in the combined dataset (X_combined), which includes both numerical and encoded categorical features, using the K-Nearest Neighbors (KNN) imputation method. The number of neighbors used for imputation is calculated based on the size of the dataset.
+(3) Outlier Detection:
+Initializes an <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html">IsolationForest</a> model to detect outliers.
+Fits the model to the data and predicts outliers, labeling them as -1.
+(4) Filtering Outliers:
+Filters out rows marked as outliers from both the features (X) and the target variable (y).
+Combines the cleaned features and target variable back into a single DataFrame (mydata).
+(5) Final Cleanup:
+Removes the ‘outlier’ column from the final DataFrame.</p>
+<p><strong>Handling Missing Values:</strong>
+Missing data can significantly impact model performance and introduce bias, making consistent preprocessing crucial.</p>
+<ul class="simple">
+<li><p>Drops rows where the outcome variable column contains NaN values: <code class="docutils literal notranslate"><span class="pre">mydata</span> <span class="pre">=</span> <span class="pre">mydata.dropna(subset=[outcome_var])</span></code>.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">demo_configs</span></code> is enabled, randomly sets some entries to NaN and adds a categorical column for race.</p></li>
+</ul>
+<p>In addition, it is possible to enable filtering highly missing data. It can be done as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">exclude_highly_missing_columns</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># True to exclude features with high missingness</span>
+<span class="n">exclude_highly_missing_rows</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># True to exclude rows (samples) with high missingness</span>
+</pre></div>
+</div>
+<p>Filtering highly missing data is done first column-wise followed by row-wise. To address this, the following steps are undertaken:</p>
+<p><strong>Filter Columns in <code class="docutils literal notranslate"><span class="pre">mydata</span></code>:</strong> Identify and retain columns in <code class="docutils literal notranslate"><span class="pre">mydata</span></code> where the proportion of missing values is below a specified threshold. This step removes columns with excessive missing data that could skew analysis or model training.</p>
+<p><strong>Apply Identified Columns to Other Datasets:</strong> Ensure that <code class="docutils literal notranslate"><span class="pre">testset</span></code> and <code class="docutils literal notranslate"><span class="pre">extval_data</span></code> are aligned with <code class="docutils literal notranslate"><span class="pre">mydata</span></code> by selecting only the columns present in the filtered <code class="docutils literal notranslate"><span class="pre">mydata</span></code>. This maintains consistency across datasets, which is essential for reliable model evaluation and comparison.</p>
+<p><strong>Filter Rows in All Datasets:</strong> After aligning columns, filter out rows from all datasets where the proportion of missing values exceeds the threshold. This step ensures that all datasets have comparable completeness, supporting fair and accurate modeling.</p>
+<p>By following this approach, all datasets are harmonized with respect to both columns and rows, ensuring consistency and reducing potential bias from missing data.</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Column Dropping:</strong></p>
+<ul class="simple">
+<li><p>Drops specified columns from the dataset: <code class="docutils literal notranslate"><span class="pre">mydata.drop(columns=columns_to_drop,</span> <span class="pre">inplace=True)</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Data Type Conversion:</strong></p>
+<ul class="simple">
+<li><p>Converts specified categorical features to the category data type: <code class="docutils literal notranslate"><span class="pre">mydata[cat_features]</span> <span class="pre">=</span> <span class="pre">mydata[cat_features].astype('category')</span></code>.</p></li>
+<li><p>Converts categories to strings for each categorical column: <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">col</span> <span class="pre">in</span> <span class="pre">cat_features:</span> <span class="pre">mydata[col]</span> <span class="pre">=</span> <span class="pre">mydata[col].astype(str).astype('category')</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Handling Empty Entries:</strong></p>
+<ul class="simple">
+<li><p>Replaces empty entries with NaN: <code class="docutils literal notranslate"><span class="pre">mydata.replace(&quot;</span> <span class="pre">&quot;,</span> <span class="pre">np.nan,</span> <span class="pre">inplace=True)</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>External Validation:</strong></p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">ext_val_demo</span></code> is enabled, selects a subset of samples from the dataframe for external validation.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">external_val</span></code> is enabled, removes specified columns from the external validation data, converts categorical features, and handles empty entries.</p></li>
+</ul>
+</li>
+<li><p><strong>Continuous Variables (Optional):</strong></p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">specify_continuous_variables</span></code> is enabled, replaces non-numeric values with NaN and converts to float64.</p></li>
+</ul>
+</li>
+<li><p><strong>Merging Rare Categories (Optional):</strong></p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">merged_rare_categories</span></code> is enabled, identifies and groups rare categories into a single category.</p></li>
+<li><p>Adds a “Missing” category for missing values and converts categories to strings for mixed category features.</p></li>
+</ul>
+</li>
+</ol>
+<p>These steps ensure data consistency, handle missing values, and prepare the dataset for further analysis. See also run_pipeline.ipynb if you need to test many different parametrizations and data configurations efficiently.</p>
+</section>
+<section id="data-split">
+<h2>Data Split<a class="headerlink" href="#data-split" title="Link to this heading">#</a></h2>
+<p>Split the data into training and test sets with stratification based on the target variable to ensure balanced distribution of target classes in both training and test sets.</p>
+<p>This part of the pipeline handles data splitting and statistical checks for training and test datasets. It configures whether to apply a stratified data split by the outcome variable (e.g., 80% training and 20% test data), with options to split by patient ID or use multiple stratification variables if specified. If the data is already split, it reads the pre-split datasets from CSV files; otherwise, the entire dataset is used for cross-validation. The code includes functions to check for statistical differences between the training and test sets: it uses the Mann-Whitney U test for numerical variables and the Chi-square test for categorical variables, generating results with test statistics and p-values. The statistical checks ensure the training and test sets are similar, aiding in the development of robust machine learning models.</p>
+</section>
+<section id="feature-selection-and-association-analysis">
+<h2>Feature Selection and Association Analysis<a class="headerlink" href="#feature-selection-and-association-analysis" title="Link to this heading">#</a></h2>
+<p>Select features using Minimum Redundancy Maximum Relevance (mRMR) and conduct association analyses. mRMR is one of the most popular algorithms for feature selection. For more information on its implementation see <a class="github reference external" href="https://github.com/smazzanti/mrmr">smazzanti/mrmr</a>.</p>
+<ul class="simple">
+<li><p><strong>Feature Selection:</strong> Select a predefined number of features based on folds of the training set.</p></li>
+</ul>
+<p>MAIT includes a block of code to perform feature selection using a combination of techniques to identify the most relevant features for a predictive model. This is a step-by-step breakdown of the process:</p>
+<ol class="arabic simple">
+<li><p><strong>Data Preparation</strong>:</p>
+<ul class="simple">
+<li><p><strong>Feature and Outcome Separation</strong>: The dataset <code class="docutils literal notranslate"><span class="pre">mydata</span></code> is divided into features (<code class="docutils literal notranslate"><span class="pre">X</span></code>) and the outcome variable (<code class="docutils literal notranslate"><span class="pre">y</span></code>).</p></li>
+<li><p><strong>Column Identification</strong>: Numerical columns and categorical columns are identified for separate processing.</p></li>
+</ul>
+</li>
+<li><p><strong>Cross-Validation Setup</strong>:</p>
+<ul class="simple">
+<li><p><strong>Stratified K-Fold Cross-Validation</strong>: The data is split into <code class="docutils literal notranslate"><span class="pre">cv_folds</span></code> folds using <code class="docutils literal notranslate"><span class="pre">StratifiedKFold</span></code>, ensuring that each fold has a representative distribution of the outcome variable. This helps in avoiding data leakage and ensures that feature selection is robust across different subsets of data. By default k=5.</p></li>
+</ul>
+</li>
+<li><p><strong>Data Scaling</strong> (Optional):</p>
+<ul class="simple">
+<li><p><strong>Robust Scaling</strong>: If <code class="docutils literal notranslate"><span class="pre">scale_data</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, numerical features are scaled using <code class="docutils literal notranslate"><span class="pre">RobustScaler</span></code>, which is less sensitive to outliers compared to other scalers.</p></li>
+</ul>
+</li>
+<li><p><strong>Missing Value Imputation</strong>:</p>
+<ul class="simple">
+<li><p><strong>KNN Imputation</strong>: Missing values in numerical features are imputed using <code class="docutils literal notranslate"><span class="pre">KNNImputer</span></code>. The number of neighbors used for imputation is determined by the square root of the number of training samples. This approach fills in missing values based on the values of the nearest neighbors, weighted by distance.</p></li>
+</ul>
+</li>
+<li><p><strong>Categorical Feature Encoding</strong>:</p>
+<ul class="simple">
+<li><p><strong>Label Encoding</strong>: Categorical features are encoded into integer values using <code class="docutils literal notranslate"><span class="pre">LabelEncoder</span></code> to convert them into a format suitable for the mRMR feature selection method.</p></li>
+</ul>
+</li>
+<li><p><strong>Feature Selection</strong>:</p>
+<ul class="simple">
+<li><p><strong>Minimum Redundancy Maximum Relevance (mRMR)</strong>: The <code class="docutils literal notranslate"><span class="pre">mrmr_classif</span></code> function is used to select the top <code class="docutils literal notranslate"><span class="pre">num_features_sel</span></code> features based on their relevance to the outcome variable and redundancy among features. This step identifies the most informative features while minimizing redundancy.</p></li>
+</ul>
+</li>
+<li><p><strong>Consolidation of Selected Features</strong>:</p>
+<ul class="simple">
+<li><p><strong>Intersection Across Folds</strong>: The selected features from each fold are compared, and only the features that are consistently selected across all folds are retained. This ensures that the final set of features is robust and consistently important across different subsets of the data.</p></li>
+</ul>
+</li>
+<li><p><strong>Finalization</strong>:</p>
+<ul class="simple">
+<li><p><strong>Print Results</strong>: The final list of selected features is printed for review.</p></li>
+<li><p><strong>Dataset Adjustment</strong>: The original dataset (<code class="docutils literal notranslate"><span class="pre">mydata</span></code>) and optionally the external validation dataset (<code class="docutils literal notranslate"><span class="pre">extval_data</span></code>) are updated to include only the selected features along with the outcome variable.</p></li>
+</ul>
+</li>
+</ol>
+<p>By using this approach we can get the selected features that are both relevant to the outcome variable and stable across different data splits, making the model more likely to be generalizable and reliable.</p>
+<ul class="simple">
+<li><p><strong>Association Analyses:</strong> Use Spearman, point-biserial correlation, and mutual information for data exploration. This is only used for data exploration and not for the subsequent machine learning analyses.</p></li>
+<li><p>Below is a summary for the heatmap plot generation based on Spearman correlation of features:</p></li>
+</ul>
+<p>This series of steps encompasses the preprocessing and visualization of data. Initially, the process involves imputation, where missing values are filled with the median for each class, followed by the imputation of any remaining NaN values with the median of the entire column. Subsequently, categorical features are transformed into binary format through one-hot encoding. Following this, the Spearman rank-order correlation matrix is computed to assess relationships between variables. In handling missing values within this correlation matrix, pairs of features with NaN correlation values are identified and replaced with 0. Visualization is then conducted through the creation of a clustermap using the seaborn library, allowing for an intuitive representation of the correlation matrix. Adjustments are made for figure size, color mapping, and hiding the upper triangle to enhance clarity. Further adjustments are made to the grid lines and axes, including hiding the x-axis dendrogram for a cleaner presentation. Finally, the clustermap plot is saved in both SVG and TIFF formats for future reference, and then displayed for immediate interpretation.</p>
+<ul class="simple">
+<li><p>Below is a summary of the point-biserial correlation:</p></li>
+</ul>
+<p>This code conducts feature selection based on point biserial correlation against a target variable. It involves data preparation, subsampling to generate 1000 bootstrap samples, calculation of correlation coefficients for each feature across subsamples, quantile calculation to identify significant features, and filtering to create a DataFrame with only significant features.</p>
+<p>Subsequently, a plot is generated to visualize the median and quantile correlation coefficients for features. It involves color coding for significance, sorting the DataFrame by median correlation coefficient, defining the plot size, plotting median correlation coefficients with significant features marked in different colors, adding error bars representing the interquartile range, customizing plot elements, and displaying the plot.</p>
+<ul class="simple">
+<li><p>And finally a brief explanation about the mutual information method for association analyses:</p></li>
+</ul>
+<p>Initially, the dataset is copied, and the target variable is converted to numerical format. Then, 1000 subsamples of the dataset are generated in parallel. Mutual information is calculated for each variable against the target within each subsample. Afterward, a DataFrame containing mutual information values is created. Significant features are identified based on quantiles of mutual information, and the original DataFrame is filtered to include only these features. Finally, a plot visualizes the median and quantile mutual information for features based on random subsamples of the development set across 1000 iterations. The plot distinguishes significant and non-significant features with different colors and includes error bars representing the interquartile range of mutual information values for all features.</p>
+</section>
+<section id="sample-size-and-data-split-assessment">
+<h2>Sample Size and Data Split Assessment<a class="headerlink" href="#sample-size-and-data-split-assessment" title="Link to this heading">#</a></h2>
+<p>Estimate and visualize the number of samples per class for the cross-validation scheme. This visualization is done to present how many samples will be available for training and hyperparameter tuning.</p>
+<ul class="simple">
+<li><p><strong>Statistical Tests:</strong> Compare the difference in variables between the training and test set.</p></li>
+</ul>
+</section>
+<section id="data-overview">
+<h2>Data Overview<a class="headerlink" href="#data-overview" title="Link to this heading">#</a></h2>
+<p>Visualize the results of the association analyses and the distribution of values in all features.</p>
+<ul class="simple">
+<li><p><strong>Missingness:</strong> Report statistical information about missing data.</p></li>
+<li><p><strong>Training and Test Sets:</strong> Overview of the types of variables.</p></li>
+</ul>
+</section>
+<section id="data-imputation">
+<h2>Data Imputation<a class="headerlink" href="#data-imputation" title="Link to this heading">#</a></h2>
+<p>Impute missing values using KNN for continuous features and one-hot encoding for categorical features.</p>
+<ul class="simple">
+<li><p><strong>Imputation and Encoding:</strong> Handle imputation and encoding fold-wise during cross-validation.</p></li>
+<li><p><strong>Model-Specific Handling:</strong> Note that some models (e.g., CatBoost, LightGBM) handle missingness algorithmically.</p></li>
+</ul>
+<p>Here we apply k-nearest neighbors (KNN) algorithm to impute missing values in continuous variables. This is done in fold-wise as in cross validation so that the informaiton from one fold does not leak to other folds. This means that the training data is split to a number of folds as the same as in cross validation and then the imputation is performed on the fold under test, for all folds. then they are merged back to recreate the training set with imputation. The test set and external datasets are also imputed based on the KNN algorithm.</p>
+</section>
+<section id="other-selective-operations-on-the-data">
+<h2>Other Selective Operations on the Data<a class="headerlink" href="#other-selective-operations-on-the-data" title="Link to this heading">#</a></h2>
+<p>Scale the data using robust scaling and handle class imbalance using oversampling techniques.</p>
+<ul class="simple">
+<li><p><strong>Data Scaling:</strong> Use robust scaling method. Read more here: <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html">https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.RobustScaler.html</a></p></li>
+<li><p><strong>Class Imbalance:</strong> Apply oversampling to handle minority class imbalance. Read more here: <a class="reference external" href="https://imbalanced-learn.org/stable/over_sampling.html">https://imbalanced-learn.org/stable/over_sampling.html</a></p></li>
+</ul>
+</section>
+<section id="visual-inspection">
+<h2>Visual Inspection<a class="headerlink" href="#visual-inspection" title="Link to this heading">#</a></h2>
+<p>Evaluate binary classification models and generate receiver operating characteristics (ROC) curves, precision-recall (PR) curves, and confusion matrices.</p>
+<ul class="simple">
+<li><p><strong>ROC and PR Curves:</strong> Visualize model performance.</p></li>
+<li><p><strong>Confusion Matrix:</strong> Assess classification accuracy.</p></li>
+</ul>
+<p>Binary classification models can be evaluated by visual inspection of ROC and PR curves as well as confusion matrices. MAIT visualize those for binary classification models at each time a model is evaluated.
+You can find more information about these methods and their implementations from here:</p>
+<ul class="simple">
+<li><p>ROC curve:
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html">https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html</a></p></li>
+<li><p>Precision-recall curve:
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_recall_curve.html">https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_recall_curve.html</a></p></li>
+<li><p>Confusion matrix:
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html">https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html</a></p></li>
+</ul>
+</section>
+<section id="model-initialization">
+<h2>Model Initialization<a class="headerlink" href="#model-initialization" title="Link to this heading">#</a></h2>
+<p>Initialize various binary classification models, from logistic regression to tree-based ensemble models.</p>
+<ul class="simple">
+<li><p><strong>Model Selection:</strong> Choose from a selection of 7 different models. If you want to save time, you can remove some of the models from the list of included models. QLattice is the slowest one to train.</p></li>
+<li><p><strong>Sampling Weights:</strong> Set weights based on class balance in the training set. This is done in the pipeline to take care of class imbalance issues.</p></li>
+<li><p><strong>Parameter Grid:</strong> Define parameters for random search in hyperparameter tuning. The search space is pre-defined but you can change them for each model.</p></li>
+</ul>
+<p>An overview of the various binary classification models included in MAIT, including their hyperparameters, interpretation methods, and a brief description of each model.</p>
+<section id="models-overview">
+<h3>Models Overview<a class="headerlink" href="#models-overview" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Hyperparameters</p></th>
+<th class="head"><p>Interpretation Method</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>QLattice</strong></p></td>
+<td><p>- <code class="docutils literal notranslate"><span class="pre">n_epochs</span></code>: [50, 100, 150]<br>- <code class="docutils literal notranslate"><span class="pre">max_complexity</span></code>: [5, 10, 15]</p></td>
+<td><p>Model block diagram and closed-form mathematical expression</p></td>
+<td><p>The QLattice, integrated into the Feyn Python library, represents a cutting-edge approach to supervised machine learning known as symbolic regression. It specializes in identifying the most suitable mathematical models to describe complex datasets. Through an iterative process of training, the QLattice prioritizes simplicity while maintaining high performance. <a class="reference external" href="https://docs.abzu.ai/docs/guides/getting_started/qlattice">More information</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Gaussian Naive Bayes</strong></p></td>
+<td><p>Not applicable (no hyperparameters to tune)</p></td>
+<td><p>Feature permutation, SHAP</p></td>
+<td><p>Gaussian Naive Bayes (GaussianNB) is a classification algorithm implemented in Python’s scikit-learn library. It assumes that the likelihood of features follows a Gaussian distribution. The algorithm estimates parameters using maximum likelihood. In practice, GaussianNB is commonly used for classification tasks when dealing with continuous data. <a class="reference external" href="https://scikit-learn.org/stable/modules/naive_bayes.html">Read more here</a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>RandomForestClassifier</strong></p></td>
+<td><p>- <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code>: randint(100, min(1000, 2*n_rows))<br>- <code class="docutils literal notranslate"><span class="pre">max_depth</span></code>: [3, 4, 5, 6, 7, 8, 9, 10]<br>- <code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code>: [2, 5, 10, int(15 + n_rows/1000)]<br>- <code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code>: [1, 2, 4, int(5 + n_rows/1000)]<br>- <code class="docutils literal notranslate"><span class="pre">max_features</span></code>: [‘sqrt’, ‘log2’, None]</p></td>
+<td><p>Feature permutation, SHAP, Tree-based feature importance</p></td>
+<td><p>The RandomForestClassifier, part of the <code class="docutils literal notranslate"><span class="pre">sklearn.ensemble</span></code> module in scikit-learn, is a versatile and powerful tool for classification tasks. It operates as a meta estimator that fits multiple decision tree classifiers on various sub-samples of the dataset, using averaging to enhance predictive accuracy and mitigate overfitting. By default, the classifier uses bootstrap sampling (<code class="docutils literal notranslate"><span class="pre">bootstrap=True</span></code>), and each tree is built using a random subset of features (<code class="docutils literal notranslate"><span class="pre">max_features='sqrt'</span></code>).<br><br>Key parameters include:<br>- <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code>: Number of trees in the forest.<br>- <code class="docutils literal notranslate"><span class="pre">criterion</span></code>: Function to measure the quality of a split (<code class="docutils literal notranslate"><span class="pre">'gini'</span></code> or <code class="docutils literal notranslate"><span class="pre">'entropy'</span></code>).<br>- <code class="docutils literal notranslate"><span class="pre">max_depth</span></code>: Maximum depth of the trees.<br>- <code class="docutils literal notranslate"><span class="pre">min_samples_split</span></code>: Minimum number of samples required to split an internal node.<br>- <code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code>: Minimum number of samples required to be at a leaf node.<br>- <code class="docutils literal notranslate"><span class="pre">class_weight</span></code>: Adjusts weights inversely proportional to class frequencies to handle imbalanced datasets.<br><br>The RandomForestClassifier is highly customizable, allowing for fine-tuning to suit specific datasets and classification challenges. It provides robust performance, especially in scenarios where feature interactions are complex or when the dataset contains a mix of categorical and numerical features. <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">Read more here</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>LightGBM</strong></p></td>
+<td><p>- <code class="docutils literal notranslate"><span class="pre">num_leaves</span></code>: randint(6, min(50, 2<em>n_rows))<br>- <code class="docutils literal notranslate"><span class="pre">min_child_samples</span></code>: randint(4, min(100, n_rows))<br>- <code class="docutils literal notranslate"><span class="pre">min_child_weight</span></code>: [1e-5, 1e-3, 1e-2, 1e-1, 1, 1e1, 1e2, 1e3, 1e4]<br>- <code class="docutils literal notranslate"><span class="pre">subsample</span></code>: uniform(loc=max(0.2, 0.5 - class_proportion/2), scale=min(0.8, 0.5 + class_proportion/2))<br>- <code class="docutils literal notranslate"><span class="pre">colsample_bytree</span></code>: uniform(loc=0.4, scale=0.6)<br>- <code class="docutils literal notranslate"><span class="pre">reg_alpha</span></code>: [0, 1e-1, 1, 2, 5, 7, 10, 50, 100]<br>- <code class="docutils literal notranslate"><span class="pre">reg_lambda</span></code>: [0, 1e-1, 1, 5, 10, 20, 50, 100]<br>- <code class="docutils literal notranslate"><span class="pre">n_estimators</span></code>: randint(50, min(1000, 2</em>n_rows))<br>- <code class="docutils literal notranslate"><span class="pre">max_depth</span></code>: [3, 4, 5, 6, 7, 8, 9, 10]</p></td>
+<td><p>Feature permutation, SHAP, Tree-based feature importance</p></td>
+<td><p>LightGBM represents an open-source, distributed, and high-performance gradient boosting framework, engineered by Microsoft, to tackle machine learning challenges with precision and efficiency. It operates on decision trees, finely tuned to optimize model efficiency while minimizing memory consumption. A key innovation is the Gradient-based One-Side Sampling (GOSS) method, which intelligently retains instances with significant gradients during training, thereby optimizing memory usage and training duration. Additionally, LightGBM employs histogram-based algorithms for rapid and resource-efficient tree construction. These advanced techniques, alongside optimizations such as leaf-wise tree growth and streamlined data storage formats, collectively contribute to LightGBM’s remarkable efficiency and competitive edge in the realm of gradient boosting frameworks. <a class="reference external" href="https://lightgbm.readthedocs.io/en/stable/">Read more here</a></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CatBoost</strong></p></td>
+<td><p>- <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code>: np.logspace(-3, 0, num=100)<br>- <code class="docutils literal notranslate"><span class="pre">depth</span></code>: [3, 4, 5, 6, 7, 8, 9, 10]<br>- <code class="docutils literal notranslate"><span class="pre">l2_leaf_reg</span></code>: np.logspace(-1, 3, num=100)<br>- <code class="docutils literal notranslate"><span class="pre">iterations</span></code>: randint(100, min(1000, 2*n_rows))<br>- <code class="docutils literal notranslate"><span class="pre">subsample</span></code>: np.linspace(0.1, 1, 10)<br>- <code class="docutils literal notranslate"><span class="pre">random_strength</span></code>: np.linspace(0, 10, 100)</p></td>
+<td><p>Feature permutation, SHAP, Tree-based feature importance</p></td>
+<td><p>CatBoost is a supervised machine learning method utilized for classification and regression tasks, particularly useful for handling categorical data without the need for extensive preprocessing. Employing gradient boosting, CatBoost iteratively constructs decision trees to refine predictions, achieving enhanced accuracy over time. Notably, CatBoost employs ordered encoding to effectively handle categorical features, utilizing target statistics from all rows to inform encoding decisions. Additionally, it introduces symmetric trees, ensuring uniformity in split conditions at each depth level. Compared to similar methods like XGBoost, CatBoost have often demonstrates superior performance across datasets of varying sizes, retaining key features such as cross-validation, regularization, and support for missing values. <a class="reference external" href="https://catboost.ai/docs/features/categorical-features">Read more here</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>LogisticRegression</strong></p></td>
+<td><p>- <code class="docutils literal notranslate"><span class="pre">C</span></code>: [0.01, 0.1, 1, 10, 100]<br>- <code class="docutils literal notranslate"><span class="pre">max_iter</span></code>: [500, 1000, 2000]<br>- <code class="docutils literal notranslate"><span class="pre">tol</span></code>: [1e-3, 1e-4, 1e-5]</p></td>
+<td><p>Feature permutation, SHAP</p></td>
+<td><p>Logistic Regression is a linear model for binary classification that uses the logistic function. This model is widely used for its simplicity and effectiveness in binary classification tasks.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>HistGBC</strong></p></td>
+<td><p>- <code class="docutils literal notranslate"><span class="pre">max_iter</span></code>: randint(100, min(1000, 2*n_rows))<br>- <code class="docutils literal notranslate"><span class="pre">validation_fraction</span></code>: uniform(0.1, 0.3)<br>- <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code>: uniform(0.01, 0.2)<br>- <code class="docutils literal notranslate"><span class="pre">max_depth</span></code>: [3, 4, 5, 6, 7, 8, 9, 10]<br>- <code class="docutils literal notranslate"><span class="pre">min_samples_leaf</span></code>: randint(1, min(5, n_rows))<br>- <code class="docutils literal notranslate"><span class="pre">max_leaf_nodes</span></code>: randint(10, 100)<br>- <code class="docutils literal notranslate"><span class="pre">l2_regularization</span></code>: uniform(0.01, 0.2)</p></td>
+<td><p>Feature permutation, SHAP, Tree-based feature importance</p></td>
+<td><p>The HistGradientBoostingClassifier, part of the scikit-learn library, offers a histogram-based approach to gradient boosting for classification tasks. Notably, it exhibits significantly faster performance on large datasets (with n_samples &gt;= 10,000) compared to the traditional GradientBoostingClassifier. The implementation of HistGradientBoostingClassifier is inspired by LightGBM and offers various parameters for customization, such as learning rate, maximum depth of trees, and early stopping criteria. This classifier is an excellent choice for classification tasks with large datasets, providing both speed and accuracy. <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.HistGradientBoostingClassifier.html">Read more here</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">randint</span></code> and <code class="docutils literal notranslate"><span class="pre">uniform</span></code> represent ranges from which hyperparameter values are drawn.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.logspace</span></code> and <code class="docutils literal notranslate"><span class="pre">np.linspace</span></code> are used to generate evenly spaced values on a log scale and linear scale, respectively.</p></li>
+</ul>
+</section>
+</section>
+<section id="binary-model-evaluation">
+<h2>Binary Model Evaluation<a class="headerlink" href="#binary-model-evaluation" title="Link to this heading">#</a></h2>
+<section id="function-to-calculate-evaluation-metrics">
+<h3>Function to Calculate Evaluation Metrics<a class="headerlink" href="#function-to-calculate-evaluation-metrics" title="Link to this heading">#</a></h3>
+<p>This function, <code class="docutils literal notranslate"><span class="pre">calculate_metrics</span></code>, computes various evaluation metrics based on the predictions and probabilities generated by a machine learning model.</p>
+</section>
+<section id="function-definition">
+<h3>Function Definition<a class="headerlink" href="#function-definition" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_metrics</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">y_pred_proba</span><span class="p">):</span>
+</pre></div>
+</div>
+</section>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>y_true</strong>: True labels.</p></li>
+<li><p><strong>y_pred</strong>: Predicted labels.</p></li>
+<li><p><strong>y_pred_proba</strong>: Predicted probabilities for the positive class.</p></li>
+</ul>
+</section>
+<section id="measures-computed">
+<h3>Measures computed<a class="headerlink" href="#measures-computed" title="Link to this heading">#</a></h3>
+<ol class="arabic">
+<li><p><strong>Confusion Matrix (CM)</strong>: Computes the confusion matrix to extract true negatives (TN), false positives (FP), false negatives (FN), and true positives (TP). For further information, refer to <a class="reference external" href="https://en.wikipedia.org/wiki/Confusion_matrix">Wikipedia - Confusion Matrix</a>.</p></li>
+<li><p><strong>Positive Predictive Value (PPV)</strong> (Precision): Measures the proportion of true positive predictions among all positive predictions.</p>
+<img src="https://latex.codecogs.com/svg.image?PPV=TP/(TP&plus;FP)" title="PPV=TP/(TP+FP)" />
+</li>
+<li><p><strong>Negative Predictive Value (NPV)</strong>: Measures the proportion of true negative predictions among all negative predictions.</p>
+<img src="https://latex.codecogs.com/svg.image?NPV=TN/(TN&plus;FN)" title="NPV=TN/(TN+FN)" />
+</li>
+<li><p><strong>True Positive Rate (Sensitivity)</strong>: Measures the proportion of true positive predictions among all actual positive instances.</p>
+<img src="https://latex.codecogs.com/svg.image?TPR=TP/(TP&plus;FN)" title="TPR=TP/(TP+FN)" />
+</li>
+<li><p><strong>True Negative Rate (Specificity)</strong>: Measures the proportion of true negative predictions among all actual negative instances.</p>
+<img src="https://latex.codecogs.com/svg.image?TNR=TN/(TN&plus;FP)" title="TNR=TN/(TN+FP)" />
+</li>
+<li><p><strong>Balanced Accuracy</strong>: Calculates the average of Sensitivity and Specificity to provide a balanced measure of model performance.</p>
+<img src="https://latex.codecogs.com/svg.image?BlanacedAccuracy=(Sensitivity&plus;Specificity)/2" title="BlanacedAccuracy=(Sensitivity+Specificity)/2" />
+</li>
+<li><p><strong>Matthews Correlation Coefficient (MCC)</strong>: Computes the correlation coefficient between true and predicted binary classifications.</p>
+ <img src="https://latex.codecogs.com/svg.image?MCC=(TP\times&space;TN-FP\times&space;FN)/\sqrt{(TP&plus;FP)(TP&plus;FN)(TN&plus;FP)(TN&plus;FN)}" title="MCC=(TP\times TN-FP\times FN)/\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}" />
+</li>
+<li><p><strong>AUC Score</strong>: Computes the Area Under the Receiver Operating Characteristic curve, indicating model discriminative ability across different thresholds.</p></li>
+<li><p><strong>Precision-Recall AUC Score</strong>: Computes the Area Under the Precision-Recall curve, providing insight into model performance at different recall levels.</p></li>
+<li><p><strong>Brier Score</strong>: Measures the mean squared difference between predicted probabilities and actual outcomes. <a class="reference external" href="https://en.wikipedia.org/wiki/Brier_score">https://en.wikipedia.org/wiki/Brier_score</a></p></li>
+<li><p><strong>F1 Score</strong>: Computes the harmonic mean of Precision and Recall, providing a balance between them.</p>
+<img src="https://latex.codecogs.com/svg.image?F1&space;score=2TP/(2TP&plus;FP&plus;FN)" title="F1 score=2TP/(2TP+FP+FN)" />
+</li>
+</ol>
+<p>The function returns a dictionary containing the computed measures. To rigorously evaluate binary classification models, the default criterion involves assessing the mean values of ROC-AUC, PRAUC, and MCC across cross-validation folds. ROC-AUC and PRAUC capture the model’s discrimination capability across various probability thresholds, crucial for imbalanced datasets, while MCC consolidates information from the confusion matrix to provide a balanced assessment of true positives, true negatives, false positives, and false negatives. By collectively considering these metrics, we ensure a comprehensive evaluation of the model’s predictive performance and robustness, facilitating informed model selection decisions.</p>
+<p>In summary, this function is essential for evaluating the performance of binary classification models. The calculated measures provide insights into the model’s predictive capabilities and generalization ability.</p>
+</section>
+</section>
+<section id="cross-validation">
+<h2>Cross validation<a class="headerlink" href="#cross-validation" title="Link to this heading">#</a></h2>
+<p>Perform cross-validation, report model performance, and visualize results. Also, conduct hyperparameter tuning and feature importance analysis.</p>
+<ul class="simple">
+<li><p><strong>Model Performance:</strong> Evaluate performance based on multiple measures.</p></li>
+<li><p><strong>Feature Importance:</strong> Analyze using SHAP, feature permutation, and tree-based methods.</p></li>
+<li><p><strong>Optimal Threshold:</strong> Determine optimal probability threshold for each model.</p></li>
+</ul>
+<p>Note: There is also a function for cross validation for survival models (<code class="docutils literal notranslate"><span class="pre">cross_validate_surv_model</span></code>).</p>
+<section id="id1">
+<h3>Function Definition<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cross_validate_model</span><span class="p">(</span><span class="n">model_class</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="n">cv_folds</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">SEED</span><span class="p">,</span> <span class="n">measures</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">use_default_threshold</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">model_params</span><span class="p">):</span>
+</pre></div>
+</div>
+<section id="id2">
+<h4>Parameters<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>model_class</strong>: The class of the model to be cross-validated.</p></li>
+<li><p><strong>X</strong>: Features dataset.</p></li>
+<li><p><strong>y</strong>: Labels dataset.</p></li>
+<li><p><strong>sample_weights</strong>: Weights for the samples (default: None).</p></li>
+<li><p><strong>n_splits</strong>: Number of folds for cross-validation (default: <code class="docutils literal notranslate"><span class="pre">cv_folds</span></code>).</p></li>
+<li><p><strong>random_state</strong>: Random seed for reproducibility (default: <code class="docutils literal notranslate"><span class="pre">SEED</span></code>).</p></li>
+<li><p><strong>measures</strong>: Performance measures to evaluate (default: list of various metrics).</p></li>
+<li><p><strong>use_default_threshold</strong>: Boolean to use the default threshold (default: False).</p></li>
+<li><p><strong>model_params</strong>: Additional model parameters.</p></li>
+</ul>
+</section>
+<section id="initial-setup">
+<h4>Initial Setup<a class="headerlink" href="#initial-setup" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n_repeats</span> <span class="o">=</span> <span class="n">n_rep_feature_permutation</span>
+<span class="k">if</span> <span class="n">measures</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">measures</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PPV&#39;</span><span class="p">,</span> <span class="s1">&#39;NPV&#39;</span><span class="p">,</span> <span class="s1">&#39;Sensitivity&#39;</span><span class="p">,</span> <span class="s1">&#39;Specificity&#39;</span><span class="p">,</span> <span class="s1">&#39;Balanced Accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;MCC&#39;</span><span class="p">,</span> <span class="s1">&#39;ROCAUC&#39;</span><span class="p">,</span> <span class="s1">&#39;PRAUC&#39;</span><span class="p">,</span> <span class="s1">&#39;Brier Score&#39;</span><span class="p">,</span> <span class="s1">&#39;F1 Score&#39;</span><span class="p">]</span>
+
+<span class="n">fold_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">fold_results_plt</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">aggregated_thr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+<span class="n">aggregated_predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+<span class="n">aggregated_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+<span class="n">skf</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">feature_importance_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">treebased_feature_importance_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">shap_values_list</span> <span class="o">=</span> <span class="p">[]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>n_repeats</strong>: Number of repetitions for feature permutation importance calculation.</p></li>
+<li><p><strong>measures</strong>: List of performance metrics to evaluate.</p></li>
+<li><p><strong>fold_results</strong>: DataFrame to store results for each fold.</p></li>
+<li><p><strong>aggregated_thr</strong>: Aggregated list of estimated optimal thresholds.</p></li>
+<li><p><strong>skf</strong>: Stratified K-Folds cross-validator to ensure balanced folds.</p></li>
+<li><p><strong>feature_importance_list</strong>: List to store feature importances from permutation.</p></li>
+<li><p><strong>shap_values_list</strong>: List to store SHAP values for interpretability.</p></li>
+</ul>
+</section>
+<section id="cross-validation-loop">
+<h4>Cross-Validation Loop<a class="headerlink" href="#cross-validation-loop" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">fold</span><span class="p">,</span> <span class="p">(</span><span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">skf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">X_train_fold</span><span class="p">,</span> <span class="n">X_test_fold</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">X</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+    <span class="n">y_train_fold</span><span class="p">,</span> <span class="n">y_test_fold</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+    <span class="n">sample_weights_fold</span> <span class="o">=</span> <span class="n">sample_weights</span><span class="p">[</span><span class="n">train_index</span><span class="p">]</span> <span class="k">if</span> <span class="n">sample_weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Splitting data into training and testing sets for each fold in the cross-validation process.</p></li>
+</ul>
+</section>
+<section id="model-training-and-evaluation">
+<h4>Model Training and Evaluation<a class="headerlink" href="#model-training-and-evaluation" title="Link to this heading">#</a></h4>
+<p>Depending on the model class, different models are trained and evaluated:</p>
+<section id="randomforestclassifier">
+<h5>RandomForestClassifier<a class="headerlink" href="#randomforestclassifier" title="Link to this heading">#</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if the model class is RandomForestClassifier</span>
+<span class="k">if</span> <span class="n">model_class</span> <span class="o">==</span> <span class="n">RandomForestClassifier</span><span class="p">:</span>
+    
+    <span class="c1"># Initialize the RandomForestClassifier with specified parameters</span>
+    <span class="n">rf_model</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">SEED</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_cpu_model_training</span><span class="p">,</span> <span class="o">**</span><span class="n">rf_params</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">hp_tuning</span><span class="p">:</span>
+        <span class="c1"># Perform hyperparameter tuning using RandomizedSearchCV</span>
+        <span class="n">random_search</span> <span class="o">=</span> <span class="n">RandomizedSearchCV</span><span class="p">(</span>
+            <span class="n">estimator</span><span class="o">=</span><span class="n">rf_model</span><span class="p">,</span> 
+            <span class="n">param_distributions</span><span class="o">=</span> <span class="n">rf_param_dist</span><span class="p">,</span>  <span class="c1"># Hyperparameter distribution</span>
+            <span class="n">n_iter</span><span class="o">=</span> <span class="n">n_iter_hptuning</span><span class="p">,</span>             <span class="c1"># Number of iterations for the search</span>
+            <span class="n">scoring</span><span class="o">=</span> <span class="n">custom_scorer</span><span class="p">,</span>               <span class="c1"># Scoring metric for evaluation (by default it is the mean of PRAUC and ROCAUC)</span>
+            <span class="n">cv</span><span class="o">=</span> <span class="n">cv_folds_hptuning</span><span class="p">,</span>              <span class="c1"># Number of cross-validation folds</span>
+            <span class="n">refit</span><span class="o">=</span> <span class="n">tun_scoring_single</span><span class="p">,</span>          <span class="c1"># Metric to use for selecting the best model</span>
+            <span class="n">random_state</span><span class="o">=</span> <span class="n">SEED</span><span class="p">,</span>                 <span class="c1"># Random state for reproducibility</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>                         <span class="c1"># Verbosity level</span>
+            <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_cpu_for_tuning</span><span class="p">)</span>           <span class="c1"># Number of jobs for parallel processing</span>
+        
+        <span class="c1"># Fit the RandomizedSearchCV object to the training data</span>
+        <span class="n">random_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_fold</span><span class="p">,</span> <span class="n">y_train_fold</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weights_fold</span><span class="p">)</span>
+        
+        <span class="c1"># Retrieve the best hyperparameters from the search</span>
+        <span class="n">best_params</span> <span class="o">=</span> <span class="n">random_search</span><span class="o">.</span><span class="n">best_params_</span>
+        
+        <span class="c1"># Reinitialize the RandomForestClassifier with the best parameters</span>
+        <span class="n">rf_model</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">SEED</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_cpu_model_training</span><span class="p">,</span> <span class="o">**</span><span class="n">best_params</span><span class="p">)</span>
+    
+    <span class="c1"># Train the RandomForestClassifier on the training data</span>
+    <span class="n">rf_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_fold</span><span class="p">,</span> <span class="n">y_train_fold</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weights_fold</span><span class="p">)</span>
+    
+    <span class="c1"># Make predictions and get probability estimates for the positive class</span>
+    <span class="n">predictions_proba</span> <span class="o">=</span> <span class="n">rf_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test_fold</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+    
+    <span class="c1"># Extract feature importances from the trained model</span>
+    <span class="n">treebased_feature_importance</span> <span class="o">=</span> <span class="n">rf_model</span><span class="o">.</span><span class="n">feature_importances_</span>
+    <span class="n">treebased_feature_importance_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">treebased_feature_importance</span><span class="p">)</span>
+    
+    <span class="c1"># Compute permutation importance to assess feature importance</span>
+    <span class="n">perm_result</span> <span class="o">=</span> <span class="n">permutation_importance</span><span class="p">(</span>
+        <span class="n">rf_model</span><span class="p">,</span> <span class="n">X_test_fold</span><span class="p">,</span> <span class="n">y_test_fold</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="n">n_repeats</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="n">n_cpu_model_training</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;roc_auc&quot;</span><span class="p">)</span>
+    <span class="n">feature_importance</span> <span class="o">=</span> <span class="n">perm_result</span><span class="o">.</span><span class="n">importances_mean</span>
+    <span class="n">feature_importance_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Feature&quot;</span><span class="p">:</span> <span class="n">X_train_fold</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="s2">&quot;Importance&quot;</span><span class="p">:</span> <span class="n">feature_importance</span><span class="p">})</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;Importance&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">feature_importance_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feature_importance_df</span><span class="p">)</span>
+    
+    <span class="c1"># Create SHAP explainer and compute SHAP values for model interpretability</span>
+    <span class="n">explainer</span> <span class="o">=</span> <span class="n">shap</span><span class="o">.</span><span class="n">TreeExplainer</span><span class="p">(</span><span class="n">rf_model</span><span class="p">)</span>
+    <span class="n">shap_values</span> <span class="o">=</span> <span class="n">explainer</span><span class="o">.</span><span class="n">shap_values</span><span class="p">(</span><span class="n">X_test_fold</span><span class="p">)</span>
+    <span class="n">shap_values_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shap_values</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>RandomForestClassifier</strong>: This function initializes and trains a RandomForestClassifier model, optionally performs hyperparameter tuning using RandomizedSearchCV, and evaluates its performance using feature importance metrics and SHAP values.</p></li>
+<li><p><strong>Feature Importance</strong>: Uses both tree-based and permutation importance to identify key features.</p></li>
+<li><p><strong>SHAP Values</strong>: Computes SHAP values for interpretability.</p></li>
+</ul>
+</section>
+<section id="qlattice">
+<h5>QLattice<a class="headerlink" href="#qlattice" title="Link to this heading">#</a></h5>
+<p>QLattice is a powerful model but is different from other models that are available in the pipeline and one of its significant difference is that it is interpreted using the model block diagram visualization rather than by SHAP. Thus the pipeline does not apply SHAP method when QLattice is the selected model.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">elif</span> <span class="n">model_class</span> <span class="o">==</span> <span class="s1">&#39;QLattice&#39;</span><span class="p">:</span>
+    <span class="n">X_train_fold_ql</span> <span class="o">=</span> <span class="n">X_train_fold</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">X_train_fold_ql</span><span class="p">[</span><span class="n">outcome_var</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_train_fold</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">if</span> <span class="n">hp_tuning</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
+        <span class="n">best_composite_score</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">best_parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;n_epochs&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;max_complexity&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>QLattice</strong>: For QLattice models, the training data is prepared, and hyperparameter tuning is performed if specified.</p></li>
+</ul>
+<p>MAIT allows using a custom metric with hyperparameter tuning:</p>
+<ol class="arabic">
+<li><p><strong>Define Custom Metric:</strong></p>
+<ul>
+<li><p>Create a function <code class="docutils literal notranslate"><span class="pre">combined_metric</span></code> to calculate the average of AUC and PR AUC:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">combined_metric</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred_proba</span><span class="p">):</span>
+    <span class="n">roc_auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred_proba</span><span class="p">)</span>
+    <span class="n">pr_auc</span> <span class="o">=</span> <span class="n">average_precision_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred_proba</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">roc_auc</span> <span class="o">+</span> <span class="n">pr_auc</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># Mean of ROCAUC and PRAUC</span>
+</pre></div>
+</div>
+</li>
+<li><p>Define the custom scorer using this metric:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">custom_scorer</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">combined_metric</span><span class="p">,</span> <span class="n">needs_proba</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+<li><p><strong>Select Single Metric (Optional):</strong></p>
+<ul>
+<li><p>If you prefer to use only one metric for evaluation, set <code class="docutils literal notranslate"><span class="pre">use_single_metric</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code> and choose either “ROCAUC” or “PRAUC”:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">use_single_metric</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Change to True if using a single metric</span>
+<span class="k">if</span> <span class="n">use_single_metric</span><span class="p">:</span>
+    <span class="n">single_score</span> <span class="o">=</span> <span class="s2">&quot;ROCAUC&quot;</span>  <span class="c1"># Options: &quot;ROCAUC&quot; or &quot;PRAUC&quot;</span>
+    <span class="k">if</span> <span class="n">single_score</span> <span class="o">==</span> <span class="s2">&quot;ROCAUC&quot;</span><span class="p">:</span>
+        <span class="n">custom_scorer</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">roc_auc_score</span><span class="p">,</span> <span class="n">needs_proba</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">single_score</span> <span class="o">==</span> <span class="s2">&quot;PRAUC&quot;</span><span class="p">:</span>
+        <span class="n">custom_scorer</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">average_precision_score</span><span class="p">,</span> <span class="n">needs_proba</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+<p>By following these steps, you can make sure that the model is evaluated and optimized according to your custom metric, and that the best hyperparameters are used to enhance the classifier’s performance.</p>
+</section>
+</section>
+</section>
+<section id="threshold-optimization-method">
+<h3>Threshold Optimization Method<a class="headerlink" href="#threshold-optimization-method" title="Link to this heading">#</a></h3>
+<p>By default, probability threshold optimization is not done. When applying the threshold optimization, consider running the pipeline without doing so and comparing the results to avoid biased interpretation.</p>
+<ul class="simple">
+<li><p><strong>Initial Threshold</strong>: Use a default threshold of 0.5 for the first fold.</p></li>
+<li><p><strong>Threshold Adjustment</strong>:</p>
+<ul>
+<li><p>For each fold, predict probabilities for the validation set.</p></li>
+<li><p>Compute the median predicted probability for each class.</p></li>
+<li><p>Calculate the midpoint of these medians and use it as the threshold for the next fold.</p></li>
+</ul>
+</li>
+<li><p><strong>Sequential Application</strong>: Continue this process, adjusting the threshold sequentially across folds.</p></li>
+</ul>
+<p>This novel method is viable under certain conditions. On one hand, it adapts the threshold based on the model’s performance, potentially improving the balance between precision and recall dynamically. It captures how the model’s predictive probabilities distribute over different folds, potentially leading to a more informed threshold. On the other hand, the threshold for each fold depends on the performance of previous folds, introducing a form of sequential dependency that could sligthly bias performance metrics.</p>
+</section>
+<section id="model-uncertainty-reduction-mur">
+<h3>Model Uncertainty Reduction (MUR)<a class="headerlink" href="#model-uncertainty-reduction-mur" title="Link to this heading">#</a></h3>
+<p>Model Uncertainty Reduction (MUR) is our novel technique applied post-cross-validation to enhance model reliability by filtering out predictions with high uncertainty.</p>
+</section>
+<section id="key-points">
+<h3>Key Points:<a class="headerlink" href="#key-points" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Objective</strong>: To reduce model uncertainty while preserving a sufficient number of samples for robust evaluation.</p></li>
+<li><p><strong>Method</strong>:</p>
+<ul class="simple">
+<li><p><strong>Thresholds and Percentiles</strong>: MUR employs a grid search over different margins around prediction probabilities and SHAP percentiles.</p></li>
+<li><p><strong>Filtering</strong>: After cross-validation, samples are filtered out if their predicted probabilities or SHAP values fall within specified uncertainty margins.</p></li>
+<li><p><strong>Sample Retention</strong>: Ensures that the proportion of discarded samples does not exceed a predefined maximum percentage, balancing uncertainty reduction with sample retention.</p></li>
+</ul>
+</li>
+<li><p><strong>Implementation</strong>:</p>
+<ul class="simple">
+<li><p><strong>Model-Specific</strong>: Applied to various models (e.g., HistGBC, RandomForest) to calculate SHAP values and filter predictions accordingly.</p></li>
+<li><p><strong>Selection</strong>: Post-filtering, the best model is selected based on evaluation metrics such as AUC, PR AUC, and MCC, while ensuring minimal sample loss.</p></li>
+</ul>
+</li>
+</ol>
+<p>MUR is used after cross-validation to refine the model by discarding less certain predictions, ultimately selecting the best-performing model with the highest confidence. The thresholds (margins) for SHAP percentile and the prediciton probabilities are then used to discard uncertain predictions on new samples (e.g., test set).</p>
+<section id="additional-sections">
+<h4>Additional sections<a class="headerlink" href="#additional-sections" title="Link to this heading">#</a></h4>
+<p>Other sections of the code perform similar operations for different model classes. Each model class has specific configurations and evaluation methods.</p>
+<p>In sum, this function provides a comprehensive approach to cross-validation for various machine learning models. It supports model training, hyperparameter tuning, performance evaluation, feature importance calculation, and model interpretability using SHAP values. The function is designed to be flexible and applicable to multiple types of machine learning models.</p>
+</section>
+</section>
+</section>
+<section id="stopping-condition">
+<h2>Stopping Condition<a class="headerlink" href="#stopping-condition" title="Link to this heading">#</a></h2>
+<p>Define the stopping condition for the pipeline if there is no data split and only cross-validation is performed.</p>
+</section>
+<section id="prediction-block">
+<h2>Prediction Block<a class="headerlink" href="#prediction-block" title="Link to this heading">#</a></h2>
+<p>Train the selected model on the entire training set and evaluate it on the test set.</p>
+<ul class="simple">
+<li><p><strong>Model Training:</strong> Train the final model using the full training set.</p></li>
+<li><p><strong>Test Evaluation:</strong> Assess model performance on the test set (and external validation set if available).</p></li>
+</ul>
+</section>
+<section id="model-interpretation">
+<h2>Model Interpretation<a class="headerlink" href="#model-interpretation" title="Link to this heading">#</a></h2>
+<p>Analyze the selected model using SHAP for model interpretation, including SHAP values and plots.</p>
+<ul class="simple">
+<li><p><strong>SHAP Analysis:</strong> Interpret model predictions and feature importance.</p></li>
+<li><p><strong>SHAP Plots:</strong> Generate summary and decision plots. It includes SHAP values association with predicted probabilities, SHAP summary plot (works only for continuous variables), enhanced SHAP summary plot (custom-made function that can also handle categorical variables), SHAP plots only for correctly predicted samples, SHAP decision plot, SHAP clustering.</p></li>
+</ul>
+<p>The best performing model (the selected model) is chosen based on the performance of the models on cross validation as the model with the highest mean of MCC, ROCAUC, and PRAUC (note that ROCAUC is also often written as AUC). This model may not necessarily have the best performance on the test set, especially if the models perform closely similar on the cross validation. Since most of the data is used in cross validation, the model that is chosen based on that is prefered to the best performing model based only on the test set.</p>
+<p>For tree-based ensemble models, TreeExplainer is used to calculate the SHAP values, for Logistic Regression model LinearExplainer is used, and for Gaussian Naive Bayes model KernelExplainer is used. SHAP is not implemented for QLattice model as it has its specific approach for model interpretation.</p>
+<section id="statistical-significance-of-features">
+<h3>Statistical significance of features<a class="headerlink" href="#statistical-significance-of-features" title="Link to this heading">#</a></h3>
+<p>Sometimes it is favorable to point out significant features, like statistical analysis, and here we so far had a list of most important (impactful in terms of SHAP values). SHAP summary gives an idea on both population-based importance and individual-based importance of features. To have more emphasize on population-based importance (global importance in explainable AI) we apply the following approach based on bootstrap testing.</p>
+<p>The significance test is based on the subsampling method (with replication), where if the IQR crosses zero less than 5% of the time (95% confidence) via subsample_iqr_test function, the feature is marked as significant. The results will be depicted as boxplots with indication of significant features with light green color (as oppposed to light red color for non-significant features) and an “*” in front of the feature name via f_imp_shapboxplot function. This is similarly done for survival models.</p>
+<p>Derivation and interpretation:</p>
+<p>Data-driven threshold: By using the sum of absolute SHAP values and defining the threshold based on the 1st percentile, you’re taking into account the overall contribution of each feature across all instances. Features with lower total contributions are compared against this data-derived threshold, rather than simply comparing them against zero.</p>
+<p>Significance Test: For each feature, you conduct a subsampling test to see how often the IQR of the SHAP values crosses this threshold. If it crosses less than 5% of the time, the feature is considered significant and marked with an asterisk.</p>
+<p>Note that the significance refers to population-wide (global) importance of the features, and for subsets of the studied population there might be variations in the importance of the features.</p>
+</section>
+<section id="shap-decision-plot-description">
+<h3>SHAP decision plot description<a class="headerlink" href="#shap-decision-plot-description" title="Link to this heading">#</a></h3>
+<p>The SHAP decision plot centers around the <code class="docutils literal notranslate"><span class="pre">explainer.expected_value</span></code> on the x-axis, with colored lines representing predictions for each observation. Moving upwards, these lines intersect the x-axis at the prediction specific to each observation, depicted in varying colors on a gradient scale. The plot integrates SHAP values for each feature, illustrating their contributions to the overall prediction relative to the model’s baseline value. At the plot’s bottom, observations converge at <code class="docutils literal notranslate"><span class="pre">explainer.expected_value</span></code>.</p>
+<ol class="arabic simple">
+<li><p><strong>Demonstrating feature effects:</strong></p>
+<ul class="simple">
+<li><p>Visualizes the impact of multiple features on predictions and their individual contributions.</p></li>
+</ul>
+</li>
+<li><p><strong>Revealing interaction effects:</strong></p>
+<ul class="simple">
+<li><p>shows how interactions between features influence predictions by incorporating SHAP values.</p></li>
+</ul>
+</li>
+<li><p><strong>Exploring feature effects across values:</strong></p>
+<ul class="simple">
+<li><p>Enables exploration of feature effects by showcasing prediction variations across different feature values.</p></li>
+</ul>
+</li>
+<li><p><strong>Identifying outliers:</strong></p>
+<ul class="simple">
+<li><p>Enables outlier detection by pinpointing observations deviating significantly from expected values or prediction trends.</p></li>
+</ul>
+</li>
+<li><p><strong>Understanding prediction paths:</strong></p>
+<ul class="simple">
+<li><p>Facilitates the identification of common prediction patterns, offering insight into model behavior.</p></li>
+</ul>
+</li>
+<li><p><strong>Model comparison:</strong></p>
+<ul class="simple">
+<li><p>Allows comparing predictions across multiple models.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="feature-interactions-based-on-shap-method">
+<h3>Feature interactions based on SHAP method<a class="headerlink" href="#feature-interactions-based-on-shap-method" title="Link to this heading">#</a></h3>
+<p>There is also a code chunk within the pipeline that generates a heatmap visualization representing the interaction between features using SHAP (SHapley Additive exPlanations) values. It is done once for all samples from the test set and once for each subset of the test set by their class from the outcome variable.</p>
+<p><strong>Process Overview:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Interaction Matrix Calculation</strong>:</p>
+<ul class="simple">
+<li><p><strong>Pairwise SHAP Values</strong>: For each pair of features, the interaction is assessed by summing their SHAP values across samples.</p></li>
+<li><p><strong>Metrics Computed</strong>: The script calculates median, minimum, and maximum values for each feature pair to quantify interactions.</p></li>
+</ul>
+</li>
+<li><p><strong>Data Visualization</strong>:</p>
+<ul class="simple">
+<li><p><strong>Heatmaps</strong>: Three types of heatmaps are produced for each class:</p>
+<ul>
+<li><p><strong>Median SHAP Values</strong>: Displays the median interaction strength (i.e., median of pairwise SHAP values).</p></li>
+<li><p><strong>Minimum SHAP Values</strong>: Shows the minimum interaction observed (i.e.,  minimum of pairwise SHAP values).</p></li>
+<li><p><strong>Maximum SHAP Values</strong>: Highlights the maximum interaction observed (i.e., maximum of pairwise SHAP values).</p></li>
+</ul>
+</li>
+<li><p><strong>Box Plots</strong>:</p>
+<ul>
+<li><p><strong>All Feature Pairs</strong>: Illustrates the distribution of interaction values for each feature pair, ordered by median interaction strength.</p></li>
+<li><p><strong>Top and Bottom 10% Feature Pairs</strong>: Focuses on the feature pairs within the top and bottom 10% of median SHAP values, revealing the most and least significant interactions.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>Seaborn and Matplotlib are used to create heatmaps and box plots, with results saved as TIFF files for further analysis. These visualizations demonstrate the combined effects of feature pairs on model predictions that could be useful to detect interacting features.</p>
+</section>
+<section id="feature-interactions-based-on-feature-permutation-method-for-feature-pairs">
+<h3>Feature interactions based on feature permutation method for feature pairs<a class="headerlink" href="#feature-interactions-based-on-feature-permutation-method-for-feature-pairs" title="Link to this heading">#</a></h3>
+<p>This code chunk provides insight into the interaction effects between pairs of features in the machine learning model, helping identify which combinations of features contribute significantly to the model’s performance.</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">permute_feature_pairs</span></code> function calculates the permutation importances for pairs of features.</p></li>
+<li><p>It converts the binary target variable to numeric format and calculates the baseline score using AUC.</p></li>
+<li><p>For each pair of features, it shuffles their values multiple times and computes the change in AUC compared to the baseline. The average change in AUC is stored as the importance score for that feature pair.</p></li>
+<li><p>It generates all possible pairs of features from the input feature set.</p></li>
+<li><p>It computes the permutation importances for pairs of features using the defined function.</p></li>
+<li><p>The results are stored in a DataFrame, where each row represents a feature pair along with its importance score.</p></li>
+<li><p>The DataFrame is sorted based on importance in descending order and printed to display the importance of feature pairs.</p></li>
+</ul>
+</section>
+<section id="shap-dependence-plots">
+<h3>SHAP dependence plots<a class="headerlink" href="#shap-dependence-plots" title="Link to this heading">#</a></h3>
+<p>We also have a custom code within the pipeline that generates SHAP dependence plots for a selected machine learning model. The code calculates the median absolute SHAP values for each feature, sorts them, and determines the number of features to plot based on a predefined threshold (<code class="docutils literal notranslate"><span class="pre">top_n_f</span></code>). It initializes subplots to display the dependence plots and iterates over the top features. For each feature, the code handles both categorical and numerical data, ensuring any missing values are addressed. It then creates scatter plots of the SHAP values against feature values, adding a regression line to indicate the trend. Misclassified samples are marked distinctly with an ‘X’. Correlation between the feature values and SHAP values is assessed using the Spearman correlation coefficient, and a corresponding p-value is calculated. These statistics are displayed in the plot titles, indicating whether the correlation is statistically significant. The plots are customized with color bars representing predicted probabilities. Finally, the layout is adjusted for clarity, and the plots are displayed using <code class="docutils literal notranslate"><span class="pre">plt.show()</span></code>.</p>
+</section>
+<section id="shap-clustering">
+<h3>SHAP clustering<a class="headerlink" href="#shap-clustering" title="Link to this heading">#</a></h3>
+<p>MAIT also includes a code chunk aimed to identify and analyze clusters of features and instances using SHAP (SHapley Additive exPlanations) values in the context of precision medicine. It does so by employing hierarchical clustering techniques. It includes the following steps:</p>
+<ol class="arabic simple">
+<li><p><strong>SHAP Values Preparation</strong>:</p>
+<ul class="simple">
+<li><p>The SHAP values are converted into a DataFrame with features as columns.</p></li>
+</ul>
+</li>
+<li><p><strong>Clustermap Visualization</strong>:</p>
+<ul class="simple">
+<li><p>A clustermap is generated to visualize clusters in both features and instances, providing an initial view of potential patterns.</p></li>
+</ul>
+</li>
+<li><p><strong>Feature Clustering</strong>:</p>
+<ul class="simple">
+<li><p><strong>Hierarchical Clustering</strong>: Features (columns) are clustered into 3 groups using Agglomerative Clustering.</p></li>
+<li><p><strong>Feature Grouping</strong>: Features are grouped based on their cluster assignments.</p></li>
+<li><p><strong>Top N Features</strong>: The top clusters with the most features are identified.</p></li>
+</ul>
+</li>
+<li><p><strong>Instance Clustering</strong>:</p>
+<ul class="simple">
+<li><p><strong>Silhouette Score Calculation</strong>: For each number of clusters (from 3 to 5), silhouette scores are computed to determine the optimal number of clusters for instances (rows).</p></li>
+<li><p><strong>Optimal Clustering</strong>: The best number of clusters is selected based on the highest silhouette score.</p></li>
+</ul>
+</li>
+<li><p><strong>Final Clustering and Output</strong>:</p>
+<ul class="simple">
+<li><p><strong>Hierarchical Clustering</strong>: Instances are clustered into the optimal number of clusters.</p></li>
+<li><p><strong>Instance Grouping</strong>: Instances are grouped based on their cluster assignments.</p></li>
+<li><p><strong>Top N Clusters</strong>: The top N clusters with the most instances are identified. (N is determined by the Silhouette score)</p></li>
+</ul>
+</li>
+<li><p><strong>Model-specific Execution</strong>:</p>
+<ul class="simple">
+<li><p>The function <code class="docutils literal notranslate"><span class="pre">find_feature_clusters</span></code> is called based on the type of model (<code class="docutils literal notranslate"><span class="pre">selected_model</span></code>), which could be either from <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> or other libraries like <code class="docutils literal notranslate"><span class="pre">catboost</span></code> or <code class="docutils literal notranslate"><span class="pre">lightgbm</span></code>.</p></li>
+</ul>
+</li>
+<li><p><strong>Results Display</strong>:</p>
+<ul class="simple">
+<li><p>The top clusters for features and instances are printed out.</p></li>
+</ul>
+</li>
+</ol>
+<p>This approach helps in understanding how different subgroups of features and patient instances behave differently with the model, potentially revealing high or low-risk clusters and offering valuable insights for personalized patient treatment strategies.</p>
+<section id="plotting-confusion-matrix-for-clusters">
+<h4>Plotting Confusion Matrix for Clusters<a class="headerlink" href="#plotting-confusion-matrix-for-clusters" title="Link to this heading">#</a></h4>
+<p>It is done by <code class="docutils literal notranslate"><span class="pre">plot_confusion_matrix_for_clusters</span></code> function that introduces the following enhancements:</p>
+<ol class="arabic simple">
+<li><p><strong>SHAP Values Handling</strong>:</p>
+<ul class="simple">
+<li><p>It includes SHAP values as an input to visualize feature importances specific to each cluster.</p></li>
+</ul>
+</li>
+<li><p><strong>Conditional SHAP Plotting</strong>:</p>
+<ul class="simple">
+<li><p>The function decides on the appropriate SHAP plot type based on the model and data characteristics:</p>
+<ul>
+<li><p>For models like HistGradientBoostingClassifier, RandomForestClassifier, LogisticRegression, and GaussianNB, it uses the standard SHAP summary plot.</p></li>
+<li><p>For models with categorical features (e.g., LGBM, CatBoost when X_test has categorical variables), it also uses a custom summary plot using categorical_shap_plot function as the original function from shap package for shap summary plot cannot display categories.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Plot Adjustments</strong>:</p>
+<ul class="simple">
+<li><p>Confusion matrix plots are adjusted for figure size, font size, and annotations to ensure clarity.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="execution-based-on-model-type">
+<h4>Execution Based on Model Type<a class="headerlink" href="#execution-based-on-model-type" title="Link to this heading">#</a></h4>
+<p>The function <code class="docutils literal notranslate"><span class="pre">plot_confusion_matrix_for_clusters</span></code> is called conditionally based on the type of selected model:</p>
+<ul class="simple">
+<li><p><strong>For sklearn Models</strong>: It processes `X_test_OHE``.</p></li>
+<li><p><strong>For CatBoost and LightGBM Models</strong>: It processes <code class="docutils literal notranslate"><span class="pre">X_test</span></code>.</p></li>
+</ul>
+<p>In sum, this enhanced code provides a comprehensive approach to analyze and visualize the performance of a machine learning model within different clusters of data, leveraging confusion matrices and SHAP values to gain deeper insights into model behavior across diverse patient subgroups.</p>
+</section>
+</section>
+</section>
+<section id="decision-curve-analysis">
+<h2>Decision Curve Analysis<a class="headerlink" href="#decision-curve-analysis" title="Link to this heading">#</a></h2>
+<p>Compare the selected model against alternative approaches using decision curve analysis.</p>
+<p>Net benefit of the model compared to random guessing, extreme cases, and an alternative method or model. Read more here: <a class="reference external" href="https://en.wikipedia.org/wiki/Decision_curve_analysis#:~:text=Decision%20curve%20analysis%20evaluates%20a,are%20positive%20are%20also%20plotted">https://en.wikipedia.org/wiki/Decision_curve_analysis#:~:text=Decision curve analysis evaluates a,are positive are also plotted</a>.
+as an alternative model we here use logistic regression model but you can modify this or import prediction probabilities for the test samples from elsewhere.</p>
+<section id="cost-sensitive-model-evaluation">
+<h3>Cost-sensitive Model Evaluation<a class="headerlink" href="#cost-sensitive-model-evaluation" title="Link to this heading">#</a></h3>
+<p>In cost-sensitive model evaluation, we incorporate weights into performance metrics to account for varying costs associated with true positive (TP) and false positive (FP) cases. Two key metrics are introduced:</p>
+<ul class="simple">
+<li><p><strong>Cost-sensitive Net Benefit:</strong> This metric adjusts the traditional net benefit by applying weights to TP and FP cases. It is defined as:</p></li>
+</ul>
+<img src="https://latex.codecogs.com/svg.image?%5Ctext%7BNet%20Benefit%7D%20%3D%20%5Cfrac%7B(TP%20%5Ctimes%20w_%7BTP%7D%20-%20FP%20%5Ctimes%20w_%7BFP%7D%20%5Ctimes%20%5Cfrac%7BThreshold%7D%7B1%20-%20Threshold%7D)%7D%7BN%7D" />
+</section>
+<section id="cost-sensitive-decision-curve-analysis">
+<h3>Cost-sensitive Decision Curve Analysis<a class="headerlink" href="#cost-sensitive-decision-curve-analysis" title="Link to this heading">#</a></h3>
+<p>Cost-sensitive Decision Curve Analysis (CDCA) is used to evaluate the cost-sensitive net benefit of different models across various probability thresholds. The function <code class="docutils literal notranslate"><span class="pre">calculate_cost_sensitive_net_benefit</span></code> computes the net benefit for given weights and thresholds. The <code class="docutils literal notranslate"><span class="pre">decision_curve_analysis</span></code> function generates a plot comparing the net benefits of the selected model, an alternative model, random predictions, and extreme cases (all positive or all negative). It should be noted that the net benefit by itself does not provide an overall assessment as it only relies on true positives and false positives.</p>
+</section>
+</section>
+<section id="model-calibration-and-conformal-predictions">
+<h2>Model calibration and conformal predictions<a class="headerlink" href="#model-calibration-and-conformal-predictions" title="Link to this heading">#</a></h2>
+<p>Here we applied isotonic regression as the model calibration method. Isotonic regression is a non-parametric approach used to calibrate the predicted probabilities of a classifier. Note that the calibration should be preferrebly done based on an unseen dataset (not the dataset the model is already trained).</p>
+<p>The following steps are followed:</p>
+<ol class="arabic simple">
+<li><p>Test Set Split:
+We split the test set into a calibration set (X_calibration, y_calibration) and a new test set (X_new_test, y_new_test). The calibration set is used to compute the nonconformity scores for Conformal Prediction.</p></li>
+<li><p>Isotonic Regression:
+We calibrate the predicted probabilities using Isotonic Regression to make the predicted probabilities more reliable.</p></li>
+<li><p>Conformal Prediction:
+To understand conformal prediction you can refer to Shafer and Vovk, 2008. Below is the steps performed in the following code:</p></li>
+</ol>
+<p>conformal prediction for binary classification is based on a split-conformal approach. The goal is to provide prediction sets for each test instance, ensuring 95% coverage (i.e., that the true label is included in the prediction set for approximately 95% of instances).</p>
+<p>Non-conformity Scores: These scores are calculated for the calibration set based on the predicted probabilities for the true class: ( s_i = 1 - p_i ), where ( p_i ) is the predicted probability for the true class.</p>
+<p>Threshold Calculation: The 95th percentile of the non-conformity scores from the calibration set is used to determine the threshold for prediction sets.</p>
+<p>Prediction Sets: For each test instance, the non-conformity scores for both classes (class 0 and class 1) are compared to the threshold. The class(es) whose non-conformity scores fall below the threshold are included in the prediction set.</p>
+<p>Coverage and Metrics: The coverage, or proportion of test instances where the true label is in the prediction set, is reported. Additional metrics like Brier Score, MCC, and AUC are also evaluated for confident predictions.</p>
+<p>Coverage is the proportion of test instances for which the true label is included in the prediction set. In this analysis, coverage was calculated as the fraction of confident predictions made by the model:</p>
+<p>The percentage of confident predictions was calculated as the fraction of predictions where the model was able to predict a single class with confidence.</p>
+<ol class="arabic simple" start="4">
+<li><p>Filtering Confident Predictions:
+We filter out the predictions where the p-value is less than alpha (indicating less confidence). Only single-class prediction sets are retained, which means the model is confident enough to assign a label with a clear margin.</p></li>
+<li><p>Evaluation:
+Various metrics like Brier Score, Matthews Correlation Coefficient (MCC), AUC, and PR AUC are computed for the confident predictions only. We also report the percentage of confident predictions, giving insight into how often the model is making confident predictions.</p></li>
+</ol>
+</section>
+<section id="survival-models">
+<h2>Survival Models<a class="headerlink" href="#survival-models" title="Link to this heading">#</a></h2>
+<p>This part of the pipeline is intended to be used in case the data contains a column for time-to-event information as a survival outcome variable. If so, it is possible to develop a random survival forest (RSF) model and a Cox’s proportional hazard’s model (CPH) with elastic net penalty and compare their prediction performance. For survival models we use scikit-survival package and you can read about here: <a class="reference external" href="https://scikit-survival.readthedocs.io/en/stable/#">https://scikit-survival.readthedocs.io/en/stable/#</a>
+By default, RSF is chosen to be interpreted for its powerful algorithm that can detect nonlinearities allowing it to potentially represent the data better and outperform its linear alternative (Cox model). It is of course possible to include more models from scikit-survival package, however it is expected that RSF to have similar performance to its alternative ensemble models.</p>
+<p>Note that the survival models can work with one-hot encoded data with no missingness. So X_train_OHE and X_test_OHE are suitable for the analyses. Another thing to note is that the time-to-event column is not in X_train_OHE and X_test_OHE and so we get that column from the copy of the dataset that was initially made in the beginning of the pipeline as a back up to extract that information.</p>
+<p>This is how the outcome column has to be formatted for survival models. In each array the first entry determines if there is any event or not and the second entry determines the last follow up time within a specific observation period. For example, when there is an event (e.g. daignosed disease) the first entry becomes True and the second entry show when it was recorded with respect to the baseline time (e.g. time of transplantation). If there was no event, then the last recorded sample of a patient is considered for the time and the event entry is False that clarifies that there was no event up to that time. Read more about the censoring here: <a class="reference external" href="https://scikit-survival.readthedocs.io/en/stable/user_guide/00-introduction.html">https://scikit-survival.readthedocs.io/en/stable/user_guide/00-introduction.html</a>.</p>
+<p>The performance of the survival models and binary classification models cannot be directly compared. One solution proposed in this pipeline is to convert the predicted cumulative hazard from each patient to binary labels (e.g., death or survival). This way the performance of the survival model can be compared with the binary classificaiton models. Note that the definition used for censoring should be the same for the two types of models for their comparison. It means that, if there are censored data (e.g., lost to follow up cases), the binary labels can either be assumed to be assigned to a class according to expert knowledge or to be assigned using other methods like semi-supervised learning that is also available in the pipeline using <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.semi_supervised.LabelPropagation.html#sklearn.semi_supervised.LabelPropagation">label propagation method</a> (see <code class="docutils literal notranslate"><span class="pre">semi_supervised</span></code> condition in the pipeline).</p>
+<p>hyperparameter tuning of random survival forest (RSF) model using random search method in repeated 5-fold cross validation (parameters can be modified). The best parameters are used when training the RSF model on the train set. It is important that the data is structured like the examples provided by tutorials to follow for example the naming protocols etc. Customization can be made to the source code when the plots require modifications (default time is in days but it could be in years for example).</p>
+<ul class="simple">
+<li><p><strong>Survival Analysis:</strong> Train on the training set and test on the test set.</p></li>
+<li><p><strong>Model Comparison:</strong> Evaluate and compare model performance.</p></li>
+</ul>
+<p>In summary, <code class="docutils literal notranslate"><span class="pre">RandomSurvivalForest</span></code> and <code class="docutils literal notranslate"><span class="pre">CoxnetSurvivalAnalysis</span></code> are used here for survival analysis, along with hyperparameter tuning, model evaluation, and interpretation. <code class="docutils literal notranslate"><span class="pre">CoxPHSurvivalAnalysis</span></code> is also available but it has technical limitations and has less regularization parameters than <code class="docutils literal notranslate"><span class="pre">CoxnetSurvivalAnalysis</span></code> and so <code class="docutils literal notranslate"><span class="pre">CoxnetSurvivalAnalysis</span></code> is more preferred here.</p>
+<section id="random-survival-forest-rsf">
+<h3>Random Survival Forest (RSF)<a class="headerlink" href="#random-survival-forest-rsf" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Hyperparameter Tuning:</strong> Utilizes <code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code> with parameters for the number of estimators, minimum samples split, and minimum samples leaf.</p></li>
+<li><p><strong>Model Training:</strong> Trains the best model found through the randomized search on the training data.</p></li>
+<li><p><strong>Model Saving:</strong> Saves the trained model using <code class="docutils literal notranslate"><span class="pre">joblib</span></code>.</p></li>
+</ul>
+</section>
+<section id="cox-proportional-hazards-model-cph">
+<h3>Cox Proportional Hazards Model (CPH)<a class="headerlink" href="#cox-proportional-hazards-model-cph" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Hyperparameter Tuning:</strong> Uses <code class="docutils literal notranslate"><span class="pre">RandomizedSearchCV</span></code> with parameters including regularization, method for handling tied event times, number of iterations, tolerance, and verbosity.</p></li>
+<li><p><strong>Model Training:</strong> Trains the best model from the randomized search on the training data.</p></li>
+<li><p><strong>Model Saving:</strong> Saves the trained model using <code class="docutils literal notranslate"><span class="pre">joblib</span></code>.</p></li>
+</ul>
+</section>
+<section id="training-and-evaluation-of-the-survival-models">
+<h3>Training and evaluation of the survival models<a class="headerlink" href="#training-and-evaluation-of-the-survival-models" title="Link to this heading">#</a></h3>
+<p>First we do corss validation using the traing set (development set) to assess the prediction performance of RSF and CPH models. The cross validation follows the same folding setting (i.e., number of folds) of the binary classification models (except for the survival models it is not stratified by the biary outcome variable). After we do the assessment of the models based on cross validation, we train the models on the whole trainig set and evaluate them on the test set. Two metrics are used to evaluate the models: (1) concordance index (CI), and (2) Integrated Brier Score (IBS). These scores are explained here: <a class="reference external" href="https://scikit-survival.readthedocs.io/en/v0.23.0/api/metrics.html">https://scikit-survival.readthedocs.io/en/v0.23.0/api/metrics.html</a>.</p>
+</section>
+<section id="concordance-index-ci-and-integrated-brier-score-ibs">
+<h3>Concordance Index (CI) and Integrated Brier Score (IBS)<a class="headerlink" href="#concordance-index-ci-and-integrated-brier-score-ibs" title="Link to this heading">#</a></h3>
+<section id="concordance-index-ci">
+<h4>Concordance Index (CI)<a class="headerlink" href="#concordance-index-ci" title="Link to this heading">#</a></h4>
+<p>The <strong>Concordance Index (CI)</strong> is a performance measure for survival models. It evaluates how well the model can correctly rank survival times. The CI measures the proportion of all usable pairs of individuals where the model correctly predicts the order of survival times. A CI of <code class="docutils literal notranslate"><span class="pre">1.0</span></code> indicates perfect predictions, while <code class="docutils literal notranslate"><span class="pre">0.5</span></code> represents random guessing.</p>
+<ul class="simple">
+<li><p><strong>Interpretation</strong>:</p>
+<ul>
+<li><p><strong>CI = 1</strong>: Perfect prediction, the model correctly ranks all pairs of individuals.</p></li>
+<li><p><strong>CI = 0.5</strong>: Random prediction, no better than chance.</p></li>
+<li><p><strong>CI &lt; 0.5</strong>: Worse than random, model is predicting the reverse order of survival times.</p></li>
+</ul>
+</li>
+</ul>
+<p>For more details: <a class="reference external" href="https://scikit-survival.readthedocs.io/en/v0.23.0/api/generated/sksurv.metrics.concordance_index_censored.html#sksurv.metrics.concordance_index_censored">Concordance Index in scikit-survival</a>.</p>
+</section>
+<section id="integrated-brier-score-ibs">
+<h4>Integrated Brier Score (IBS)<a class="headerlink" href="#integrated-brier-score-ibs" title="Link to this heading">#</a></h4>
+<p>The <strong>Integrated Brier Score (IBS)</strong> is a measure of the accuracy of predicted survival probabilities over time. It is the average Brier score, which measures the difference between the predicted survival probability and the actual outcome (whether the event occurred or not), across a range of time points. A lower IBS indicates better performance.</p>
+<ul class="simple">
+<li><p><strong>Interpretation</strong>:</p>
+<ul>
+<li><p><strong>IBS = 0</strong>: Perfect prediction, the model’s predicted probabilities match the true outcomes.</p></li>
+<li><p><strong>Higher IBS values</strong>: Less accurate predictions.</p></li>
+</ul>
+</li>
+</ul>
+<p>For more details: <a class="reference external" href="https://scikit-survival.readthedocs.io/en/v0.23.0/api/generated/sksurv.metrics.integrated_brier_score.html#sksurv.metrics.integrated_brier_score">Integrated Brier Score in scikit-survival</a>.</p>
+<p>The above measures are already sufficient to assess the quality of the models. As a supplementary option, time-updated AUC is also depicted for RSF model on the test set.</p>
+</section>
+</section>
+<section id="model-interpretation-using-shap-values">
+<h3>Model Interpretation Using SHAP Values<a class="headerlink" href="#model-interpretation-using-shap-values" title="Link to this heading">#</a></h3>
+<p>SHAP method has recently been developed for survival models.</p>
+<p>An elaborative method is to calculate SHAP values for variables over time. This has been implemented using SurvSHAP(t) package developed by <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0950705122013302?via%3Dihub">Krzyziński et al</a>.
+In our customized implementation we follow below steps:</p>
+<ol class="arabic simple">
+<li><p>we have <code class="docutils literal notranslate"><span class="pre">rsf_exp</span> <span class="pre">=</span> <span class="pre">SurvivalModelExplainer(model</span> <span class="pre">=</span> <span class="pre">rsf,</span> <span class="pre">data</span> <span class="pre">=</span> <span class="pre">X_train_surv,</span> <span class="pre">y</span> <span class="pre">=</span> <span class="pre">y_train_surv_transformed)</span></code> to create an explainer object.</p></li>
+<li><p>we set a seed for reproducibility and the outcome type that is  cumulative hazard function for calculation of SHAP values using <code class="docutils literal notranslate"><span class="pre">survshap</span> <span class="pre">=</span> <span class="pre">PredictSurvSHAP(random_state</span> <span class="pre">=</span> <span class="pre">SEED,</span> <span class="pre">function_type</span> <span class="pre">=</span> <span class="pre">&quot;chf&quot;)</span></code></p></li>
+<li><p>we use <code class="docutils literal notranslate"><span class="pre">compute_shap</span></code> function and parallel processing to compute the SHAP values efficiently.</p></li>
+<li><p>a plot is generated for one sample (instance/patient). It displays the impact of each (baseline) variable over time. The impact of a variable may vary substantially over time and that is an important information revealed by this method.</p></li>
+<li><p>Using <code class="docutils literal notranslate"><span class="pre">plot_shap_heatmap</span></code> function we aggregate the survival SHAP values and get the overall importance (impact) of the variables on the survival model. It ranks variables from top to bottom by their mean absolute SHAP values.</p></li>
+<li><p>For more detailed visualization, we also use <code class="docutils literal notranslate"><span class="pre">plot_shap_time_series_all_features</span></code> that plots SHAP values for each variable and sample over time. In addition, it displays the median absolute SHAP values. The ranking of variables here are based on the medican absolute SHAP values.</p></li>
+<li><p>At the end, we also get the aggregated SHAP plot (similar to binary classification models) for the survival model (RSF).</p></li>
+</ol>
+</section>
+<section id="feature-importance-using-permutation-importance">
+<h3>Feature Importance Using Permutation Importance<a class="headerlink" href="#feature-importance-using-permutation-importance" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Permutation Importance:</strong> Computes feature importance for both the RSF and CPH models using permutation importance and sorts features by their mean importance scores.</p></li>
+</ul>
+</section>
+<section id="predicting-cumulative-hazard-function">
+<h3>Predicting cumulative hazard function<a class="headerlink" href="#predicting-cumulative-hazard-function" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Prediction:</strong> The cumulative hazard function is predicted for all training samples using the Random Survival Forest (RSF).</p></li>
+<li><p><strong>Separation into Classes:</strong> Predictions are separated into two classes based on the binary target variable.</p></li>
+<li><p><strong>Survival Probabilities:</strong> Cumulative hazards are converted to survival probabilities.</p></li>
+<li><p><strong>Statistics Calculation:</strong> Median and interquartile range (IQR) are calculated for both classes.
+In addition, a table is displayed that summarizes the counts for patients at risk, censored, and events for different time intervals. The table contains both counts for each time interval and accumulative counts for each measure from the baseline.</p></li>
+</ul>
+</section>
+<section id="visualization-of-predicted-survival-probabilities">
+<h3>Visualization of predicted survival probabilities<a class="headerlink" href="#visualization-of-predicted-survival-probabilities" title="Link to this heading">#</a></h3>
+<p>Cumulative hazard is the output of the RSF model that can be converted to survival probabilities.</p>
+<ul class="simple">
+<li><p><strong>Plotting:</strong> Median survival probabilities and IQR for both classes are plotted against time.</p></li>
+<li><p><strong>Annotations:</strong> The plots include annotations for the Mann-Whitney U test results, comparing the risk scores between classes.</p></li>
+</ul>
+</section>
+<section id="evaluation-on-test-set">
+<h3>Evaluation on test set<a class="headerlink" href="#evaluation-on-test-set" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Median Hazard Calculation:</strong> Similar calculations (median and IQR) are performed for the test set.</p></li>
+<li><p><strong>Prediction Comparison:</strong> Euclidean distances from the median curves are calculated to determine predicted classes based on proximity.</p></li>
+</ul>
+</section>
+<section id="translation-of-the-predicted-hazard-curves-to-binary-predictions">
+<h3>Translation of the Predicted Hazard Curves to Binary Predictions<a class="headerlink" href="#translation-of-the-predicted-hazard-curves-to-binary-predictions" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Confusion Matrix:</strong> Confusion matrix is computed, along with metrics such as sensitivity, specificity, PPV, NPV, balanced accuracy, and Matthews correlation coefficient (MCC).</p></li>
+<li><p><strong>Heatmap:</strong> A heatmap of the confusion matrix is plotted.</p></li>
+</ul>
+<p>This is how it’s done:</p>
+<ol class="arabic simple">
+<li><p><strong>Calculate Distances:</strong></p>
+<ul class="simple">
+<li><p>Calculate the Euclidean distances from each predicted hazard curve to the median hazard curves of both classes.</p></li>
+</ul>
+</li>
+<li><p><strong>Predict Classes:</strong></p>
+<ul class="simple">
+<li><p>Determine the predicted class for each sample based on proximity to the median curves.</p></li>
+</ul>
+</li>
+<li><p><strong>Compute Metrics:</strong></p>
+<ul class="simple">
+<li><p>Construct a confusion matrix and compute metrics such as sensitivity, specificity, PPV, NPV, balanced accuracy, and MCC.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="risk-scores-analysis">
+<h3>Risk Scores Analysis<a class="headerlink" href="#risk-scores-analysis" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Average Risk Scores:</strong> Average risk scores for each class are computed for both the training and test sets.</p></li>
+<li><p><strong>Comparison:</strong> Differences and proportions of average risk scores between the two classes are calculated and compared.</p></li>
+</ul>
+</section>
+<section id="time-dependent-auc">
+<h3>Time-Dependent AUC<a class="headerlink" href="#time-dependent-auc" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Cumulative Dynamic AUC:</strong> Time-dependent AUC is calculated using cumulative dynamic AUC, with results plotted against time.</p></li>
+<li><p><strong>Integrated Brier Score:</strong> The integrated Brier score is calculated to assess the accuracy of survival predictions over time.</p></li>
+</ul>
+</section>
+<section id="visualizations">
+<h3>Visualizations<a class="headerlink" href="#visualizations" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Survival Probability Plots:</strong> Plots showing median survival probabilities and IQR for both classes.</p></li>
+<li><p><strong>Cumulative Hazard Plots:</strong> Plots showing median cumulative hazards and IQR for both classes, with additional samples plotted.</p></li>
+<li><p><strong>Confusion Matrix Heatmap:</strong> Heatmap visualization of the confusion matrix.</p></li>
+<li><p><strong>Time-Dependent AUC Plot:</strong> Plot showing time-dependent AUC over days from baseline.</p></li>
+<li><p><strong>Integrated Brier Score:</strong> Calculation and visualization of integrated Brier scores.</p></li>
+</ul>
+</section>
+</section>
+<section id="regression-models">
+<h2>Regression Models<a class="headerlink" href="#regression-models" title="Link to this heading">#</a></h2>
+<p>Train and evaluate regression models like Linear Regression and Random Forest Regression.</p>
+<ul class="simple">
+<li><p><strong>Regression Analysis:</strong> Train on the training set and test on the test set.</p></li>
+<li><p><strong>Model Interpretation:</strong> Interpret using SHAP method.</p></li>
+</ul>
+<section id="model-evaluation-and-interpretation">
+<h3>Model evaluation and interpretation<a class="headerlink" href="#model-evaluation-and-interpretation" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Mean Squared Error (MSE)</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>Formula:</strong> MSE = (1/n) * Σ(yᵢ - ŷᵢ)²</p></li>
+<li><p><strong>Where:</strong></p>
+<ul>
+<li><p>( n ) is the number of observations</p></li>
+<li><p>( yᵢ ) is the actual value</p></li>
+<li><p>( ŷᵢ ) is the predicted value</p></li>
+</ul>
+</li>
+<li><p><strong>Interpretation:</strong></p>
+<ul>
+<li><p>Measures the average squared difference between actual and predicted values.</p></li>
+<li><p>Lower MSE indicates better fit.</p></li>
+<li><p>Sensitive to outliers.</p></li>
+</ul>
+</li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p>Mean Absolute Error (MAE)</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>Formula:</strong> MAE = (1/n) * Σ|yᵢ - ŷᵢ|</p></li>
+<li><p><strong>Where:</strong></p>
+<ul>
+<li><p>( n ) is the number of observations</p></li>
+<li><p>( yᵢ ) is the actual value</p></li>
+<li><p>( ŷᵢ ) is the predicted value</p></li>
+</ul>
+</li>
+<li><p><strong>Interpretation:</strong></p>
+<ul>
+<li><p>Measures the average absolute difference between actual and predicted values.</p></li>
+<li><p>Lower MAE indicates better fit.</p></li>
+<li><p>Less sensitive to outliers than MSE.</p></li>
+<li><p>Same units as the original data.</p></li>
+</ul>
+</li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p>R-squared (R²)</p></li>
+</ol>
+<ul class="simple">
+<li><p><strong>Formula:</strong> R² = 1 - (Σ(yᵢ - ŷᵢ)² / Σ(yᵢ - ȳ)²)</p></li>
+<li><p><strong>Where:</strong></p>
+<ul>
+<li><p>( yᵢ ) is the actual value</p></li>
+<li><p>( ŷᵢ ) is the predicted value</p></li>
+<li><p>( ȳ ) is the mean of actual values</p></li>
+</ul>
+</li>
+<li><p><strong>Interpretation:</strong></p>
+<ul>
+<li><p>Measures the proportion of variance in the dependent variable explained by the model.</p></li>
+<li><p>Values range from -∞ to 1.</p></li>
+<li><p>Higher values indicate better fit.</p></li>
+<li><p>Negative values indicate the model performs worse than a horizontal line (mean of the target variable).</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="report-the-python-environment">
+<h2>Report the Python Environment<a class="headerlink" href="#report-the-python-environment" title="Link to this heading">#</a></h2>
+<p>Report the Python environment and dependencies used in the pipeline.</p>
+<ul class="simple">
+<li><p><strong>Environment Report:</strong> List the Python version, platform, and installed packages.</p></li>
+</ul>
+</section>
+<section id="save-the-executed-pipeline">
+<h2>Save the Executed Pipeline<a class="headerlink" href="#save-the-executed-pipeline" title="Link to this heading">#</a></h2>
+<p>Save the entire executed pipeline in HTML format for reproducibility.</p>
+<p>In case there was any issue when saving output files like SHAP figures on disk, check your permission. For example, see below:
+<a class="reference external" href="https://stackoverflow.com/questions/66496890/vs-code-nopermissions-filesystemerror-error-eacces-permission-denied">https://stackoverflow.com/questions/66496890/vs-code-nopermissions-filesystemerror-error-eacces-permission-denied</a>
+that explains how to fix probable permission issues, especially when using VS code:
+<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">chown</span> <span class="pre">-R</span> <span class="pre">username</span> <span class="pre">path</span></code>
+like <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">chown</span> <span class="pre">-R</span> <span class="pre">emanuel</span> <span class="pre">/home/emanuel/test/</span></code></p>
+<ul class="simple">
+<li><p><strong>Export Pipeline:</strong> Save the notebook as an HTML file for documentation and sharing.</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="QuickStart.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">QuickStart - minimal configuration guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="MAIT_Tutorial_BreastCancer_pub.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MAIT 1.0.0 - Tutorial: Breast cancer prediction</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of Contents</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-overview">Workflow Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data-and-libraries">Load Data and Libraries</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#user-defined-parameters">User-Defined Parameters:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#default-parameters">Default Parameters:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">Data Preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-split">Data Split</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-and-association-analysis">Feature Selection and Association Analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-size-and-data-split-assessment">Sample Size and Data Split Assessment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-overview">Data Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-imputation">Data Imputation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-selective-operations-on-the-data">Other Selective Operations on the Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visual-inspection">Visual Inspection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-initialization">Model Initialization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#models-overview">Models Overview</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-model-evaluation">Binary Model Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-to-calculate-evaluation-metrics">Function to Calculate Evaluation Metrics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-definition">Function Definition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#measures-computed">Measures computed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-validation">Cross validation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Function Definition</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Parameters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-setup">Initial Setup</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-validation-loop">Cross-Validation Loop</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#model-training-and-evaluation">Model Training and Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#randomforestclassifier">RandomForestClassifier</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#qlattice">QLattice</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#threshold-optimization-method">Threshold Optimization Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-uncertainty-reduction-mur">Model Uncertainty Reduction (MUR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-points">Key Points:</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-sections">Additional sections</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stopping-condition">Stopping Condition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction-block">Prediction Block</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-interpretation">Model Interpretation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#statistical-significance-of-features">Statistical significance of features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-decision-plot-description">SHAP decision plot description</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-interactions-based-on-shap-method">Feature interactions based on SHAP method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-interactions-based-on-feature-permutation-method-for-feature-pairs">Feature interactions based on feature permutation method for feature pairs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-dependence-plots">SHAP dependence plots</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shap-clustering">SHAP clustering</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#plotting-confusion-matrix-for-clusters">Plotting Confusion Matrix for Clusters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#execution-based-on-model-type">Execution Based on Model Type</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-curve-analysis">Decision Curve Analysis</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-sensitive-model-evaluation">Cost-sensitive Model Evaluation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cost-sensitive-decision-curve-analysis">Cost-sensitive Decision Curve Analysis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-calibration-and-conformal-predictions">Model calibration and conformal predictions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#survival-models">Survival Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-survival-forest-rsf">Random Survival Forest (RSF)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cox-proportional-hazards-model-cph">Cox Proportional Hazards Model (CPH)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#training-and-evaluation-of-the-survival-models">Training and evaluation of the survival models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concordance-index-ci-and-integrated-brier-score-ibs">Concordance Index (CI) and Integrated Brier Score (IBS)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#concordance-index-ci">Concordance Index (CI)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#integrated-brier-score-ibs">Integrated Brier Score (IBS)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-interpretation-using-shap-values">Model Interpretation Using SHAP Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-importance-using-permutation-importance">Feature Importance Using Permutation Importance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predicting-cumulative-hazard-function">Predicting cumulative hazard function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization-of-predicted-survival-probabilities">Visualization of predicted survival probabilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-on-test-set">Evaluation on test set</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#translation-of-the-predicted-hazard-curves-to-binary-predictions">Translation of the Predicted Hazard Curves to Binary Predictions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-scores-analysis">Risk Scores Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-dependent-auc">Time-Dependent AUC</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizations">Visualizations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-models">Regression Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-evaluation-and-interpretation">Model evaluation and interpretation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#report-the-python-environment">Report the Python Environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#save-the-executed-pipeline">Save the Executed Pipeline</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ramtin Zargari Marandi
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
