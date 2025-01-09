@@ -76,17 +76,28 @@ The repository includes several Jupyter Notebooks that serve as tutorials. These
 4. [Tutorial 4: Prediction of Breast Cancer](https://github.com/PERSIMUNE/MAIT/blob/main/Tutorials/MAIT_Tutorial_BreastCancer_pub.html)
 
 ## How to Cite
-If you use this pipeline in your research, please cite it as follows:
+Here's how to cite MAIT:
 
+### **APA Style**
 ```
-@misc{marandi2025medicalartificialintelligencetoolbox,
-      title={Medical artificial intelligence toolbox (MAIT): an explainable machine learning framework for binary classification, survival modelling, and regression analyses}, 
-      author={Ramtin Zargari Marandi and Anne Svane Frahm and Jens Lundgren and Daniel Dawson Murray and Maja Milojevic},
-      year={2025},
-      eprint={2501.04547},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2501.04547}, 
+Zargari Marandi, R., Frahm, A. S., Lundgren, J., Murray, D. D., & Milojevic, M. (2025). Medical artificial intelligence toolbox (MAIT): An explainable machine learning framework for binary classification, survival modelling, and regression analyses. *arXiv*. [https://arxiv.org/abs/2501.04547](https://arxiv.org/abs/2501.04547)
+```
+### **MLA Style**
+```
+Zargari Marandi, Ramtin, et al. "Medical Artificial Intelligence Toolbox (MAIT): An Explainable Machine Learning Framework for Binary Classification, Survival Modelling, and Regression Analyses." *arXiv*, 2025, [https://arxiv.org/abs/2501.04547](https://arxiv.org/abs/2501.04547).
+```
+### **Chicago Style**
+```
+Zargari Marandi, Ramtin, Anne Svane Frahm, Jens Lundgren, Daniel Dawson Murray, and Maja Milojevic. "Medical Artificial Intelligence Toolbox (MAIT): An Explainable Machine Learning Framework for Binary Classification, Survival Modelling, and Regression Analyses." *arXiv*, 2025. [https://arxiv.org/abs/2501.04547](https://arxiv.org/abs/2501.04547).
+```
+### **BibTeX**
+```bibtex
+@article{zargari2025mait,
+  title={Medical artificial intelligence toolbox (MAIT): An explainable machine learning framework for binary classification, survival modelling, and regression analyses},
+  author={Zargari Marandi, Ramtin and Frahm, Anne Svane and Lundgren, Jens and Murray, Daniel Dawson and Milojevic, Maja},
+  journal={arXiv preprint arXiv:2501.04547},
+  year={2025},
+  url={https://arxiv.org/abs/2501.04547}
 }
 ```
 
