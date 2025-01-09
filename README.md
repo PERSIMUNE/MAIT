@@ -81,13 +81,14 @@ you can find the datasets used for the tutorials on [Kaggle](https://www.kaggle.
 If you use this pipeline in your research, please cite it as follows:
 
 ```
-@misc{MAIT,
-  author = {Marandi, R.Z., Frahm A.S., Murray, D., Milojevic, M.},
-  title = {MAIT - medical artificial intelligence},
-  year = {2024},
-  publisher = {GitHub},
-  journal = {GitHub repository},
-  howpublished = {\url{https://github.com/PERSIMUNE/MAIT}},
+@misc{marandi2025medicalartificialintelligencetoolbox,
+      title={Medical artificial intelligence toolbox (MAIT): an explainable machine learning framework for binary classification, survival modelling, and regression analyses}, 
+      author={Ramtin Zargari Marandi and Anne Svane Frahm and Jens Lundgren and Daniel Dawson Murray and Maja Milojevic},
+      year={2025},
+      eprint={2501.04547},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2501.04547}, 
 }
 ```
 
