@@ -1,0 +1,14 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+chapters:
+- file: QuickStart.md
+- file: MANUAL.md
+- file: MAIT_Tutorial_BreastCancer_pub.ipynb
+- file: MAIT_Tutorial_Dementia_pub.ipynb
+- file: MAIT_Tutorial_Azithromycin_pub.ipynb
+- file: MAIT_Tutorial_Ciprofloxacin_pub.ipynb
+- file: Executed_tutorials.md
+- file: function_reference.md
