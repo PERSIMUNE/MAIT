@@ -82,14 +82,7 @@ Here's how to cite MAIT:
 ```
 Zargari Marandi, R., Frahm, A. S., Lundgren, J., Murray, D. D., & Milojevic, M. (2025). Medical artificial intelligence toolbox (MAIT): An explainable machine learning framework for binary classification, survival modelling, and regression analyses. *arXiv*. [https://arxiv.org/abs/2501.04547](https://arxiv.org/abs/2501.04547)
 ```
-### **MLA Style**
-```
-Zargari Marandi, Ramtin, et al. "Medical Artificial Intelligence Toolbox (MAIT): An Explainable Machine Learning Framework for Binary Classification, Survival Modelling, and Regression Analyses." *arXiv*, 2025, [https://arxiv.org/abs/2501.04547](https://arxiv.org/abs/2501.04547).
-```
-### **Chicago Style**
-```
-Zargari Marandi, Ramtin, Anne Svane Frahm, Jens Lundgren, Daniel Dawson Murray, and Maja Milojevic. "Medical Artificial Intelligence Toolbox (MAIT): An Explainable Machine Learning Framework for Binary Classification, Survival Modelling, and Regression Analyses." *arXiv*, 2025. [https://arxiv.org/abs/2501.04547](https://arxiv.org/abs/2501.04547).
-```
+
 ### **BibTeX**
 ```bibtex
 @article{zargari2025mait,
