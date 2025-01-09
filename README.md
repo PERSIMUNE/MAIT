@@ -3,7 +3,7 @@
 # MAIT - medical artificial intelligence toolbox
 
 ## Introduction
-Welcome to the MAIT repository! This pipeline, implemented in Python, is designed to streamline your machine learning workflows using Jupyter Notebooks. It is compatible with both Windows and Linux operating systems. This repository also includes several tutorial notebooks to help you get started quickly. You can also refer to the `MANUAL` of MAIT for documentation.
+Welcome to the MAIT repository! This pipeline, implemented in Python, is designed to streamline your machine learning workflows using Jupyter Notebooks. It is compatible with both Windows and Linux operating systems. This repository also includes several tutorial notebooks to help you get started quickly. You can also refer to the `MANUAL` of MAIT for documentation. To overview MAIT's unique features and capabilities, we highly recommend reading the [MAIT preprint](https://arxiv.org/abs/2501.04547) on arXiv. If you use MAIT in your research, please remember to cite it in your publications.
 
 ## How to Use
 
@@ -70,12 +70,10 @@ You can also refer to the `environment.yml` file to understand the dependencies 
 ## Tutorials
 The repository includes several Jupyter Notebooks that serve as tutorials. These notebooks cover various aspects of the pipeline and demonstrate how to use different components effectively. Below you can find a list of available tutorials:
 
-1. [Tutorial 1: Prediction of antimicrobial resistance for Azithromycin](https://PERSIMUNE.github.io/MAIT/Tutorials/MAIT_Tutorial_Azithromycin.html)
-2. [Tutorial 2: Prediction of antimicrobial resistance for Ciprofloxacin](https://PERSIMUNE.github.io/MAIT/Tutorials/MAIT_Tutorial_Ciprofloxacin.html)
-3. [Tutorial 3: Prediction of Dementia](https://PERSIMUNE.github.io/MAIT/Tutorials/MAIT_Tutorial_Dementia.html)
-4. [Tutorial 4: Prediction of Breast Cancer](https://PERSIMUNE.github.io/MAIT/Tutorials/MAIT_Tutorial_BreastCancer.html)
-
-you can find the datasets used for the tutorials on [Kaggle](https://www.kaggle.com/datasets/remyz5/curated-healthcare-and-genomics-datasets/data).
+1. [Tutorial 1: Prediction of antimicrobial resistance for Azithromycin](https://github.com/PERSIMUNE/MAIT/blob/main/Tutorials/MAIT_Tutorial_Azithromycin_pub.html)
+2. [Tutorial 2: Prediction of antimicrobial resistance for Ciprofloxacin](https://github.com/PERSIMUNE/MAIT/blob/main/Tutorials/MAIT_Tutorial_Ciprofloxacin_pub.html)
+3. [Tutorial 3: Prediction of Dementia](https://github.com/PERSIMUNE/MAIT/blob/main/Tutorials/MAIT_Tutorial_Dementia_pub.html)
+4. [Tutorial 4: Prediction of Breast Cancer](https://github.com/PERSIMUNE/MAIT/blob/main/Tutorials/MAIT_Tutorial_BreastCancer_pub.html)
 
 ## How to Cite
 If you use this pipeline in your research, please cite it as follows:
@@ -91,8 +89,6 @@ If you use this pipeline in your research, please cite it as follows:
       url={https://arxiv.org/abs/2501.04547}, 
 }
 ```
-
-A research paper detailing this pipeline will soon be available. Please stay tuned for updates on how to cite the paper.
 
 ## License
 This pipeline is free to use for research purposes. Please ensure you follow the licenses of the individual packages used within this pipeline. For more details, refer to the `LICENSE` file in the repository.
