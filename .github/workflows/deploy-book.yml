@@ -11,16 +11,6 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-      - name: Build the book
-        run: |
-          jupyter-book build .
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
