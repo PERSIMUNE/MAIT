@@ -1,0 +1,30 @@
+name: mait_py3_10_9_30092024gpu
+channels:
+  - defaults
+  - conda-forge
+  - anaconda
+  - bioconda
+dependencies:
+  - python=3.10.9
+  - pip
+  - pip:
+    - matplotlib
+    - feyn==3.0.5
+    - shap
+    - scikit-learn
+    - pandas
+    - catboost
+    - seaborn
+    - numpy
+    - openpyxl
+    - jupyter
+    - ipykernel
+    - mrmr_selection
+    - scipy
+    - scikit-survival
+    - papermill
+    - nbconvert
+    - survshap
+    - sympy
+    - imbalanced-learn
+    - lightgbm==3.3.5
