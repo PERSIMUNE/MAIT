@@ -1,5 +1,9 @@
 ![Alt Text](https://github.com/PERSIMUNE/MAIT/blob/main/MAITlogo.gif)
-
+[![GitHub release](https://img.shields.io/github/v/release/PERSIMUNE/MAIT)](https://github.com/PERSIMUNE/MAIT/releases)  
+[![Docker Pulls](https://img.shields.io/docker/pulls/danishdyna/mait_30092024gpu)](https://hub.docker.com/r/danishdyna/mait_30092024gpu)  
+![Python Versions](https://img.shields.io/badge/Python-3.10%20%7C%203.12-blue) 
+[![License](https://img.shields.io/github/license/PERSIMUNE/MAIT)](https://github.com/PERSIMUNE/MAIT/blob/main/LICENSE)  
+[![arXiv](https://img.shields.io/badge/arXiv-2501.04547-B31B1B)](https://arxiv.org/abs/2501.04547)  
 # MAIT - medical artificial intelligence toolbox
 
 ## Introduction
