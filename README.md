@@ -3,8 +3,8 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/danishdyna/mait_30092024gpu)](https://hub.docker.com/r/danishdyna/mait_30092024gpu)  
 ![Python Versions](https://img.shields.io/badge/Python-3.10%20%7C%203.12-blue) 
 [![License](https://img.shields.io/github/license/PERSIMUNE/MAIT)](https://github.com/PERSIMUNE/MAIT/blob/main/LICENSE)  
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FPERSIMUNE%2FMAIT&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=MAIT+visitors&edge_flat=false)](https://hits.seeyoufarm.com)
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fpersimune.github.io%2FMAIT%2Fintro.html&count_bg=%233D7CC8&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=MAIT+book+portal+visitors&edge_flat=false)](https://hits.seeyoufarm.com)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FPERSIMUNE%2FMAIT&count_bg=%233DC853&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=MAIT+codes+visitors&edge_flat=false)](https://hits.seeyoufarm.com)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fpersimune.github.io%2FMAIT%2F&count_bg=%233D7CC8&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=MAIT+book+portal+visitors&edge_flat=false)](https://hits.seeyoufarm.com)
 [![arXiv](https://img.shields.io/badge/arXiv-2501.04547-B31B1B)](https://arxiv.org/abs/2501.04547)  
 # MAIT - medical artificial intelligence toolbox
 
