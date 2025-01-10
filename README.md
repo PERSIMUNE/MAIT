@@ -79,9 +79,7 @@ The repository includes several Jupyter Notebooks that serve as tutorials. These
 Here's how to cite MAIT:
 
 ### **APA Style**
-```
-Zargari Marandi, R., Frahm, A. S., Lundgren, J., Murray, D. D., & Milojevic, M. (2025). Medical artificial intelligence toolbox (MAIT): An explainable machine learning framework for binary classification, survival modelling, and regression analyses. *arXiv*. [https://arxiv.org/abs/2501.04547](https://arxiv.org/abs/2501.04547)
-```
+Zargari Marandi, R., Frahm, A. S., Lundgren, J., Murray, D. D., & Milojevic, M. (2025) "Medical artificial intelligence toolbox (MAIT): An explainable machine learning framework for binary classification, survival modelling, and regression analyses." arXiv preprint arXiv:2501.04547.
 
 ### **BibTeX**
 ```bibtex
