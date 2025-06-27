@@ -2,19 +2,20 @@
 
 ## Table of Contents
 1. [Introduction](#introduction)
-2. [Workflow overview](#workflow-overview)
-3. [Load data and libraries](#load-data-and-libraries)
-4. [Data preparation](#data-preparation)
-5. [Data split](#data-split)
-6. [Feature selection and association analysis](#feature-selection-and-association-analysis)
-7. [Sample size and data split assessment](#sample-size-and-data-split-assessment)
-8. [Data overview](#data-overview)
-9. [Data imputation](#data-imputation)
-10. [Other selective operations on the Data](#other-selective-operations-on-the-data)
-11. [Visual inspection](#visual-inspection)
-12. [Model initialization](#model-initialization)
-13. [Binary model evaluation](#binary-model-evaluation)
-14. [Cross validation](#cross-validation)
+2. [MAIT Streamlit Configuration Interface](#mait-streamlit-configuration-interface)
+3. [Workflow overview](#workflow-overview)
+4. [Load data and libraries](#load-data-and-libraries)
+5. [Data preparation](#data-preparation)
+6. [Data split](#data-split)
+7. [Feature selection and association analysis](#feature-selection-and-association-analysis)
+8. [Sample size and data split assessment](#sample-size-and-data-split-assessment)
+9. [Data overview](#data-overview)
+10. [Data imputation](#data-imputation)
+11. [Other selective operations on the Data](#other-selective-operations-on-the-data)
+12. [Visual inspection](#visual-inspection)
+13. [Model initialization](#model-initialization)
+14. [Binary model evaluation](#binary-model-evaluation)
+15. [Cross validation](#cross-validation)
 16. [Stopping condition](#stopping-condition)
 17. [Prediction block](#prediction-block)
 18. [Model interpretation](#model-interpretation)
@@ -29,6 +30,144 @@
 This manual provides a detailed description of the methods and workflow of MAIT. This pipeline is designed to facilitate the end-to-end process of developing, evaluating, and deploying machine learning models for tabular data, focusing on binary classification but also supporting survival and regression models. The pipeline is implemented in Python using Jupyter Notebooks. This manual offers detailed instructions on using MAIT. For a more intuitive understanding of the pipeline, we recommend exploring the tutorials available on our GitHub page. Additionally, MAIT is discussed in a research paper for further insight.
 
 To navigate the pipeline more easily, you can use the "Outline" feature in VS Code. Alternatively, you can search for specific code segments related to the conditions described in "Load Data, Libraries, and Set Parameters."
+
+## MAIT Streamlit Configuration Interface
+
+MAIT includes a user-friendly web interface built with Streamlit for configuring and setting up MAIT pipelines without directly editing notebook code.
+
+### Features
+
+- **Easy Configuration**: Intuitive web interface for setting up MAIT parameters
+- **Data Management**: Upload files or specify paths, preview data, and configure variables  
+- **Model Selection**: Choose from 7 different machine learning algorithms
+- **Feature Engineering**: Configure feature selection, data cleaning, and preprocessing
+- **Training Parameters**: Set hyperparameter tuning, cross-validation, and resource allocation
+- **Output Settings**: Customize result folders and visualization formats
+- **Setup Instructions**: Get step-by-step instructions for manually configuring template notebooks
+
+### Quick Start
+
+#### Option 1: Using the Launch Script
+```bash
+cd /path/to/MAIT
+./run_streamlit.sh
+```
+
+#### Option 2: Manual Installation
+```bash
+# Install Streamlit requirements
+pip install -r streamlit_requirements.txt
+
+# Run the app
+streamlit run streamlit_app.py
+```
+
+#### Option 3: Using MAIT Environment
+```bash
+# Activate MAIT environment
+conda activate mait_py3_10_9
+
+# Install Streamlit
+pip install streamlit plotly
+
+# Run the app
+streamlit run streamlit_app.py
+```
+
+### Usage
+
+1. **Open your browser** and go to `http://localhost:8501`
+2. **Navigate through sections** using the sidebar:
+   - **Data Configuration**: Upload data and set variables
+   - **Model Selection**: Choose ML algorithms  
+   - **Feature Engineering**: Configure preprocessing
+   - **Training Parameters**: Set training options
+   - **Output Settings**: Customize outputs
+   - **Advanced Options**: Fine-tune settings
+   - **Generate & Setup**: Get configuration instructions
+
+3. **Configure your pipeline** by filling out the forms in each section
+4. **Get setup instructions** to manually update the template notebook with your configuration
+
+### Configuration Sections
+
+#### Data Configuration
+- Upload CSV files or specify file paths
+- Select outcome (target) variable
+- Choose categorical features
+- Configure data splitting options
+- Set patient-based splitting if needed
+
+#### Model Selection  
+- **Random Forest**: Ensemble method with decision trees
+- **LightGBM**: Gradient boosting framework  
+- **CatBoost**: Gradient boosting for categorical features
+- **Logistic Regression**: Linear model for classification
+- **QLattice**: Symbolic regression (requires Feyn)
+- **Naive Bayes**: Probabilistic classifier
+- **Histogram-based Gradient Boosting**: Fast gradient boosting
+
+#### Feature Engineering
+- Feature selection with customizable number of features
+- Outlier detection and removal
+- Missing data handling
+- Categorical feature preprocessing
+- Data scaling and normalization
+
+#### Training Parameters
+- Hyperparameter tuning configuration
+- Cross-validation settings
+- Resource allocation (CPU/GPU)
+- Performance metrics selection
+
+#### Output Settings
+- Custom result folder names
+- Figure format selection (PNG, PDF, SVG, etc.)
+- Class label customization
+- Output structure preview
+
+### How to Use the Setup Instructions
+
+The Streamlit interface provides step-by-step instructions for manually updating MAIT template notebooks:
+
+1. **Copy the template notebook** from the Tutorials folder
+2. **Rename it** with your project name
+3. **Find and replace** configuration values using the provided before/after lists
+4. **Update model selection** and categorical features lists
+5. **Update the data file path** in the data loading cell
+6. **Run the updated notebook** to execute your customized pipeline
+
+### Integration with MAIT
+
+The Streamlit interface generates configurations that are fully compatible with the original MAIT pipeline. You can:
+
+1. **Get manual setup instructions** with exact find/replace values
+2. **Copy configuration code** into existing MAIT notebooks
+3. **Save JSON configs** for automated workflows
+4. **Generate notebooks** with your configuration (when implemented)
+
+### Troubleshooting
+
+#### Common Issues
+
+1. **Port already in use**: Change the port or kill existing processes
+   ```bash
+   streamlit run streamlit_app.py --server.port 8502
+   ```
+
+2. **Missing dependencies**: Install requirements
+   ```bash
+   pip install -r streamlit_requirements.txt
+   ```
+
+3. **File upload errors**: Ensure files are in CSV format and accessible
+
+#### Performance Tips
+
+- Use smaller datasets for initial testing
+- Enable GPU if available for faster training
+- Reduce cross-validation folds for quicker runs
+- Use feature selection to reduce dimensionality
 
 ## Workflow Overview
 The pipeline consists of scripts and functions to first prepare the datasets for binary classification followed by training, evaluation, and interpretation of those binary models. There are some optional operations that can be selected to be performed by the user. In addition, it is possible to develop survival and regression models when we approach the ending parts of the pipeline. All this is explained as follows.

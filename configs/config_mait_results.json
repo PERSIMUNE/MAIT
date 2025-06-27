@@ -1,0 +1,53 @@
+{
+  "data_file": "demo_medical_data.csv",
+  "outcome_var": "disease_outcome",
+  "columns_to_drop": [
+    "patient_id"
+  ],
+  "cat_features": [
+    "gender",
+    "smoking_status",
+    "exercise_frequency"
+  ],
+  "external_val": false,
+  "ext_val_demo": false,
+  "data_split": true,
+  "train_size_perc": 0.8,
+  "data_split_by_patients": false,
+  "patient_id_col": "",
+  "data_split_multi_strats": true,
+  "already_split": false,
+  "models_to_include": [
+    "RandomForest_mdl",
+    "LightGBM_mdl",
+    "LogisticRegression_mdl"
+  ],
+  "feat_sel": true,
+  "num_features_sel": 15,
+  "merged_rare_categories": true,
+  "rarity_threshold": 0.05,
+  "remove_outliers": false,
+  "filter_highly_mis_feats": true,
+  "exclude_highly_missing_columns": true,
+  "exclude_highly_missing_rows": true,
+  "hp_tuning": true,
+  "n_iter_hptuning": 10,
+  "cv_folds": 5,
+  "tun_score": "roc_auc",
+  "oversampling": false,
+  "scale_data": false,
+  "n_cpu_for_tuning": 4,
+  "n_cpu_model_training": 4,
+  "GPU_avail": false,
+  "main_folder_name": "mait_results",
+  "fig_file_format": "png",
+  "class_labels_display": [
+    "No",
+    "Yes"
+  ],
+  "survival_analysis": false,
+  "regression_analysis": false,
+  "demo_configs": false,
+  "shorten_feature_names": true,
+  "test_only_best_cvmodel": true
+}
