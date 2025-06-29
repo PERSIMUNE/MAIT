@@ -659,526 +659,392 @@ def validate_configuration():
     return errors
 
 def generate_notebook():
-    """Generate a Jupyter notebook with the current configuration"""
+    """Generate a complete Python script with the current configuration"""
     try:
-        notebook_content = create_notebook_content()
+        # Generate the complete Python script
+        python_content, error = generate_python_script(st.session_state.config)
         
-        # Save notebook
-        output_path = f"generated_pipeline_{st.session_state.config['main_folder_name']}.ipynb"
+        if error:
+            st.error(f"⚠️ Error generating script: {error}")
+            return
         
-        with open(output_path, 'w') as f:
-            f.write(notebook_content)
+        # Create filename based on configuration
+        output_filename = f"mait_pipeline_{st.session_state.config['main_folder_name']}.py"
         
-        st.success(f" Notebook generated successfully!")
-        st.info(f" Saved to: {output_path}")
+        # Save the Python script
+        with open(output_filename, 'w', encoding='utf-8') as f:
+            f.write(python_content)
+        
+        st.success(f"✅ Python script generated successfully!")
+        st.info(f"📁 Saved to: {output_filename}")
+        
+        # Show configuration summary
+        with st.expander("📋 Configuration Summary", expanded=False):
+            config = st.session_state.config
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.write("**Data Configuration:**")
+                st.write(f"• Data file: `{config['data_file']}`")
+                st.write(f"• Outcome variable: `{config['outcome_var']}`")
+                st.write(f"• Categorical features: {len(config['cat_features'])} selected")
+                st.write(f"• Data split: {config['train_size_perc']:.0%} train / {1-config['train_size_perc']:.0%} test")
+                
+                st.write("**Model Configuration:**")
+                models_list = [m.replace('_mdl', '') for m in config['models_to_include']]
+                st.write(f"• Selected models: {', '.join(models_list)}")
+                st.write(f"• Feature selection: {'Enabled' if config['feat_sel'] else 'Disabled'}")
+                if config['feat_sel']:
+                    st.write(f"• Features to select: {config['num_features_sel']}")
+            
+            with col2:
+                st.write("**Processing Configuration:**")
+                st.write(f"• Cross validation: {config['cv_folds']} folds")
+                st.write(f"• Hyperparameter tuning: {'Enabled' if config['hp_tuning'] else 'Disabled'}")
+                st.write(f"• GPU support: {'Yes' if config['GPU_avail'] else 'No'}")
+                st.write(f"• CPUs for training: {config['n_cpu_model_training']}")
+                
+                st.write("**Analysis Options:**")
+                st.write(f"• Survival analysis: {'Enabled' if config['survival_analysis'] else 'Disabled'}")
+                st.write(f"• Regression analysis: {'Enabled' if config['regression_analysis'] else 'Disabled'}")
+                st.write(f"• External validation: {'Enabled' if config['external_val'] else 'Disabled'}")
         
         # Download button
         st.download_button(
-            label=" Download Notebook",
-            data=notebook_content,
-            file_name=f"mait_pipeline_{st.session_state.config['main_folder_name']}.ipynb",
-            mime="application/json"
+            label="⬇️ Download Python Script",
+            data=python_content,
+            file_name=output_filename,
+            mime="text/plain",
+            help="Download the generated Python script to run your MAIT pipeline"
         )
         
-    except Exception as e:
-        st.error(f" Error generating notebook: {e}")
+        # Instructions
+        with st.expander("📖 Usage Instructions", expanded=True):
+            st.markdown(f"""
+**How to use your generated Python script:**
 
-def create_notebook_content():
-    """Create notebook content based on configuration by copying and modifying tutorial notebook"""
-    config = st.session_state.config
-    
-    # Read the tutorial notebook (JSON format)
-    tutorial_path = "Tutorials/MAIT_Tutorial_Azithromycin_pub.ipynb"
-    
+1. **Download the script** using the button above or find it in your current directory as `{output_filename}`
+
+2. **Install required packages** (if not already installed):
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the script directly**:
+   ```bash
+   python {output_filename}
+   ```
+
+4. **Or convert to Jupyter notebook** (if you prefer notebooks):
+   ```bash
+   # Install jupytext if needed: pip install jupytext
+   jupytext --to notebook {output_filename}
+   ```
+
+5. **Check the results** in the `{config['main_folder_name']}` folder that will be created
+
+**What the script contains:**
+- ✅ All your configuration parameters pre-filled
+- ✅ Complete MAIT pipeline code from the template
+- ✅ Ready to run without manual configuration
+- ✅ Compatible with both Python execution and Jupyter notebooks
+
+**Note:** Make sure your data file `{config['data_file']}` is in the same directory as the script, or update the path in the script.
+            """)
+        
+    except Exception as e:
+        st.error(f"⚠️ Error generating script: {e}")
+
+def generate_python_script(config):
+    """Generate a complete Python script based on the template with user configuration injected."""
     try:
-        with open(tutorial_path, 'r', encoding='utf-8') as f:
-            tutorial_content = f.read()
+        # Read the Python template
+        template_path = "Tutorials/mait_template.py"
+        if not os.path.exists(template_path):
+            return None, "Python template not found. Please ensure mait_template.py exists in the Tutorials directory."
         
-        # Apply configuration replacements to the entire notebook content
-        modified_content = apply_config_replacements(tutorial_content, config)
-        return modified_content
+        with open(template_path, 'r', encoding='utf-8') as f:
+            template_content = f.read()
+        
+        # Create configuration replacements based on user input
+        replacements = create_configuration_replacements(config)
+        
+        # Apply replacements to the template
+        modified_content = template_content
+        
+        # Apply replacements line by line to ensure accuracy
+        lines = modified_content.split('\n')
+        modified_lines = []
+        
+        for line in lines:
+            modified_line = line
+            for old_value, new_value in replacements.items():
+                if old_value in line and not line.strip().startswith('#'):
+                    modified_line = line.replace(old_value, new_value)
+                    break
+            modified_lines.append(modified_line)
+        
+        modified_content = '\n'.join(modified_lines)
+        
+        # Add user configuration header
+        header_comment = f'''# MAIT Pipeline - Generated by Streamlit Configuration Interface
+# Generated on {time.strftime("%Y-%m-%d %H:%M:%S")}
+# 
+# This file contains your custom MAIT pipeline configuration.
+# All parameters have been set according to your Streamlit interface selections.
+# 
+# CONFIGURATION SUMMARY:
+# - Data file: {config['data_file']}
+# - Outcome variable: {config['outcome_var']}
+# - Selected models: {', '.join([m.replace('_mdl', '') for m in config['models_to_include']])}
+# - Feature selection: {'Enabled' if config['feat_sel'] else 'Disabled'} ({config['num_features_sel']} features)
+# - Data split: {config['train_size_perc']:.0%} training / {1-config['train_size_perc']:.0%} testing
+# - Cross validation: {config['cv_folds']} folds
+# - Hyperparameter tuning: {'Enabled' if config['hp_tuning'] else 'Disabled'}
+# - GPU support: {'Yes' if config['GPU_avail'] else 'No'}
+# - Output folder: {config['main_folder_name']}
+#
+# To run this script:
+# 1. Ensure your data file is in the same directory
+# 2. Install required packages: pip install -r requirements.txt
+# 3. Run: python {config['main_folder_name']}_pipeline.py
+# 
+# ==================================================================================
+
+'''
+        
+        final_content = header_comment + modified_content
+        
+        return final_content, None
         
     except Exception as e:
-        st.error(f"Error reading tutorial notebook: {e}")
-        # Fallback to simple template
-        return create_simple_notebook_template(config)
+        return None, f"Error generating Python script: {str(e)}"
 
-def apply_config_replacements(notebook_content, config):
-    """Apply configuration replacements to the notebook content"""
+def create_configuration_replacements(config):
+    """Create a dictionary of replacements to apply to the template"""
     
-    # Parse the JSON notebook
-    import json
-    notebook_data = json.loads(notebook_content)
+    replacements = {}
     
-    # Create a list of replacements to apply
-    replacements = {
-        # Data configuration
-        '"combined_data_Azithromycin.csv"': f'"{config["data_file"]}"',
-        '"azm_sr"': f'"{config["outcome_var"]}"',
-        'cat_features = []': f'cat_features = {config["cat_features"]}',
-        'columns_to_drop = [': f'columns_to_drop = {config["columns_to_drop"]} # Original: [',
-        
-        # Model selection
-        '"QLattice_mdl", "NaiveBayes_mdl", "RandomForest_mdl", "LightGBM_mdl", "CatBoost_mdl", "LogisticRegression_mdl", "HistGBC_mdl"': ', '.join([f'"{m}"' for m in config["models_to_include"]]),
-        
-        # Results folder
-        "'results_Azithromycin'": f"'{config['main_folder_name']}'",
-        
-        # Data split settings
-        'data_split = True': f'data_split = {config["data_split"]}',
-        'train_size_perc = 0.8': f'train_size_perc = {config["train_size_perc"]}',
-        'data_split_by_patients = False': f'data_split_by_patients = {config["data_split_by_patients"]}',
-        'data_split_multi_strats = False': f'data_split_multi_strats = {config["data_split_multi_strats"]}',
-        'already_split = False': f'already_split = {config["already_split"]}',
-        
-        # Feature selection
-        'feat_sel = True': f'feat_sel = {config["feat_sel"]}',
-        'num_features_sel = 30': f'num_features_sel = {config["num_features_sel"]}',
-        
-        # External validation
-        'external_val = False': f'external_val = {config["external_val"]}',
-        'ext_val_demo = False': f'ext_val_demo = {config["ext_val_demo"]}',
-        
-        # Processing settings
-        'merged_rare_categories = True': f'merged_rare_categories = {config["merged_rare_categories"]}',
-        'rarity_threshold = 0.05': f'rarity_threshold = {config["rarity_threshold"]}',
-        'remove_outliers = False': f'remove_outliers = {config["remove_outliers"]}',
-        
-        # Resource configuration
-        'GPU_avail = False': f'GPU_avail = {config["GPU_avail"]}',
-        'hp_tuning = True': f'hp_tuning = {config["hp_tuning"]}',
-        'n_cpu_for_tuning = 4': f'n_cpu_for_tuning = {config["n_cpu_for_tuning"]}',
-        'n_cpu_model_training = 4': f'n_cpu_model_training = {config["n_cpu_model_training"]}',
-        'n_iter_hptuning = 10': f'n_iter_hptuning = {config["n_iter_hptuning"]}',
-        
-        # Cross validation
-        'cv_folds = 5': f'cv_folds = {config["cv_folds"]}',
-        'test_only_best_cvmodel = True': f'test_only_best_cvmodel = {config["test_only_best_cvmodel"]}',
-        
-        # Missing data handling
-        'exclude_highly_missing_columns = True': f'exclude_highly_missing_columns = {config["exclude_highly_missing_columns"]}',
-        'exclude_highly_missing_rows = True': f'exclude_highly_missing_rows = {config["exclude_highly_missing_rows"]}',
-        
-        # Analysis types
-        'survival_analysis = False': f'survival_analysis = {config["survival_analysis"]}',
-        'regression_analysis = False': f'regression_analysis = {config["regression_analysis"]}',
-    }
+    # Data configuration
+    replacements['mydata = pd.read_csv("combined_data_Azithromycin.csv")'] = f'mydata = pd.read_csv("{config["data_file"]}")  # Data file from Streamlit config'
+    replacements['outcome_var = "azm_sr"'] = f'outcome_var = "{config["outcome_var"]}"  # Outcome variable from Streamlit config'
+    replacements['cat_features = []'] = f'cat_features = {config["cat_features"]}  # Categorical features from Streamlit config'
+    replacements['columns_to_drop = []'] = f'columns_to_drop = {config["columns_to_drop"]}  # Columns to drop from Streamlit config'
     
-    # Convert notebook back to string to apply replacements
-    notebook_str = json.dumps(notebook_data, indent=1)
+    # Model selection
+    models_str = ', '.join([f'"{m}"' for m in config["models_to_include"]])
+    replacements['models_to_include = ["QLattice_mdl", "NaiveBayes_mdl", "RandomForest_mdl", "LightGBM_mdl", "CatBoost_mdl", "LogisticRegression_mdl", "HistGBC_mdl"]'] = f'models_to_include = [{models_str}]  # Models from Streamlit config'
     
-    # Apply all replacements
-    for old_value, new_value in replacements.items():
-        notebook_str = notebook_str.replace(old_value, new_value)
+    # Results folder
+    replacements["main_folder_name = 'results_Azithromycin'"] = f"main_folder_name = '{config['main_folder_name']}'  # Output folder from Streamlit config"
     
-    # Add a comment at the top of the first code cell to indicate it's been customized
-    customization_comment = (f'\\n\\n#  MAIT Pipeline - Customized via Streamlit Interface\\n'
-                            f'# Generated on {time.strftime("%Y-%m-%d %H:%M:%S")}\\n'
-                            f'# Configuration applied for: {config["main_folder_name"]}\\n'
-                            f'# Data: {config["data_file"]} | Outcome: {config["outcome_var"]}\\n'
-                            f'# Models: {", ".join([m.replace("_mdl", "") for m in config["models_to_include"]])}\\n')
+    # Class labels
+    class_labels_str = str(config['class_labels_display'])
+    replacements["class_labels_display = ['non-resistant', 'resistant']"] = f"class_labels_display = {class_labels_str}  # Class labels from Streamlit config"
     
-    # Find the first code cell and add the comment
-    notebook_data = json.loads(notebook_str)
-    for cell in notebook_data["cells"]:
-        if cell["cell_type"] == "code":
-            if isinstance(cell["source"], list):
-                cell["source"].insert(0, customization_comment)
-            else:
-                cell["source"] = customization_comment + cell["source"]
-            break
+    # Data split settings
+    replacements['data_split = True'] = f'data_split = {config["data_split"]}  # Data split setting from Streamlit config'
+    replacements['train_size_perc = 0.8'] = f'train_size_perc = {config["train_size_perc"]}  # Training size from Streamlit config'
+    replacements['data_split_by_patients = False'] = f'data_split_by_patients = {config["data_split_by_patients"]}  # Patient split from Streamlit config'
+    replacements['data_split_multi_strats = False'] = f'data_split_multi_strats = {config["data_split_multi_strats"]}  # Multi-strat from Streamlit config'
+    replacements['already_split = False'] = f'already_split = {config["already_split"]}  # Already split from Streamlit config'
     
-    # Update the notebook title
-    if notebook_data["cells"] and notebook_data["cells"][0]["cell_type"] == "markdown":
-        title_content = (f'# MAIT Pipeline - {config["main_folder_name"]}\\n\\n'
-                        f'**Generated automatically using MAIT Streamlit Configuration Interface**\\n\\n'
-                        f'This notebook has been customized with your specific configuration parameters.\\n\\n'
-                        f'## Configuration Summary\\n'
-                        f'- **Data File**: {config["data_file"]}\\n'
-                        f'- **Outcome Variable**: {config["outcome_var"]}\\n'
-                        f'- **Selected Models**: {", ".join([m.replace("_mdl", "") for m in config["models_to_include"]])}\\n'
-                        f'- **Feature Selection**: {"Enabled" if config["feat_sel"] else "Disabled"} ({config["num_features_sel"]} features)\\n'
-                        f'- **Data Split**: {config["train_size_perc"]:.0%} training, {1-config["train_size_perc"]:.0%} testing\\n'
-                        f'- **Cross Validation**: {config["cv_folds"]} folds\\n'
-                        f'- **Hyperparameter Tuning**: {"Enabled" if config["hp_tuning"] else "Disabled"}\\n'
-                        f'- **GPU Support**: {"Yes" if config["GPU_avail"] else "No"}\\n'
-                        f'- **Output Folder**: {config["main_folder_name"]}\\n\\n'
-                        f'## Instructions\\n'
-                        f'1. **Review the configuration** in the parameter cells below\\n'
-                        f'2. **Run all cells sequentially** to execute the complete MAIT pipeline\\n'
-                        f'3. **Check the results** in the generated output folder\\n'
-                        f'4. **Modify parameters** if needed and re-run specific sections\\n\\n'
-                        f'---\\n\\n'
-                        f'*This pipeline is based on the MAIT framework. Please cite the MAIT paper if you use this in your research.*\\n')
-        
-        if isinstance(notebook_data["cells"][0]["source"], list):
-            notebook_data["cells"][0]["source"] = [title_content]
-        else:
-            notebook_data["cells"][0]["source"] = title_content
+    # Feature selection
+    replacements['feat_sel = True'] = f'feat_sel = {config["feat_sel"]}  # Feature selection from Streamlit config'
+    replacements['num_features_sel = 30'] = f'num_features_sel = {config["num_features_sel"]}  # Number of features from Streamlit config'
     
-    return json.dumps(notebook_data, indent=1)
-
-def generate_config_cell_content(config):
-    """Generate the configuration cell content based on user settings"""
+    # External validation
+    replacements['external_val = False'] = f'external_val = {config["external_val"]}  # External validation from Streamlit config'
+    replacements['ext_val_demo = False'] = f'ext_val_demo = {config["ext_val_demo"]}  # External validation demo from Streamlit config'
     
-    # Handle data split by patients
-    patient_split_code = ""
-    if config['data_split_by_patients']:
-        patient_split_code = f"""
-if data_split_by_patients:
-    patient_id_col = "{config['patient_id_col']}"  # the column name that contains patient ID"""
+    # Processing settings
+    replacements['merged_rare_categories = True'] = f'merged_rare_categories = {config["merged_rare_categories"]}  # Merge rare categories from Streamlit config'
+    replacements['rarity_threshold = 0.05'] = f'rarity_threshold = {config["rarity_threshold"]}  # Rarity threshold from Streamlit config'
+    replacements['remove_outliers = False'] = f'remove_outliers = {config["remove_outliers"]}  # Remove outliers from Streamlit config'
     
-    # Handle multi-stratification
-    multi_strat_code = ""
-    if config['data_split_multi_strats']:
-        multi_strat_code = """
-if data_split_multi_strats:  # the names of the columns used for multiple stratification should be specified by user
-    strat_var1 = "stratification variable 1"  # UPDATE THIS with your stratification variable"""
+    # Resource configuration
+    replacements['GPU_avail = True'] = f'GPU_avail = {config["GPU_avail"]}  # GPU availability from Streamlit config'
+    replacements['hp_tuning = True'] = f'hp_tuning = {config["hp_tuning"]}  # Hyperparameter tuning from Streamlit config'
+    replacements['n_cpu_for_tuning = 20'] = f'n_cpu_for_tuning = {config["n_cpu_for_tuning"]}  # CPUs for tuning from Streamlit config'
+    replacements['n_cpu_model_training = 20'] = f'n_cpu_model_training = {config["n_cpu_model_training"]}  # CPUs for training from Streamlit config'
+    replacements['n_iter_hptuning = 10'] = f'n_iter_hptuning = {config["n_iter_hptuning"]}  # Tuning iterations from Streamlit config'
     
-    # Handle already split data
-    already_split_code = ""
-    if config['already_split']:
-        already_split_code = """
-if already_split:  # specify the names of the train (development) and test sets
-    # Splitting based on values - UPDATE THE COLUMN NAME AND VALUES
-    testset = mydata[mydata['subset'] == 'Test']
-    mydata = mydata[mydata['subset'] == 'Train']"""
+    # Cross validation
+    replacements['cv_folds = 5'] = f'cv_folds = {config["cv_folds"]}  # CV folds from Streamlit config'
+    replacements['test_only_best_cvmodel = True'] = f'test_only_best_cvmodel = {config["test_only_best_cvmodel"]}  # Test best model from Streamlit config'
     
-    config_content = f"""# MAIT Configuration Parameters - Customized via Streamlit Interface
-# Generated on {time.strftime('%Y-%m-%d %H:%M:%S')}
-
-# settings for categorical variables
-cat_features = {config['cat_features']}  # categorical features specified via interface
-merged_rare_categories = {config['merged_rare_categories']}  # merge rare categories and unify missing categories
-rarity_threshold = {config['rarity_threshold']}  # threshold for rarity (e.g., 0.05 means 5%)
-
-###################################################################################
-# specify columns that must be removed
-columns_to_drop = {config['columns_to_drop']}  # columns to drop specified via interface
-
-###################################################################################
-# import data
-mydata = pd.read_csv("{config['data_file']}")  # data file specified via interface
-external_val = {config['external_val']}  # external validation enabled/disabled via interface
-ext_val_demo = {config['ext_val_demo']}  # external validation demo mode
-
-###################################################################################
-# random data split
-data_split = {config['data_split']}  # data split enabled/disabled via interface
-train_size_perc = {config['train_size_perc']}  # training set percentage specified via interface
-data_split_by_patients = {config['data_split_by_patients']}  # patient-based splitting{patient_split_code}
-data_split_multi_strats = {config['data_split_multi_strats']}  # multiple stratification variables{multi_strat_code}
-already_split = {config['already_split']}  # data already split indicator{already_split_code}
-
-###################################################################################
-# available binary classification models in the pipeline
-models_to_include = {config['models_to_include']}  # models selected via interface
-
-# outcome variable
-outcome_var = "{config['outcome_var']}"  # outcome variable specified via interface
-
-###################################################################################
-# set a directory to save the results
-main_folder_name = '{config['main_folder_name']}'  # output folder specified via interface
-# Define class labels for display
-class_labels_display = {config['class_labels_display']}  # class labels specified via interface
-
-# Specify the class labels
-class_0 = class_labels_display[0]
-class_1 = class_labels_display[1]
-
-# Create a mapping dictionary for class labels
-class_label_dict = {{0.0: class_0, 1.0: class_1}}  # mapping for class labels
-
-###################################################################################
-# feature selection
-feat_sel = {config['feat_sel']}  # feature selection enabled/disabled via interface
-num_features_sel = {config['num_features_sel']}  # number of features to select specified via interface
-top_n_f = 20  # number of top features for SHAP plots (default)
-
-###################################################################################
-# survival analysis
-survival_analysis = {config['survival_analysis']}  # survival analysis enabled/disabled via interface
-if survival_analysis:
-    survival_demo = False  # demo mode for survival analysis
-    time_to_event_column = ""  # UPDATE THIS with your time-to-event column name
-    if survival_demo: 
-        mydata[time_to_event_column] = np.random.randint(90, 366, size=len(mydata))
-    mydata_copy_survival = mydata.copy()
-
-###################################################################################
-# regression analysis
-regression_analysis = {config['regression_analysis']}  # regression analysis enabled/disabled via interface
-if regression_analysis:
-    regression_outcome = "regression_outcome_var"  # UPDATE THIS with your regression outcome variable
-    demo_regression_analysis = False  # demo mode for regression analysis
-    if demo_regression_analysis:
-        mydata_copy_regression = mydata.copy()
-        X = np.random.randn(mydata_copy_regression.shape[0], mydata_copy_regression.shape[1])
-        true_calculate = np.random.randn(mydata_copy_regression.shape[1])
-        noise = np.random.randn(mydata_copy_regression.shape[0]) * 0.5
-        mydata_copy_regression[regression_outcome] = np.dot(X, true_calculate) + noise
-
-###################################################################################
-# settings for processing resources
-GPU_avail = {config['GPU_avail']}  # GPU availability specified via interface
-hp_tuning = {config['hp_tuning']}  # hyperparameter tuning enabled/disabled via interface
-n_cpu_for_tuning = {config['n_cpu_for_tuning']}  # CPUs for tuning specified via interface
-n_cpu_model_training = {config['n_cpu_model_training']}  # CPUs for training specified via interface
-n_rep_feature_permutation = 100  # number of repetitions for feature permutation (default)
-n_iter_hptuning = {config['n_iter_hptuning']}  # iterations for hyperparameter tuning specified via interface
-SEED = 123  # random seed for reproducibility
-
-###################################################################################
-cv_folds = {config['cv_folds']}  # cross validation folds specified via interface
-cv_folds_hptuning = 5  # folds for hyperparameter tuning (default)
-use_default_threshold = True  # use default threshold of 0.5 for binary classification
-test_only_best_cvmodel = {config['test_only_best_cvmodel']}  # test only best CV model specified via interface
-
-###################################################################################
-# handle missingness
-exclude_highly_missing_columns = {config['exclude_highly_missing_columns']}  # exclude highly missing columns via interface
-exclude_highly_missing_rows = {config['exclude_highly_missing_rows']}  # exclude highly missing rows via interface
-column_threshold = 0.99  # threshold for variables - columns (default)
-row_threshold = 0.90     # threshold for samples - rows (default)
-
-###################################################################################
-remove_outliers = {config['remove_outliers']}  # outlier removal enabled/disabled via interface
-
-###################################################################################
-# Specify the filename of this Jupyter notebook
-JupyterNotebook_filename = "MAIT_Pipeline_{config['main_folder_name']}.ipynb"
-
-print(" Configuration loaded successfully!")
-print(f" Data file: {{config['data_file']}}")
-print(f" Outcome variable: {{config['outcome_var']}}")
-print(f" Models: {{', '.join([m.replace('_mdl', '') for m in config['models_to_include']])}}")
-print(f" Output folder: {{config['main_folder_name']}}")"""
-
-    return config_content
-
-def create_simple_notebook_template(config):
-    """Create a simple notebook template as fallback"""
-    template = f"""<VSCode.Cell language="markdown">
-# MAIT Pipeline - {config['main_folder_name']}
-
-Generated automatically using MAIT Streamlit Configuration Interface
-
-## Configuration Summary
-- **Data File**: {config['data_file']}
-- **Outcome Variable**: {config['outcome_var']}
-- **Models**: {', '.join(config['models_to_include'])}
-- **Output Folder**: {config['main_folder_name']}
-</VSCode.Cell>
-<VSCode.Cell language="python">
-# Import libraries and load data
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
-# Add other imports as needed
-
-# Load data
-mydata = pd.read_csv('{config['data_file']}')
-
-# Configuration parameters
-outcome_var = '{config['outcome_var']}'
-columns_to_drop = {config['columns_to_drop']}
-cat_features = {config['cat_features']}
-models_to_include = {config['models_to_include']}
-main_folder_name = '{config['main_folder_name']}'
-train_size_perc = {config['train_size_perc']}
-data_split = {config['data_split']}
-feat_sel = {config['feat_sel']}
-num_features_sel = {config['num_features_sel']}
-hp_tuning = {config['hp_tuning']}
-cv_folds = {config['cv_folds']}
-GPU_avail = {config['GPU_avail']}
-</VSCode.Cell>
-<VSCode.Cell language="markdown">
-## Next Steps
-
-1. Review the configuration parameters above
-2. Add the complete MAIT pipeline code (copy from tutorial notebooks)
-3. Execute the cells to run your analysis
-
-**Note**: This is a simplified template. For the complete pipeline, please copy the full tutorial notebook.
-</VSCode.Cell>"""
+    # Missing data handling
+    replacements['exclude_highly_missing_columns = True'] = f'exclude_highly_missing_columns = {config["exclude_highly_missing_columns"]}  # Exclude missing columns from Streamlit config'
+    replacements['exclude_highly_missing_rows = True'] = f'exclude_highly_missing_rows = {config["exclude_highly_missing_rows"]}  # Exclude missing rows from Streamlit config'
     
-    return template
+    # Analysis types
+    replacements['survival_analysis = False'] = f'survival_analysis = {config["survival_analysis"]}  # Survival analysis from Streamlit config'
+    replacements['regression_analysis = False'] = f'regression_analysis = {config["regression_analysis"]}  # Regression analysis from Streamlit config'
+    
+    # Demo settings (turn off for real use)
+    replacements['demo_configs = True'] = 'demo_configs = False  # Demo configs disabled for real use'
+    
+    return replacements
 
 def run_pipeline():
     """Provide clear instructions for running the pipeline manually"""
-    st.info(" **Manual Setup Instructions** - Follow these steps to run your configured MAIT pipeline:")
+    st.info("📋 **Manual Setup Instructions** - Follow these steps to run your configured MAIT pipeline:")
     
     config = st.session_state.config
-    tutorial_path = "Tutorials/MAIT_Tutorial_Azithromycin_pub.ipynb"
     
-    # Step 1: Copy template
-    st.markdown("### Step 1: Copy the Template Notebook")
+    # Step 1: Template guidance
+    st.markdown("### Step 1: Using the Generated Script")
     st.markdown(f"""
-    1. **Copy** the template notebook: `{tutorial_path}`
-    2. **Rename** it to: `MAIT_Pipeline_{config['main_folder_name']}.ipynb`
-    3. **Open** the copied notebook in Jupyter Notebook or VS Code
+    The generated Python script (`mait_pipeline_{config['main_folder_name']}.py`) contains:
+    - ✅ Complete MAIT pipeline code
+    - ✅ Your configuration parameters pre-filled
+    - ✅ Ready to run without manual editing
     """)
     
+    # Step 2: Execution instructions
+    st.markdown("### Step 2: Run Your Pipeline")
+    
     col1, col2 = st.columns(2)
+    
     with col1:
-        if st.button(" Open Tutorials Folder"):
-            try:
-                subprocess.Popen(["xdg-open", "Tutorials"])
-                st.success(" Opening tutorials folder...")
-            except Exception as e:
-                st.info("Please navigate to: Tutorials/")
+        st.markdown("**Option A: Direct Python Execution**")
+        st.code(f"""
+# Navigate to your MAIT directory
+cd /path/to/MAIT
+
+# Run the generated script
+python mait_pipeline_{config['main_folder_name']}.py
+        """, language="bash")
     
     with col2:
-        if st.button(" Copy Template Path"):
-            st.code(tutorial_path)
-            st.info("Copy the path above to navigate to the template")
-    
-    # Step 2: Update configurations
-    st.markdown("### Step 2: Update Configuration Values")
-    st.markdown("In your copied notebook, **find and replace** the following values in the configuration cell:")
-    
-    # Create two columns for the find/replace table
-    col_left, col_right = st.columns(2)
-    
-    with col_left:
-        st.markdown("** Find (Original Value):**")
-        original_values = [
-            "outcome_var = 'Azithromycin_Use'",
-            "columns_to_drop = ['Patient_ID']",
-            "main_folder_name = 'Azithromycin_Analysis'",
-            "train_size_perc = 0.8",
-            "feat_sel = True",
-            "num_features_sel = 50",
-            "cv_folds = 5",
-            "hp_tuning = True",
-            "n_iter_hptuning = 50",
-            "GPU_avail = False",
-            "oversampling = False",
-            "scale_data = True"
-        ]
-        for val in original_values:
-            st.code(val, language="python")
-    
-    with col_right:
-        st.markdown("** Replace With (Your Configuration):**")
-        new_values = [
-            f"outcome_var = '{config['outcome_var']}'",
-            f"columns_to_drop = {config['columns_to_drop']}",
-            f"main_folder_name = '{config['main_folder_name']}'",
-            f"train_size_perc = {config['train_size_perc']}",
-            f"feat_sel = {config['feat_sel']}",
-            f"num_features_sel = {config['num_features_sel']}",
-            f"cv_folds = {config['cv_folds']}",
-            f"hp_tuning = {config['hp_tuning']}",
-            f"n_iter_hptuning = {config['n_iter_hptuning']}",
-            f"GPU_avail = {config['GPU_avail']}",
-            f"oversampling = {config['oversampling']}",
-            f"scale_data = {config['scale_data']}"
-        ]
-        for val in new_values:
-            st.code(val, language="python")
-    
-    # Step 3: Update additional settings
-    if config['models_to_include']:
-        st.markdown("### Step 3: Update Model Selection")
-        st.markdown("Find the `models_to_include` list and replace it with:")
-        st.code(f"models_to_include = {config['models_to_include']}", language="python")
-    
-    if config['cat_features']:
-        st.markdown("### Step 4: Update Categorical Features")
-        st.markdown("Find the `cat_features` list and replace it with:")
-        st.code(f"cat_features = {config['cat_features']}", language="python")
-    
-    # Step 5: Update data file path
-    st.markdown("### Step 5: Update Data File Path")
-    st.markdown("Find the data loading cell and update the file path to:")
-    st.code(f"# Update this line in the data loading cell:\ndf = pd.read_csv('{config['data_file']}')", language="python")
-    
-    # Step 6: Run the pipeline
-    st.markdown("### Step 6: Run Your Pipeline")
-    st.markdown("""
-    1. **Save** your updated notebook
-    2. **Run all cells** sequentially (or use "Run All" in Jupyter)
-    3. **Monitor progress** - the pipeline will create output folder: `{}`
-    4. **Check results** in the generated reports and visualizations
-    """.format(config['main_folder_name']))
-    
-    # Quick copy section for all parameters
-    st.markdown("###  Quick Copy: All Your Parameters")
-    with st.expander("Click to see all parameters for easy copying"):
-        parameters_text = f"""
-# Your MAIT Configuration
-outcome_var = '{config['outcome_var']}'
-columns_to_drop = {config['columns_to_drop']}
-cat_features = {config['cat_features']}
-models_to_include = {config['models_to_include']}
-main_folder_name = '{config['main_folder_name']}'
-train_size_perc = {config['train_size_perc']}
-feat_sel = {config['feat_sel']}
-num_features_sel = {config['num_features_sel']}
-hp_tuning = {config['hp_tuning']}
-n_iter_hptuning = {config['n_iter_hptuning']}
-cv_folds = {config['cv_folds']}
-tun_score = '{config['tun_score']}'
-GPU_avail = {config['GPU_avail']}
-oversampling = {config['oversampling']}
-scale_data = {config['scale_data']}
-merged_rare_categories = {config['merged_rare_categories']}
-rarity_threshold = {config['rarity_threshold']}
-remove_outliers = {config['remove_outliers']}
+        st.markdown("**Option B: Convert to Jupyter Notebook**")
+        st.code(f"""
+# Install jupytext if needed
+pip install jupytext
 
-# Data file path (update in data loading cell):
-# df = pd.read_csv('{config['data_file']}')
-"""
-        st.code(parameters_text, language="python")
-        st.info(" **Tip:** Copy this entire block and replace the configuration section in your notebook")
+# Convert to notebook
+jupytext --to notebook mait_pipeline_{config['main_folder_name']}.py
+
+# Open in Jupyter
+jupyter notebook mait_pipeline_{config['main_folder_name']}.ipynb
+        """, language="bash")
     
-    # Summary
-    st.success(" **Ready to go!** Follow the steps above to run your customized MAIT pipeline.")
+    # Step 3: Expected output
+    st.markdown("### Step 3: Expected Output")
+    st.markdown(f"""
+    After running, you should see:
+    - 📁 **Results folder**: `{config['main_folder_name']}/`
+    - 📊 **Performance reports** with model comparisons
+    - 📈 **Visualizations** (ROC curves, feature importance, etc.)
+    - 🤖 **Trained models** saved for future use
+    """)
+    
+    # Troubleshooting
+    with st.expander("🔧 Troubleshooting", expanded=False):
+        st.markdown("""
+        **Common Issues:**
+        
+        1. **Missing packages**: Install requirements with `pip install -r requirements.txt`
+        2. **Data file not found**: Ensure your data file is in the same directory as the script
+        3. **Permission errors**: Check file permissions and disk space
+        4. **Memory issues**: Reduce dataset size or increase system memory
+        
+        **Getting Help:**
+        - Check the MAIT documentation on GitHub
+        - Review the generated script comments for parameter explanations
+        - Ensure all dependencies are properly installed
+        """)
 
 def save_configuration():
     """Save configuration to file"""
-    config_path = f"configs/config_{st.session_state.config['main_folder_name']}.json"
-    
-    # Create configs directory if it doesn't exist
-    os.makedirs(os.path.dirname(config_path), exist_ok=True)
-    
-    with open(config_path, 'w') as f:
-        json.dump(st.session_state.config, f, indent=2)
-    
-    st.success(f" Configuration saved to: {config_path}")
+    try:
+        config_path = f"configs/config_{st.session_state.config['main_folder_name']}.json"
+        
+        # Create configs directory if it doesn't exist
+        os.makedirs(os.path.dirname(config_path), exist_ok=True)
+        
+        with open(config_path, 'w') as f:
+            json.dump(st.session_state.config, f, indent=2)
+        
+        st.success(f"✅ Configuration saved to: {config_path}")
+        
+        # Show download option
+        config_json = json.dumps(st.session_state.config, indent=2)
+        st.download_button(
+            label="⬇️ Download Configuration File",
+            data=config_json,
+            file_name=f"mait_config_{st.session_state.config['main_folder_name']}.json",
+            mime="application/json",
+            help="Download the configuration file for future use"
+        )
+        
+    except Exception as e:
+        st.error(f"⚠️ Error saving configuration: {e}")
 
 def copy_parameters_to_clipboard():
     """Generate parameter code for copying"""
     config = st.session_state.config
     
-    parameters_code = f"""
-# MAIT Configuration Parameters
+    st.subheader("📋 Copy Configuration Parameters")
+    
+    # Generate formatted configuration code
+    parameters_code = f"""# MAIT Configuration Parameters
+# Generated from Streamlit Interface on {time.strftime('%Y-%m-%d %H:%M:%S')}
+
+# Data Configuration
+data_file = '{config['data_file']}'
 outcome_var = '{config['outcome_var']}'
-columns_to_drop = {config['columns_to_drop']}
 cat_features = {config['cat_features']}
+columns_to_drop = {config['columns_to_drop']}
+
+# Model Selection
 models_to_include = {config['models_to_include']}
+
+# Output Settings
 main_folder_name = '{config['main_folder_name']}'
+class_labels_display = {config['class_labels_display']}
+
+# Data Split Settings
 data_split = {config['data_split']}
 train_size_perc = {config['train_size_perc']}
+data_split_by_patients = {config['data_split_by_patients']}
+already_split = {config['already_split']}
+
+# Feature Engineering
 feat_sel = {config['feat_sel']}
 num_features_sel = {config['num_features_sel']}
+merged_rare_categories = {config['merged_rare_categories']}
+rarity_threshold = {config['rarity_threshold']}
+remove_outliers = {config['remove_outliers']}
+
+# Training Parameters
 hp_tuning = {config['hp_tuning']}
 n_iter_hptuning = {config['n_iter_hptuning']}
 cv_folds = {config['cv_folds']}
 tun_score = '{config['tun_score']}'
+
+# Resource Configuration
+n_cpu_for_tuning = {config['n_cpu_for_tuning']}
+n_cpu_model_training = {config['n_cpu_model_training']}
 GPU_avail = {config['GPU_avail']}
-oversampling = {config['oversampling']}
-scale_data = {config['scale_data']}
-merged_rare_categories = {config['merged_rare_categories']}
-rarity_threshold = {config['rarity_threshold']}
-remove_outliers = {config['remove_outliers']}
+
+# Advanced Options
+external_val = {config['external_val']}
+survival_analysis = {config['survival_analysis']}
+regression_analysis = {config['regression_analysis']}
 """
     
     st.code(parameters_code, language='python')
-    st.info(" Copy the code above and paste it into your MAIT notebook")
+    st.info("💡 **Tip:** Copy this entire block and paste it into any MAIT notebook to apply your configuration")
+    
+    # Also provide as downloadable file
+    st.download_button(
+        label="⬇️ Download as Python File",
+        data=parameters_code,
+        file_name=f"mait_config_{config['main_folder_name']}.py",
+        mime="text/plain",
+        help="Download the configuration as a Python file"
+    )
 
 if __name__ == "__main__":
     main()
