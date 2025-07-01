@@ -73,6 +73,39 @@ Inside the container, you should activate the conda environment using `activate 
 
 You can also refer to the `environment.yml` file to understand the dependencies and create your Docker environment. If you run the Docker container on an HPC server or a remote computer you can use http://your_HPC_server_address:8888/ to get access to the Jupyter Notebook to run MAIT.
 
+
+## Quick Start with Streamlit Configuration Interface
+
+For new users who want to get started quickly without diving into Jupyter notebooks, MAIT includes a user-friendly **Streamlit web interface** for configuration:
+
+### Try Online (No Installation Required)
+**Access the live app at: https://maitconfig.streamlit.app/**
+
+### Launch Locally
+```bash
+cd MAIT
+./run_streamlit.sh
+```
+
+Or manually:
+```bash
+streamlit run streamlit_app.py
+```
+
+### Features
+- **Interactive Configuration**: Set up your machine learning pipeline through an intuitive web interface
+- **Demo Data Included**: Test MAIT immediately with built-in medical dataset
+- **Ready-to-Run Scripts**: Generate complete Python scripts with your configurations pre-filled
+- **No Manual Editing**: Generated scripts are ready to execute without any code modifications
+
+### Quick Demo
+1. Launch the Streamlit app
+2. Click "Use Demo Data" in the Data Configuration section
+3. Configure your preferred models and parameters
+4. Generate and download your customized MAIT pipeline script
+
+This interface is perfect for users who want to explore MAIT's capabilities before diving into the detailed Jupyter tutorial notebooks.
+
 ## Tutorials
 The repository includes several Jupyter Notebooks that serve as tutorials. These notebooks cover various aspects of the pipeline and demonstrate how to use different components effectively. Below you can find a list of available tutorials:
 
