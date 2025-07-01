@@ -57,7 +57,7 @@ def main():
     <div class="info-box">
         <strong>Welcome to MAIT (Medical Artificial Intelligence Toolbox)!</strong><br>
         This interface helps you configure and run MAIT pipelines for binary classification, survival modeling, and regression analysis.
-        Configure your parameters below and generate a ready-to-run notebook or execute the pipeline directly.
+        Configure your parameters below and export a ready-to-run Python script for your pipeline.
     </div>
     """, unsafe_allow_html=True)
 
@@ -70,7 +70,7 @@ def main():
         "Training Parameters",
         "Output Settings",
         "Advanced Options",
-        "Generate & Run"
+        "Finalize and Export"
     ])
 
     # Initialize session state for configuration
@@ -90,7 +90,7 @@ def main():
         output_settings_page()
     elif page == "Advanced Options":
         advanced_options_page()
-    elif page == "Generate & Run":
+    elif page == "Finalize and Export":
         generate_run_page()
 
 def init_default_config():
@@ -220,21 +220,75 @@ def data_configuration_page():
         
         # Categorical features
         if 'available_columns' in st.session_state:
+            # Filter out outcome variable and columns to drop from available options
+            available_for_cat = [col for col in st.session_state.available_columns 
+                               if col != st.session_state.config['outcome_var'] 
+                               and col not in st.session_state.config['columns_to_drop']]
+            
+            # Initialize widget state if not exists or validate current selection
+            if "categorical_features" not in st.session_state:
+                # Get current categorical features, ensuring they're still valid
+                valid_cat_features = [f for f in st.session_state.config['cat_features'] if f in available_for_cat]
+                st.session_state["categorical_features"] = valid_cat_features
+            
             cat_features = st.multiselect(
                 "Categorical Features:", 
-                st.session_state.available_columns,
-                default=st.session_state.config['cat_features']
+                available_for_cat,
+                key="categorical_features",
+                help="Select all columns that contain categorical data (e.g., gender, smoking_status, race)"
             )
+            
+            # Update configuration from the widget
             st.session_state.config['cat_features'] = cat_features
+            
+            # Show current selection
+            if cat_features:
+                st.info(f"✅ Selected {len(cat_features)} categorical feature(s): {', '.join(cat_features)}")
         
         # Columns to drop
         if 'available_columns' in st.session_state:
+            # Filter out outcome variable from available options
+            available_for_drop = [col for col in st.session_state.available_columns 
+                                if col != st.session_state.config['outcome_var']]
+            
+            # Initialize widget state if not exists or validate current selection
+            if "columns_to_drop" not in st.session_state:
+                # Get current columns to drop, ensuring they're still valid
+                valid_cols_to_drop = [f for f in st.session_state.config['columns_to_drop'] if f in available_for_drop]
+                st.session_state["columns_to_drop"] = valid_cols_to_drop
+            
             columns_to_drop = st.multiselect(
                 "Columns to Drop:", 
-                st.session_state.available_columns,
-                default=st.session_state.config['columns_to_drop']
+                available_for_drop,
+                key="columns_to_drop",
+                help="Select columns that should be excluded from the analysis"
             )
+            
+            # Update configuration from the widget
             st.session_state.config['columns_to_drop'] = columns_to_drop
+            
+            # Show current selection
+            if columns_to_drop:
+                st.info(f"🗑️ Will drop {len(columns_to_drop)} column(s): {', '.join(columns_to_drop)}")
+    
+    # Debug info section (collapsible)
+    with st.expander("🔍 Current Configuration Status", expanded=False):
+        col_debug1, col_debug2 = st.columns(2)
+        
+        with col_debug1:
+            st.write("**Current Settings:**")
+            st.write(f"• Data file: `{st.session_state.config['data_file']}`")
+            st.write(f"• Outcome variable: `{st.session_state.config['outcome_var']}`")
+            if 'available_columns' in st.session_state:
+                st.write(f"• Total columns available: {len(st.session_state.available_columns)}")
+        
+        with col_debug2:
+            st.write("**Feature Selection:**")
+            st.write(f"• Categorical features: {st.session_state.config['cat_features']}")
+            st.write(f"• Columns to drop: {st.session_state.config['columns_to_drop']}")
+            if 'available_columns' in st.session_state:
+                remaining_cols = len(st.session_state.available_columns) - len(st.session_state.config['columns_to_drop']) - (1 if st.session_state.config['outcome_var'] else 0)
+                st.write(f"• Features for modeling: ~{remaining_cols}")
     
     # Data Split Configuration
     st.subheader("Data Split Configuration")
@@ -573,7 +627,7 @@ def advanced_options_page():
                 st.error(f"Error loading configuration: {e}")
 
 def generate_run_page():
-    st.markdown('<h2 class="section-header"> Generate Notebook & Setup Instructions</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-header"> Generate Python Script & Setup Instructions</h2>', unsafe_allow_html=True)
     
     # Configuration summary
     st.subheader("Configuration Summary")
@@ -612,7 +666,7 @@ def generate_run_page():
     col4, col5 = st.columns(2)
     
     with col4:
-        if st.button(" Generate Notebook", type="primary"):
+        if st.button("💾 Save Executable Python File", type="primary"):
             generate_notebook()
     
     with col5:
@@ -675,7 +729,7 @@ def generate_notebook():
         with open(output_filename, 'w', encoding='utf-8') as f:
             f.write(python_content)
         
-        st.success(f"✅ Python script generated successfully!")
+        st.success(f"✅ Python script exported successfully!")
         st.info(f"📁 Saved to: {output_filename}")
         
         # Show configuration summary
@@ -715,13 +769,13 @@ def generate_notebook():
             data=python_content,
             file_name=output_filename,
             mime="text/plain",
-            help="Download the generated Python script to run your MAIT pipeline"
+            help="Download the exported Python script to run your MAIT pipeline"
         )
         
         # Instructions
         with st.expander("📖 Usage Instructions", expanded=True):
             st.markdown(f"""
-**How to use your generated Python script:**
+**How to use your exported Python script:**
 
 1. **Download the script** using the button above or find it in your current directory as `{output_filename}`
 
@@ -787,8 +841,8 @@ def generate_python_script(config):
         modified_content = '\n'.join(modified_lines)
         
         # Add user configuration header
-        header_comment = f'''# MAIT Pipeline - Generated by Streamlit Configuration Interface
-# Generated on {time.strftime("%Y-%m-%d %H:%M:%S")}
+        header_comment = f'''# MAIT Pipeline - Exported by Streamlit Configuration Interface
+# Exported on {time.strftime("%Y-%m-%d %H:%M:%S")}
 # 
 # This file contains your custom MAIT pipeline configuration.
 # All parameters have been set according to your Streamlit interface selections.
@@ -893,9 +947,9 @@ def run_pipeline():
     config = st.session_state.config
     
     # Step 1: Template guidance
-    st.markdown("### Step 1: Using the Generated Script")
+    st.markdown("### Step 1: Using the Exported Script")
     st.markdown(f"""
-    The generated Python script (`mait_pipeline_{config['main_folder_name']}.py`) contains:
+    The exported Python script (`mait_pipeline_{config['main_folder_name']}.py`) contains:
     - ✅ Complete MAIT pipeline code
     - ✅ Your configuration parameters pre-filled
     - ✅ Ready to run without manual editing
@@ -912,7 +966,7 @@ def run_pipeline():
 # Navigate to your MAIT directory
 cd /path/to/MAIT
 
-# Run the generated script
+# Run the exported script
 python mait_pipeline_{config['main_folder_name']}.py
         """, language="bash")
     
