@@ -364,6 +364,8 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#easy-configuration-with-streamlit-app">🚀 Easy Configuration with Streamlit App</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-configuration-alternative-method">Manual Configuration (Alternative Method)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-settings-mandatory-for-all-tasks">General Settings (Mandatory for All Tasks)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-classification-mandatory-parameters">Binary Classification (Mandatory Parameters)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#survival-analysis-mandatory-parameters">Survival Analysis (Mandatory Parameters)</a></li>
@@ -384,6 +386,27 @@
   <section class="tex2jax_ignore mathjax_ignore" id="quickstart-minimal-configuration-guide">
 <h1>QuickStart - minimal configuration guide<a class="headerlink" href="#quickstart-minimal-configuration-guide" title="Link to this heading">#</a></h1>
 <p>You can copy one of the tutorial notebooks found in this documentation and customize it for your project. The customization includes setting serveral parameters depending the type of the analysis.</p>
+<section id="easy-configuration-with-streamlit-app">
+<h2>🚀 Easy Configuration with Streamlit App<a class="headerlink" href="#easy-configuration-with-streamlit-app" title="Link to this heading">#</a></h2>
+<p><strong>NEW: Use our interactive configuration interface!</strong></p>
+<p>Instead of manually setting parameters, you can use our Streamlit-based configuration interface:</p>
+<ul class="simple">
+<li><p><strong>Online version</strong>: <a href="https://maitconfig.streamlit.app/" target="_blank">https://maitconfig.streamlit.app/</a></p></li>
+<li><p><strong>Local version</strong>: Run <code class="docutils literal notranslate"><span class="pre">streamlit</span> <span class="pre">run</span> <span class="pre">streamlit_app.py</span></code> in your MAIT directory</p></li>
+</ul>
+<p>The Streamlit app provides:</p>
+<ul class="simple">
+<li><p>✅ Interactive parameter configuration with validation</p></li>
+<li><p>✅ Real-time preview of your settings</p></li>
+<li><p>✅ Export ready-to-run Python scripts</p></li>
+<li><p>✅ Built-in help and documentation</p></li>
+<li><p>✅ No manual coding required</p></li>
+</ul>
+<p>Simply configure your pipeline through the web interface and download the generated Python script!</p>
+</section>
+<hr class="docutils" />
+<section id="manual-configuration-alternative-method">
+<h2>Manual Configuration (Alternative Method)<a class="headerlink" href="#manual-configuration-alternative-method" title="Link to this heading">#</a></h2>
 <section id="general-settings-mandatory-for-all-tasks">
 <h2>General Settings (Mandatory for All Tasks)<a class="headerlink" href="#general-settings-mandatory-for-all-tasks" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
@@ -495,6 +518,7 @@ Also if you need some variables not to be included like <code class="docutils li
 <section id="additional-notes">
 <h2>Additional Notes<a class="headerlink" href="#additional-notes" title="Link to this heading">#</a></h2>
 <ul class="simple">
+<li><p><strong>Recommended</strong>: Use the <a href="https://maitconfig.streamlit.app/" target="_blank">Streamlit configuration app</a> for easier setup and automatic parameter validation</p></li>
 <li><p>Each task (classification, survival, regression) has specific mandatory parameters. Only include the settings relevant to the task you are running.</p></li>
 <li><p>Omitting any of the above parameters will result in errors or crashes during execution.</p></li>
 <li><p>For further details, refer to the full pipeline manual.</p></li>
