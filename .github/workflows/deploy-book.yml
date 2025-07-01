@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   deploy-book:
     runs-on: ubuntu-latest
@@ -10,11 +11,13 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: "Tutorials/book/_build/html"
+          path: Tutorials/book/_build/html
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
