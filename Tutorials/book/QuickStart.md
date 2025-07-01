@@ -2,6 +2,28 @@
 
 You can copy one of the tutorial notebooks found in this documentation and customize it for your project. The customization includes setting serveral parameters depending the type of the analysis.
 
+## 🚀 Easy Configuration with Streamlit App
+
+**NEW: Use our interactive configuration interface!**
+
+Instead of manually setting parameters, you can use our Streamlit-based configuration interface:
+
+- **Online version**: [https://maitconfig.streamlit.app/](https://maitconfig.streamlit.app/)
+- **Local version**: Run `streamlit run streamlit_app.py` in your MAIT directory
+
+The Streamlit app provides:
+- ✅ Interactive parameter configuration with validation
+- ✅ Real-time preview of your settings
+- ✅ Export ready-to-run Python scripts
+- ✅ Built-in help and documentation
+- ✅ No manual coding required
+
+Simply configure your pipeline through the web interface and download the generated Python script!
+
+---
+
+## Manual Configuration (Alternative Method)
+
 ## General Settings (Mandatory for All Tasks)
 1. **Specify Main Directory**:
    - `main_folder_name = 'results_<ProjectName>'`
@@ -69,6 +91,7 @@ Also if you need some variables not to be included like `columns_to_drop = ["irr
 ---
 
 ## Additional Notes
+- **Recommended**: Use the [Streamlit configuration app](https://maitconfig.streamlit.app/) for easier setup and automatic parameter validation
 - Each task (classification, survival, regression) has specific mandatory parameters. Only include the settings relevant to the task you are running.
 - Omitting any of the above parameters will result in errors or crashes during execution.
 - For further details, refer to the full pipeline manual.
