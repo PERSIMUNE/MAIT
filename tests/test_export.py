@@ -22,6 +22,11 @@ class ExportTests(unittest.TestCase):
             with self.assertRaises(FileExistsError):
                 export_demo(destination)
 
+    def test_bundled_template_matches_repository_source(self):
+        root = Path(__file__).resolve().parents[1]
+        self.assertEqual((root / 'Tutorials/mait_template.py').read_bytes(),
+                         (root / 'src/mait/data/pipeline.py.txt').read_bytes())
+
     def test_missing_assignment_fails_instead_of_silent_default(self):
         with self.assertRaises(ValueError):
             _configure('unrelated = 1\n', {'outcome_var': repr('heart_disease')})
