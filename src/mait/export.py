@@ -4,6 +4,7 @@ from importlib.resources import files
 from pathlib import Path
 
 DEMO_SETTINGS = {
+    "demo_configs": False,
     "cat_features": ["gender", "smoking_status"],
     "columns_to_drop": ["patient_id"],
     "outcome_var": "heart_disease",

@@ -1,6 +1,6 @@
 # MAIT package prototype
 
-This first packaging step exposes the existing MAIT script through a small library and command-line interface. It preserves the original analysis code and exports explicit CPU settings for the included classification dataset.
+This first packaging step exposes the existing MAIT script through a small library and command-line interface. It builds on the original analysis code and exports explicit CPU settings for the included classification dataset.
 
 This is an alpha prototype, not a complete migration of MAIT into a modular library. The distribution name `mait-toolbox` is provisional; it has not been reserved or published.
 
@@ -29,7 +29,7 @@ The full original MAIT analysis environment is still required. The package inten
 python my-mait-demo/mait_demo.py
 ```
 
-Inputs and result paths are absolute, so invocation does not depend on your current directory. The script retains the original pipeline's imports, methods, outputs, and runtime behaviour, including its process working-directory changes. It must run in a separate process rather than inside a caller's Python session.
+Inputs and result paths are absolute, so invocation does not depend on your current directory. The script uses the original pipeline, with compatibility updates for optional LightGBM loading and scikit-learn scoring, including its process working-directory changes. It must run in a separate process rather than inside a caller's Python session.
 
 ## What comes next
 
@@ -39,4 +39,8 @@ Inputs and result paths are absolute, so invocation does not depend on your curr
 4. Make survival and symbolic-model dependencies optional.
 5. Connect the graphical interface to the validated library.
 
-The bundled template is copied from `Tutorials/mait_template.py`; keep the copy synchronized until the pipeline has one canonical packaged implementation.
+The bundled template is synchronized with `Tutorials/mait_template.py`; an automated check keeps the copy synchronized until the pipeline has one canonical packaged implementation.
+
+## Local compatibility work
+
+`requirements-analysis.txt` provides a candidate CPU environment with bounded versions. Full validation remains in progress. LightGBM is imported only when selected; selecting it on macOS still requires OpenMP. Target conversion and scorer calls have been updated for current library behaviour. No change to model-selection criteria is intended.
