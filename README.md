@@ -8,6 +8,17 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2501.04547-B31B1B)](https://arxiv.org/abs/2501.04547)  
 # MAIT - medical artificial intelligence toolbox
 
+## Start here
+
+MAIT is an open-source Python workflow for explainable machine learning on tabular research data, supporting binary classification, survival modelling, and regression.
+
+- **Explore the configuration interface:** [Open MAIT](https://maitconfig.streamlit.app/). This prepares a script; analysis runs in your own Python environment.
+- **Try the included dataset:** follow the [quick-start guide](QUICK_START_DEMO.md).
+- **See published applications:** [Research using MAIT](RESEARCH_USING_MAIT.md).
+- **Understand the methods:** read the [manual](MANUAL.md) and [MAIT paper](https://arxiv.org/abs/2501.04547).
+
+The configuration interface and the analysis pipeline have separate dependencies. Installing the interface alone does not install the full analysis environment.
+
 ## Introduction
 Welcome to the MAIT repository! This pipeline, implemented in Python, is designed to streamline your machine learning workflows using Jupyter Notebooks. It is compatible with both Windows and Linux operating systems. This repository also includes several tutorial notebooks to help you get started quickly. You can also refer to the `MANUAL` of MAIT for documentation. To overview MAIT's unique features and capabilities, we highly recommend reading the [MAIT preprint](https://arxiv.org/abs/2501.04547) on arXiv. If you use MAIT in your research, please remember to cite it in your publications.
 
