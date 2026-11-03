@@ -88,6 +88,8 @@ When reporting a failure, include the operating system, Python and MAIT versions
 
 ## Research using MAIT
 
+**[Cited by 3 papers on Google Scholar](https://scholar.google.com/scholar?cites=8130668980657492766&hl=en)** · As of 3 November 2026.
+
 | Research area | Publication |
 | --- | --- |
 | Gut microbiome and chronic lymphocytic leukemia | [Microbiology Spectrum](https://doi.org/10.1128/spectrum.00944-25) |
