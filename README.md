@@ -88,17 +88,15 @@ When reporting a failure, include the operating system, Python and MAIT versions
 
 ## Research using MAIT
 
-Published applications include:
-
 | Research area | Publication |
 | --- | --- |
 | Gut microbiome and chronic lymphocytic leukemia | [Microbiology Spectrum](https://doi.org/10.1128/spectrum.00944-25) |
 | Testicular cancer relapse prediction | [Andrology](https://doi.org/10.1111/andr.70195) |
 | Severe COVID-19 risk factors | [JAMIA Open](https://doi.org/10.1093/jamiaopen/ooag079) |
 
-See [application details and evidence](RESEARCH_USING_MAIT.md) or [papers citing MAIT on Google Scholar](https://scholar.google.com/scholar?cites=8130668980657492766&hl=en). Applications and citations are different: a citation alone does not establish software use. This curated list does not imply independent adoption or clinical validation.
+[Explore these applications](RESEARCH_USING_MAIT.md) · [Papers citing MAIT](https://scholar.google.com/scholar?cites=8130668980657492766&hl=en)
 
-Used MAIT in your research? [Suggest an addition](https://github.com/PERSIMUNE/MAIT/issues/new) with a publication or code link and the passage describing its use.
+Used MAIT in your research? [Share your work](https://github.com/PERSIMUNE/MAIT/issues/new) to be featured here.
 
 ## Cite MAIT
 
