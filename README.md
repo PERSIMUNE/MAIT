@@ -86,6 +86,20 @@ If `mait` is not found, activate the environment where you installed it. If anal
 
 When reporting a failure, include the operating system, Python and MAIT versions (`python --version`, `mait --version`), command, and error message. Do not include confidential data. LightGBM is a separate optional extra and requires a native OpenMP runtime on macOS; it is not needed by the bundled demo.
 
+## Research using MAIT
+
+Published applications include:
+
+| Research area | Publication |
+| --- | --- |
+| Gut microbiome and chronic lymphocytic leukemia | [Microbiology Spectrum](https://doi.org/10.1128/spectrum.00944-25) |
+| Testicular cancer relapse prediction | [Andrology](https://doi.org/10.1111/andr.70195) |
+| Severe COVID-19 risk factors | [JAMIA Open](https://doi.org/10.1093/jamiaopen/ooag079) |
+
+See [application details and evidence](RESEARCH_USING_MAIT.md) or [papers citing MAIT on Google Scholar](https://scholar.google.com/scholar?cites=8130668980657492766&hl=en). Applications and citations are different: a citation alone does not establish software use. This curated list does not imply independent adoption or clinical validation.
+
+Used MAIT in your research? [Suggest an addition](https://github.com/PERSIMUNE/MAIT/issues/new) with a publication or code link and the passage describing its use.
+
 ## Cite MAIT
 
 Zargari Marandi R, Frahm AS, Lundgren J, Murray DD, Milojevic M. *Medical artificial intelligence toolbox (MAIT): an explainable machine learning framework for binary classification, survival modelling, and regression analyses.* 2025. [doi:10.48550/arXiv.2501.04547](https://doi.org/10.48550/arXiv.2501.04547).
