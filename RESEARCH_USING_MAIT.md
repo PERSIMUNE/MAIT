@@ -1,6 +1,6 @@
 # Research using MAIT
 
-The following publications explicitly describe using MAIT in their methods. These are documented applications; this list does not imply that the authors are independent of the MAIT development team.
+Selected publications using MAIT in their research.
 
 | Publication | Application | Evidence |
 | --- | --- | --- |
@@ -8,9 +8,9 @@ The following publications explicitly describe using MAIT in their methods. Thes
 | [A Unified Machine Learning Model for Relapse Prediction in Clinical Stage I Testicular Cancer](https://onlinelibrary.wiley.com/doi/full/10.1111/andr.70195) | Relapse prediction | The methods state that MAIT was used for model training, validation, and interpretation. |
 | [Comparing risk factors in severe COVID-19 using machine learning and non-machine learning methods: analysis from 2 international randomized controlled trials](https://academic.oup.com/jamiaopen/article/9/3/ooag079/8714031) | Mortality prediction in clinical trial data | The machine learning analyses describe MAIT for binary classification and time-to-event outcomes. |
 
-Last checked: 2 November 2026. This is a curated list, not a complete citation count.
 
-To suggest an addition, open an issue with the publication link and the methods passage describing MAIT use. Papers discussing or citing MAIT without using it can be recorded separately as citations.
+
+Used MAIT in your research? [Share your publication](https://github.com/PERSIMUNE/MAIT/issues/new) to be featured here.
 
 ## Cite MAIT
 
