@@ -26,7 +26,7 @@ from mrmr import mrmr_classif # for feature selection (optional)
 from imblearn.over_sampling import RandomOverSampler # for oversampling (optional)
 # loading models (libraries or packages for base models)
 from sklearn.ensemble import RandomForestClassifier
-import lightgbm as lgb
+lgb = None  # Loaded below only when LightGBM is selected.
 import catboost as cb
 from sklearn.linear_model import LogisticRegression
 import feyn
@@ -257,19 +257,24 @@ demo_configs = True # True only if using the Breast Cancer dataset to add missin
 
 ###################################################################################
 # following is the default custom metric (Mean of ROCAUC and PRAUC) used for hyperparameter tuning
+# LightGBM requires a native OpenMP runtime on some platforms.
+# Other selected models can run without importing it.
+if "LightGBM_mdl" in models_to_include:
+    import lightgbm as lgb
+
 def combined_metric(y_true, y_pred_proba):
     roc_auc = roc_auc_score(y_true, y_pred_proba)
     pr_auc = average_precision_score(y_true, y_pred_proba)
     return (roc_auc + pr_auc) / 2  # Mean of ROCAUC and PRAUC
 
-custom_scorer = make_scorer(combined_metric, needs_proba=True)
+custom_scorer = make_scorer(combined_metric, response_method="predict_proba")
 use_single_metric = False # in case you want to use a single metric for training and hyperparameter tuninig
 if use_single_metric:
     single_score = "ROCAUC" # choose between ROCAUC and PRAUC
     if single_score == "ROCAUC":
-        custom_scorer = make_scorer(roc_auc_score, needs_proba=True)
+        custom_scorer = make_scorer(roc_auc_score, response_method="predict_proba")
     elif single_score == "PRAUC":
-        custom_scorer = make_scorer(average_precision_score, needs_proba=True)
+        custom_scorer = make_scorer(average_precision_score, response_method="predict_proba")
 
 ###################################################################################
 # Check if the main folder exists, and create it if not
@@ -1099,7 +1104,7 @@ def is_hyperparameter_tuning_suitable(data, outcome_var, train_size=train_size_p
     # Extract features and target variable
     X = data.drop(columns=[outcome_var])
     y = data[outcome_var]
-    y = y.replace({class_1: 1, class_0: 0})
+    y = y.map({class_1: 1, class_0: 0}).astype(int)
         
     # Calculate number of samples used in model training
     n_train_samples = int(len(X) * train_size)
@@ -2096,7 +2101,7 @@ def evaluate_and_plot_model(model, testset, y_test, filename, class_labels = cla
         bootstrap_sample_testset = testset.iloc[bootstrap_sample_indices]
         bootstrap_sample_y_test = y_test.iloc[bootstrap_sample_indices]
 
-        if isinstance(model, (cb.CatBoostClassifier, lgb.LGBMClassifier, GaussianNB,RandomForestClassifier, LogisticRegression, RandomForestClassifier, HistGradientBoostingClassifier)):
+        if (lgb is not None and isinstance(model, lgb.LGBMClassifier)) or isinstance(model, (cb.CatBoostClassifier, GaussianNB,RandomForestClassifier, LogisticRegression, RandomForestClassifier, HistGradientBoostingClassifier)):
             predictions = model.predict_proba(bootstrap_sample_testset)[:, 1]
             # print(predictions)
         else:
@@ -2139,7 +2144,7 @@ def evaluate_and_plot_model(model, testset, y_test, filename, class_labels = cla
         # Set metrics to NaN or another suitable value
         PPV, NPV, sensitivity, specificity, balanced_accuracy, MCC, roc_auc, pr_auc, brier_score, f1 = [np.nan] * 10
     else:
-        if isinstance(model, (cb.CatBoostClassifier, lgb.LGBMClassifier, GaussianNB, RandomForestClassifier, LogisticRegression, HistGradientBoostingClassifier)):
+        if (lgb is not None and isinstance(model, lgb.LGBMClassifier)) or isinstance(model, (cb.CatBoostClassifier, GaussianNB, RandomForestClassifier, LogisticRegression, HistGradientBoostingClassifier)):
             predictions = model.predict_proba(testset)[:, 1]
             # print(predictions)
         else:
@@ -2685,6 +2690,8 @@ def shap_summary_plot(shap_values, data, model_name):
     - None: Saves the plot as a .tif file and displays it.
     """
    
+    # SHAP plotting requires a numeric array, including mixed-type frames.
+    shap_values = np.asarray(shap_values, dtype=float)
     # Create the SHAP summary plot
     shap.summary_plot(
         shap_values, 
@@ -3084,7 +3091,7 @@ def cross_validate_model(model_class, X, y, sample_weights=None, n_splits=cv_fol
             predictions_proba_fold_train = hgbc_model.predict_proba(X_train_fold)[:, 1]
             predictions_proba_fold_list.append(predictions_proba_fold)
             predictions_proba_fold_train_list.append(predictions_proba_fold_train)
-        elif model_class == lgb.LGBMClassifier:
+        elif lgb is not None and model_class == lgb.LGBMClassifier:
             # LightGBM instance
             if GPU_avail:
                 lgbm_model = lgb.LGBMClassifier(random_state=random_state, n_jobs=n_cpu_model_training, verbose=-1,device="gpu", **lgbm_params) 
@@ -4981,8 +4988,7 @@ else:
             print("Best Parameters:", best_params)
         else:
             rf = RandomForestClassifier(random_state=SEED, class_weight= "balanced",n_jobs=n_cpu_model_training, **rf_params)
-            # Print the best parameters
-            print("Best Parameters:", best_params)
+            print("Default Parameters:", rf_params)
         # Train the new model on the training data
         rf.fit(X_train_OHE_nocv, y_train, sample_weight=sample_weights)
 
@@ -5723,7 +5729,7 @@ if not skip_block:
         predictions = predictions[:, 1]
         y_pred = [True if x >= opt_threshold_CB else False for x in predictions]
         misclassified = y_pred != y_test
-    elif isinstance(selected_model, (lgb.LGBMClassifier)):
+    elif (lgb is not None and isinstance(selected_model, lgb.LGBMClassifier)):
         predictions = selected_model.predict_proba(X_test)
         predictions = predictions[:, 1]
         y_pred = [True if x >= opt_threshold_LGBM else False for x in predictions]
@@ -6066,7 +6072,7 @@ if not skip_block:
             ## Returns
                 dict: A dictionary where the keys are tuples of feature indices and the values are the average permutation importances for each pair.
             """
-            y = y.replace({class_1: 1, class_0: 0})
+            y = y.map({class_1: 1, class_0: 0}).astype(int)
             baseline_score = roc_auc_score(y, model.predict_proba(X)[:, 1])
             importance_dict = {}
 
@@ -6426,7 +6432,7 @@ if not skip_block:
                                                                                     selected_model=selected_model, 
                                                                                     data_dictionary=data_dictionary, 
                                                                                     top_n_f=top_n_f)
-    elif isinstance(selected_model, (cb.CatBoostClassifier, lgb.LGBMClassifier)):
+    elif (isinstance(selected_model, cb.CatBoostClassifier) or (lgb is not None and isinstance(selected_model, lgb.LGBMClassifier))):
         top_n_col_clusters_info, row_clusters_info, shap_df = find_feature_clusters(X=X_test, 
                                                                                     shap_values=shap_values,
                                                                                     selected_model=selected_model, 
@@ -6490,7 +6496,7 @@ if not skip_block:
             elif isinstance(model, (HistGradientBoostingClassifier)):
                 predictions_proba_cluster = model.predict_proba(X_cluster)[:, 1]
                 model_opt_threshold = opt_threshold_HGBC
-            elif isinstance(model, (lgb.LGBMClassifier)):
+            elif (lgb is not None and isinstance(model, lgb.LGBMClassifier)):
                 predictions_proba_cluster = model.predict_proba(X_cluster)[:, 1]
                 model_opt_threshold = opt_threshold_LGBM
             elif isinstance(model, (cb.CatBoostClassifier)):
@@ -6534,7 +6540,7 @@ if not skip_block:
     if isinstance(selected_model, (HistGradientBoostingClassifier, RandomForestClassifier,LogisticRegression, GaussianNB)):
         plot_confusion_matrix_for_clusters(X=X_test_OHE, y=y_test, cluster_info=row_clusters_info, model=selected_model, shap_values=shap_values, top_n=top_n_f)
 
-    elif isinstance(selected_model, (cb.CatBoostClassifier, lgb.LGBMClassifier)):
+    elif (isinstance(selected_model, cb.CatBoostClassifier) or (lgb is not None and isinstance(selected_model, lgb.LGBMClassifier))):
         plot_confusion_matrix_for_clusters(X=X_test, y=y_test, cluster_info=row_clusters_info, model=selected_model, shap_values=shap_values, top_n=top_n_f)
 
 
@@ -6577,7 +6583,7 @@ if not skip_block:
                 # shap.plots.force(base_value, sample_shap_values.values[:,:,1])
                 display(shap.plots.force(base_value, sample_shap_values.values, plot_cmap="RdBu", feature_names=X_train_OHE_nocv.columns))
             
-            elif isinstance(selected_model, (cb.CatBoostClassifier, lgb.LGBMClassifier)):
+            elif (isinstance(selected_model, cb.CatBoostClassifier) or (lgb is not None and isinstance(selected_model, lgb.LGBMClassifier))):
                 sample_predicted_prob = selected_model.predict_proba(sample)
                 print(f"predicted probability: {sample_predicted_prob[:,1]}")
                 # Get the SHAP values for the sample
@@ -6749,7 +6755,7 @@ if not skip_block:
             rand_pred_probs = np.random.rand(len(X_test_OHE))
             predictions = selected_model.predict_proba(X_test_OHE)
             pred_probs_selected_model = predictions[:, 1]
-        elif isinstance(selected_model, (cb.CatBoostClassifier, lgb.LGBMClassifier)):
+        elif (isinstance(selected_model, cb.CatBoostClassifier) or (lgb is not None and isinstance(selected_model, lgb.LGBMClassifier))):
             np.random.seed(SEED)
             rand_pred_probs = np.random.rand(len(X_test))
             predictions = selected_model.predict_proba(X_test)
@@ -6829,7 +6835,7 @@ if not skip_block:
         # Step 2: Get predicted probabilities for the calibration set
         if isinstance(selected_model, (HistGradientBoostingClassifier, RandomForestClassifier, LogisticRegression, GaussianNB)):
             calibration_probs = selected_model.predict_proba(X_calibration)[:, 1]
-        elif isinstance(selected_model, (cb.CatBoostClassifier, lgb.LGBMClassifier)):
+        elif (isinstance(selected_model, cb.CatBoostClassifier) or (lgb is not None and isinstance(selected_model, lgb.LGBMClassifier))):
             calibration_probs = selected_model.predict_proba(X_calibration)[:, 1]
 
         # Step 3: Compute nonconformity scores using the calibration set
@@ -6839,7 +6845,7 @@ if not skip_block:
         # Step 4: Get predicted probabilities for the new test set
         if isinstance(selected_model, (HistGradientBoostingClassifier, RandomForestClassifier, LogisticRegression, GaussianNB)):
             test_probs = selected_model.predict_proba(X_new_test)[:, 1]
-        elif isinstance(selected_model, (cb.CatBoostClassifier, lgb.LGBMClassifier)):
+        elif (isinstance(selected_model, cb.CatBoostClassifier) or (lgb is not None and isinstance(selected_model, lgb.LGBMClassifier))):
             test_probs = selected_model.predict_proba(X_new_test)[:, 1]
 
         # Step 5: Define the p-value calculation for conformal prediction
@@ -8642,7 +8648,7 @@ def get_conda_environment():
     *   This function assumes that the `conda` command is available on the system and that the user has permission to run it.
     *   The returned string may be truncated if it exceeds the maximum allowed size by the system.
     """
-    conda_list = subprocess.check_output(['conda', 'list']).decode('utf-8')
+    conda_list = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze']).decode('utf-8')
     return conda_list
 
 def get_python_info():
@@ -8721,7 +8727,7 @@ report_filename = 'pipeline_report.txt'
 # Open the file for writing
 with open(report_filename, 'w') as f:
     # Write Conda environment to the file
-    f.write("Conda environment:\n")
+    f.write("Python environment (pip freeze):\n")
     f.write(get_conda_environment())
     f.write("\n\n")
     

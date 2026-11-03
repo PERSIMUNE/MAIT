@@ -1,0 +1,7 @@
+# Local classification validation — 3 November 2026
+
+The exported CPU demo completed successfully on Apple Silicon macOS with Python 3.11. It trained Logistic Regression and Random Forest, completed evaluation and explanation steps, and wrote 35 output files. The saved RandomForestClassifier reloaded successfully; both evaluation workbooks opened; a ROC/precision-recall/confusion-matrix figure was inspected. The report now records the actual running Python environment. Three package/export/template synchronization tests passed, and pip check reported no broken requirements.
+
+Fixes: load LightGBM only when selected and guard type checks; explicitly convert the tuning diagnostic target to integers; use the current probability-scoring API; convert summary SHAP values to numeric arrays; print default Random Forest parameters when tuning is disabled; disable the breast-cancer-specific data augmentation setting for this demo; report the active Python environment rather than an unrelated Conda environment.
+
+Scope: one bundled small dataset, two classification models, CPU execution. Other models, survival, regression, other operating systems, hyperparameter tuning, and numerical equivalence to a historical environment remain unverified. This verifies execution and basic artifact integrity, not clinical validity or a full statistical-method audit. The bounded requirements file is a candidate reproducible route; a second fresh installation from that file remains to be tested. Automated GitHub checks have been added but their remote result is not yet verified.
