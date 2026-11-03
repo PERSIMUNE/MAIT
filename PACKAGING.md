@@ -4,6 +4,8 @@ This first packaging step exposes the existing MAIT script through a small libra
 
 This is an alpha prototype, not a complete migration of MAIT into a modular library. The distribution name `mait-toolbox` is provisional; it has not been reserved or published.
 
+See [release instructions](RELEASE.md) for the new `mait demo` command and analysis extra.
+
 ## Install from this checkout
 
 ```bash
