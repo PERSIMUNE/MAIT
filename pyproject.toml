@@ -3,14 +3,38 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mait-toolbox"
-version = "0.1.0a1"
+name = "mait-pipeline"
+version = "0.1.0a2"
 description = "Medical Artificial Intelligence Toolbox: experimental packaging of the existing MAIT pipeline"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
 readme = "PACKAGING.md"
-authors = [{name = "MAIT contributors"}]
+authors = [{name = "Ramtin Zargari Marandi"}]
+maintainers = [{name = "MAIT contributors"}]
 dependencies = []
+
+[project.optional-dependencies]
+analysis = [
+    "numpy>=1.26,<2",
+    "pandas>=2.2,<3",
+    "scikit-learn>=1.6,<1.7",
+    "scipy>=1.13,<1.18",
+    "shap>=0.47,<0.48",
+    "scikit-survival>=0.24,<0.25",
+    "matplotlib",
+    "seaborn",
+    "joblib",
+    "catboost",
+    "feyn",
+    "mrmr-selection",
+    "survshap",
+    "openpyxl",
+    "sympy",
+    "imbalanced-learn",
+    "ipython",
+    "psutil",
+]
+lightgbm = ["lightgbm"]
 
 [project.urls]
 Repository = "https://github.com/PERSIMUNE/MAIT"
