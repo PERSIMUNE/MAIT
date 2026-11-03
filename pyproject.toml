@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mait-pipeline"
-version = "0.1.0a2"
+version = "0.1.0a3"
 description = "Medical Artificial Intelligence Toolbox: experimental packaging of the existing MAIT pipeline"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
@@ -41,6 +41,9 @@ Repository = "https://github.com/PERSIMUNE/MAIT"
 
 [project.scripts]
 mait = "mait.cli:main"
+
+[tool.setuptools.data-files]
+"share/mait-pipeline" = ["RESEARCH_USE.md", "THIRD_PARTY_NOTICES.md"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

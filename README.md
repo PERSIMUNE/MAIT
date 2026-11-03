@@ -8,6 +8,19 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2501.04547-B31B1B)](https://arxiv.org/abs/2501.04547)  
 # MAIT - medical artificial intelligence toolbox
 
+## License, third-party components, and intended use
+
+MAIT's own source code is distributed under the MIT License; see [LICENSE](https://github.com/PERSIMUNE/MAIT/blob/main/LICENSE) for its terms, warranty disclaimer, and limitation of liability. The existing PERSIMUNE copyright notice is retained.
+
+Third-party libraries, datasets, and other components retain their respective licenses and notices. MAIT's MIT License does not relicense those components or override their conditions. Some dependencies impose additional requirements or restrictions, including restrictions on commercial use or redistribution. See [THIRD_PARTY_NOTICES.md](https://github.com/PERSIMUNE/MAIT/blob/main/THIRD_PARTY_NOTICES.md) and the applicable component's license. This notice does not establish that every combination or use is license-compatible.
+
+MAIT is intended for research and methodological exploration. It has not been validated for clinical decision-making, diagnosis, or treatment. Example results and successful software execution do not establish clinical safety, effectiveness, or suitability for a particular purpose.
+
+Users should independently assess data quality, study design, model assumptions, validation, and applicable legal and ethical requirements before relying on results. No commitment to ongoing maintenance or support is made unless separately agreed in writing.
+
+Developer attribution identifies contributions to the software; it does not imply endorsement or approval by a current or former employer or institution.
+
+
 ## Start here
 
 MAIT is an open-source Python workflow for explainable machine learning on tabular research data, supporting binary classification, survival modelling, and regression.
@@ -289,7 +302,7 @@ flowchart TD
     SurvivalAnalysis --> AdvancedResults["Advanced Analysis Results<br/>Specialized metrics<br/>Advanced visualizations<br/>Domain-specific insights<br/>Extended reports"]
     RegressionAnalysis --> AdvancedResults
     Calibration --> AdvancedResults
-    AdvancedResults --> EndPipeline["End Pipeline<br/>Analysis complete<br/>Results exported<br/>Ready for deployment<br/>All outputs saved"]
+    AdvancedResults --> EndPipeline["End Pipeline<br/>Analysis complete<br/>Results exported<br/>Research outputs for review<br/>All outputs saved"]
     
     %% External Validation Path
     TestPerformance --> ExtValidation{External Validation?<br/>Independent dataset<br/>Real-world testing}
@@ -446,7 +459,7 @@ Zargari Marandi, R., Frahm, A. S., Lundgren, J., Murray, D. D., & Milojevic, M. 
 ```
 
 ## License
-This pipeline is free to use for research purposes. Please ensure you follow the licenses of the individual packages used within this pipeline. For more details, refer to the `LICENSE` file in the repository.
+MAIT source code is licensed under MIT, which permits commercial and non-commercial use. Its intended research use is described above; this is not an additional restriction on the MIT License. Third-party components remain subject to their own terms. See `LICENSE` and `THIRD_PARTY_NOTICES.md`.
 
 ---
 
