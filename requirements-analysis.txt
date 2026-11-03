@@ -1,0 +1,21 @@
+# CPU environment bounds used for local classification validation on macOS arm64.
+# LightGBM additionally requires a system OpenMP runtime on macOS.
+numpy>=1.26,<2
+pandas>=2.2,<3
+scikit-learn>=1.6,<1.7
+scipy>=1.13,<1.18
+shap>=0.47,<0.48
+scikit-survival>=0.24,<0.25
+matplotlib
+seaborn
+joblib
+lightgbm
+catboost
+feyn
+mrmr-selection
+survshap
+openpyxl
+sympy
+imbalanced-learn
+ipython
+psutil
