@@ -1,48 +1,39 @@
-# MAIT package prototype
+# MAIT — Medical Artificial Intelligence Toolbox
 
-This first packaging step exposes the existing MAIT script through a small library and command-line interface. It builds on the original analysis code and exports explicit CPU settings for the included classification dataset.
+MAIT provides explainable machine-learning workflows for tabular research data. This alpha package offers a CPU classification demonstration using Logistic Regression and Random Forest, with evaluation tables, a saved model, and explanation plots.
 
-This is an alpha prototype, not a complete migration of MAIT into a modular library. The distribution name `mait-pipeline` is provisional; it has not been reserved or published.
-
-See [release instructions](RELEASE.md) for the new `mait demo` command and analysis extra.
-
-## Install from this checkout
+## Install and run
 
 ```bash
-python -m pip install .
-mait --version
-mait export-demo ./my-mait-demo
+python -m pip install "mait-pipeline[analysis]"
+mait demo ./my-mait-demo
 ```
 
-Or use Python:
+These commands apply after the PyPI release is published. For the trial release, install the MAIT wheel from TestPyPI separately from analysis dependencies sourced from PyPI. For a repository checkout, use `python -m pip install ".[analysis]"`.
+
+Choose a new output directory. The demo command runs the pipeline in a separate process and saves its input data, configured script, and results there. It does not modify your notebook's working directory.
+
+To export the script without running it:
+
+```bash
+mait export-demo ./my-export
+```
+
+Or in Python:
 
 ```python
 from mait import export_demo
-script = export_demo("./my-mait-demo")
+script = export_demo("./my-export")
 ```
 
-The destination must be new. Existing files are never overwritten. Export does not require the analysis dependencies.
+## Scope and validation
 
-## Run the exported script
+The installed demo completed on Apple Silicon macOS with Python 3.11, including a fresh analysis-environment installation and installation of the uploaded TestPyPI wheel. Other platforms, model combinations, survival analysis, regression, and equivalence to historical versions remain unverified. This small demonstration does not establish clinical predictive performance.
 
-The full original MAIT analysis environment is still required. The package intentionally does not claim that the existing platform-specific requirements are portable. After that environment is available:
+The analysis extra still includes legacy dependencies that will be separated as MAIT becomes a modular library. LightGBM is excluded; its separate `lightgbm` extra also needs a native OpenMP runtime on macOS.
 
-```bash
-python my-mait-demo/mait_demo.py
-```
+The packaged template is synchronized with the repository tutorial template and checked automatically. See the [source repository](https://github.com/PERSIMUNE/MAIT) for methods, tutorials, limitations, and release instructions.
 
-Inputs and result paths are absolute, so invocation does not depend on your current directory. The script uses the original pipeline, with compatibility updates for optional LightGBM loading and scikit-learn scoring, including its process working-directory changes. It must run in a separate process rather than inside a caller's Python session.
+## Citation
 
-## What comes next
-
-1. Resolve and verify a portable analysis environment.
-2. Complete the real demo run and record its outputs and runtime.
-3. Extract reusable preprocessing, fitting, evaluation, and reporting functions; verify their results against the original pipeline.
-4. Make survival and symbolic-model dependencies optional.
-5. Connect the graphical interface to the validated library.
-
-The bundled template is synchronized with `Tutorials/mait_template.py`; an automated check keeps the copy synchronized until the pipeline has one canonical packaged implementation.
-
-## Local compatibility work
-
-`requirements-analysis.txt` provides a candidate CPU environment with bounded versions. Full validation remains in progress. LightGBM is imported only when selected; selecting it on macOS still requires OpenMP. Target conversion and scorer calls have been updated for current library behaviour. No change to model-selection criteria is intended.
+Ramtin Zargari Marandi, Anne Svane Frahm, Jens Lundgren, Daniel Dawson Murray, and Maja Milojevic. Medical artificial intelligence toolbox (MAIT): an explainable machine learning framework for binary classification, survival modelling, and regression analyses. 2025. https://doi.org/10.48550/arXiv.2501.04547
