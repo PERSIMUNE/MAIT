@@ -10,6 +10,7 @@ jobs:
           python-version: '3.11'
       - run: python -m pip install .
       - run: python -m unittest discover -s tests -v
+      - run: mait demo --help
       - run: mait export-demo ./package-demo
       - run: python -m py_compile ./package-demo/mait_demo.py
       - run: cmp Tutorials/mait_template.py src/mait/data/pipeline.py.txt
