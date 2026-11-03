@@ -57,6 +57,8 @@ The small bundled dataset demonstrates software operation. Its performance resul
 
 ## Use your own data
 
+**Check and document your dataset first:** [DAIMS—Datasheets for AI and Medical Datasets](https://github.com/PERSIMUNE/DAIMS) provides a checklist, automated data checks, and templates for dataset documentation and data dictionaries. It can help identify preparation issues before analysis with MAIT. DAIMS is optional; passing its checks does not establish that a dataset or study design is suitable for a particular analysis.
+
 The packaged command currently runs the bundled demo. For your own dataset, use the [Streamlit configuration interface](https://maitconfig.streamlit.app/) and [configuration walkthrough](QUICK_START_DEMO.md), or adapt the [tutorial notebooks](Tutorials/).
 
 The browser interface prepares a script; it does not run the analysis online. You must execute the script locally with its required analysis environment. Survival, regression, other model combinations, and historical numerical equivalence are not validated by the package demo.
