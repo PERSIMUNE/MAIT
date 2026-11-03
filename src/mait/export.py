@@ -64,5 +64,8 @@ def export_demo(directory):
         "Install the full MAIT analysis environment before running mait_demo.py.\n"
         "The package alone does not install analysis dependencies.\n"
         "This small example demonstrates software operation, not clinical validity.\n"
+        "Third-party components retain their own licenses; MAIT does not override their terms.\n"
+        "MAIT is research software, not validated for clinical decisions, diagnosis, or treatment.\n"
+        "License and notices: https://github.com/PERSIMUNE/MAIT/blob/main/RESEARCH_USE.md\n"
         "Citation: https://doi.org/10.48550/arXiv.2501.04547\n", encoding="utf-8")
     return script
