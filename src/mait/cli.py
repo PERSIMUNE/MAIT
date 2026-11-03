@@ -26,6 +26,6 @@ def main():
         result = subprocess.run([sys.executable, "-u", str(script)], env=environment)
         if result.returncode:
             print("Demo failed. Install the analysis extra in this Python environment: "
-                  'python -m pip install "mait-toolbox[analysis]"', file=sys.stderr)
+                  'python -m pip install "mait-pipeline[analysis]"', file=sys.stderr)
         raise SystemExit(result.returncode)
     print(f"Exported {script}\nAnalysis has not been run. The full MAIT analysis environment is required.")

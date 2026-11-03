@@ -3,7 +3,7 @@
 Install with the analysis dependencies and run the bundled CPU example:
 
 ```bash
-python -m pip install "mait-toolbox[analysis]"
+python -m pip install "mait-pipeline[analysis]"
 mait demo ./my-mait-demo
 ```
 
@@ -17,7 +17,7 @@ Validated scope is the bundled binary-classification example using Logistic Regr
 
 ## Publication checklist
 
-- Confirm ownership and availability of the provisional PyPI name `mait-toolbox`.
+- Confirm ownership and availability of the provisional PyPI name `mait-pipeline`.
 - Build source and wheel distributions; check metadata.
 - Upload to TestPyPI, install that wheel with analysis dependencies from PyPI, and run the demo.
 - Publish the same reviewed candidate to PyPI under the maintainer's account.
