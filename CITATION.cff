@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "Please cite the MAIT paper when using this software."
 title: "Medical artificial intelligence toolbox (MAIT)"
 type: software
-version: 0.1.0a2
+version: 0.1.0a3
 authors:
   - family-names: Zargari Marandi
     given-names: Ramtin
