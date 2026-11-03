@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "Please cite the MAIT paper when using this software."
+title: "Medical artificial intelligence toolbox (MAIT)"
+type: software
+version: 0.1.0a2
+authors:
+  - family-names: Zargari Marandi
+    given-names: Ramtin
+repository-code: "https://github.com/PERSIMUNE/MAIT"
+url: "https://doi.org/10.48550/arXiv.2501.04547"
+license: MIT
+preferred-citation:
+  type: article
+  title: "Medical artificial intelligence toolbox (MAIT): an explainable machine learning framework for binary classification, survival modelling, and regression analyses"
+  authors:
+    - family-names: Zargari Marandi
+      given-names: Ramtin
+    - family-names: Frahm
+      given-names: Anne Svane
+    - family-names: Lundgren
+      given-names: Jens
+    - family-names: Murray
+      given-names: Daniel Dawson
+    - family-names: Milojevic
+      given-names: Maja
+  year: 2025
+  doi: "10.48550/arXiv.2501.04547"
