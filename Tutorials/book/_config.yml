@@ -35,6 +35,8 @@ html:
 
 sphinx:
   config:
+    html_static_path: ["_static"]
+    html_css_files: ["mait.css"]
     html_extra_path: ['MAIT_Tutorial_BreastCancer_pub.html',
     'MAIT_Tutorial_Azithromycin_pub.html',
     'MAIT_Tutorial_Ciprofloxacin_pub.html',
