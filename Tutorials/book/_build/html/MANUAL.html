@@ -511,6 +511,94 @@
 <section id="load-data-and-libraries">
 <h2>Load Data and Libraries<a class="headerlink" href="#load-data-and-libraries" title="Link to this heading">#</a></h2>
 <p>Load the necessary libraries and set parameters for the pipeline. Define the data file location, the variables to be used, and the computational resources (e.g., GPU and CPU).</p>
+<h3>Configure a first analysis</h3>
+<p>Start with the parameters below. Values shown are examples to adapt to your dataset, rather than a complete runnable script.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Example</th>
+<th>What to supply</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dataset</td>
+<td><code>mydata = pd.read_csv(&quot;study.csv&quot;)</code></td>
+<td>One row per observation, with predictors and outcome in columns.</td>
+</tr>
+<tr>
+<td>Binary outcome</td>
+<td><code>outcome_var = &quot;event&quot;</code></td>
+<td>The outcome column, encoded as 0 and 1.</td>
+</tr>
+<tr>
+<td>Display labels</td>
+<td><code>class_labels_display = [&quot;No event&quot;, &quot;Event&quot;]</code></td>
+<td>Names corresponding to class 0 and class 1, in that order.</td>
+</tr>
+<tr>
+<td>Categorical predictors</td>
+<td><code>cat_features = [&quot;smoking_status&quot;]</code></td>
+<td>Predictor columns to treat as categories; use <code>[]</code> if none.</td>
+</tr>
+<tr>
+<td>Models</td>
+<td><code>models_to_include = [&quot;LogisticRegression_mdl&quot;, &quot;RandomForest_mdl&quot;]</code></td>
+<td>Model identifiers from the template.</td>
+</tr>
+<tr>
+<td>Output folder</td>
+<td><code>main_folder_name = &quot;study_results&quot;</code></td>
+<td>The folder in which MAIT saves results.</td>
+</tr>
+</tbody>
+</table>
+<p>Next, choose a <a href="#data-split">data-splitting route</a>, then review feature selection and computing resources. Parameter values can differ between the full template, tutorials, and packaged demo; check the configuration of the script you run.</p>
+<h3>Optional analyses at a glance</h3>
+<table>
+<thead>
+<tr>
+<th>Analysis</th>
+<th>Enable with</th>
+<th>Required inputs</th>
+<th>Main outputs and interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Feature selection</td>
+<td><code>feat_sel = True</code></td>
+<td>Development predictors, binary outcome, and <code>num_features_sel</code></td>
+<td>Features retained in every selection fold; inspect the final feature count.</td>
+</tr>
+<tr>
+<td>Decision curve analysis</td>
+<td><code>do_decision_curve_analysis = True</code></td>
+<td>Selected classifier and test outcomes</td>
+<td>Net-benefit curves over decision thresholds, compared with the configured alternatives.</td>
+</tr>
+<tr>
+<td>Conformal predictions</td>
+<td><code>calibration_and_conformal_predictions = True</code></td>
+<td>Classifier probabilities and test outcomes</td>
+<td><code>prediction_sets.txt</code> and single-label prediction rate; see the uncertainty section for output definitions.</td>
+</tr>
+<tr>
+<td>Survival models</td>
+<td><code>survival_analysis = True</code></td>
+<td>Event indicator, <code>time_to_event_column</code>, and aligned survival-data backup</td>
+<td>RSF and Cox model results, concordance, integrated Brier score, and time-dependent explanations.</td>
+</tr>
+<tr>
+<td>Regression models</td>
+<td><code>regression_analysis = True</code></td>
+<td>Numeric <code>regression_outcome</code> and aligned predictor data</td>
+<td>Regression predictions, MSE, MAE, R², and SHAP explanations.</td>
+</tr>
+</tbody>
+</table>
+<p>The prediction-stage optional blocks run only when the pipeline reaches that stage. In cross-validation-only mode, the stopping condition skips those held-out evaluation blocks.</p>
 <section id="user-defined-parameters">
 <h3>User-Defined Parameters:<a class="headerlink" href="#user-defined-parameters" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
@@ -525,7 +613,6 @@
 <li><p>Choose the models to include in the analysis: <code class="docutils literal notranslate"><span class="pre">models_to_include</span> <span class="pre">=</span> <span class="pre">[...]</span></code>.</p></li>
 <li><p>Specify the number of features to select using feature selection: <code class="docutils literal notranslate"><span class="pre">num_features_sel</span> <span class="pre">=</span> <span class="pre">30</span></code>.</p></li>
 <li><p>Define categorical features, if any: <code class="docutils literal notranslate"><span class="pre">cat_features</span> <span class="pre">=</span> <span class="pre">[...]</span></code>.</p></li>
-<li><p>Set options for model design: <code class="docutils literal notranslate"><span class="pre">extra_option1</span> <span class="pre">=</span> <span class="pre">[...]</span></code>.</p></li>
 </ul>
 </li>
 <li><p><strong>Survival Analysis (Optional):</strong></p>
@@ -675,8 +762,66 @@ Missing data can significantly impact model performance and introduce bias, maki
 </section>
 <section id="data-split">
 <h2>Data Split<a class="headerlink" href="#data-split" title="Link to this heading">#</a></h2>
-<p>Split the data into training and test sets with stratification based on the target variable to ensure balanced distribution of target classes in both training and test sets.</p>
-<p>This part of the pipeline handles data splitting and statistical checks for training and test datasets. It configures whether to apply a stratified data split by the outcome variable (e.g., 80% training and 20% test data), with options to split by patient ID or use multiple stratification variables if specified. If the data is already split, it reads the pre-split datasets from CSV files; otherwise, the entire dataset is used for cross-validation. The code includes functions to check for statistical differences between the training and test sets: it uses the Mann-Whitney U test for numerical variables and the Chi-square test for categorical variables, generating results with test statistics and p-values. The statistical checks ensure the training and test sets are similar, aiding in the development of robust machine learning models.</p>
+<p>Split data according to the question you want to answer. MAIT uses these datasets:</p>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Purpose</th>
+<th>In the pipeline</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Development set</td>
+<td>Cross-validation, model selection, and final model fitting</td>
+<td><code>mydata</code></td>
+</tr>
+<tr>
+<td>Held-out test set</td>
+<td>Evaluate the fitted model on samples set aside from development</td>
+<td><code>testset</code></td>
+</tr>
+<tr>
+<td>External validation set</td>
+<td>Evaluate on a separately supplied dataset, such as another cohort or centre</td>
+<td><code>extval_data</code>, with <code>external_val = True</code></td>
+</tr>
+</tbody>
+</table>
+<p>Choose the split configuration before running the analysis:</p>
+<table>
+<thead>
+<tr>
+<th>Configuration</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data_split = True</code>, <code>already_split = False</code></td>
+<td>Create a random split, stratified by the binary outcome. <code>train_size_perc = 0.8</code> assigns 80% to development and 20% to testing.</td>
+</tr>
+<tr>
+<td><code>data_split = True</code>, <code>already_split = True</code></td>
+<td>Use the development and test subsets you supplied. The template initially reads <code>Train</code> and <code>Test</code> values from a <code>subset</code> column; adapt this block to your dataset and exclude the split indicator from predictors. The later split block checks column names and types.</td>
+</tr>
+<tr>
+<td><code>data_split = False</code></td>
+<td>Use the full development dataset for cross-validation. An overlapping placeholder <code>testset</code> is created for internal bookkeeping; it is not a held-out evaluation set.</td>
+</tr>
+<tr>
+<td><code>data_split_by_patients = True</code></td>
+<td>Split unique patient IDs so repeated samples from one patient stay in the same subset. Set <code>patient_id_col</code> to the ID column. This branch uses a random patient-level split.</td>
+</tr>
+<tr>
+<td><code>data_split_multi_strats = True</code></td>
+<td>Stratify by the combination of the outcome and <code>strat_var1</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>With <code>data_split = True</code>, patient-level splitting takes precedence over multiple-variable stratification, which takes precedence over <code>already_split</code>. Enable the route that matches your study design.</p>
+<p>The pipeline also compares numerical variables using the Mann–Whitney U test and categorical variables using the chi-square test. These summaries describe observed differences; a large p-value does not establish equivalence between datasets. A random subset from the same dataset is a held-out test set, rather than external validation.</p>
 </section>
 <section id="feature-selection-and-association-analysis">
 <h2>Feature Selection and Association Analysis<a class="headerlink" href="#feature-selection-and-association-analysis" title="Link to this heading">#</a></h2>
@@ -694,7 +839,7 @@ Missing data can significantly impact model performance and introduce bias, maki
 </li>
 <li><p><strong>Cross-Validation Setup</strong>:</p>
 <ul class="simple">
-<li><p><strong>Stratified K-Fold Cross-Validation</strong>: The data is split into <code class="docutils literal notranslate"><span class="pre">cv_folds</span></code> folds using <code class="docutils literal notranslate"><span class="pre">StratifiedKFold</span></code>, ensuring that each fold has a representative distribution of the outcome variable. This helps in avoiding data leakage and ensures that feature selection is robust across different subsets of data. By default k=5.</p></li>
+<li><p><strong>Stratified K-Fold Cross-Validation</strong>: The data is split into <code class="docutils literal notranslate"><span class="pre">cv_folds</span></code> folds using <code class="docutils literal notranslate"><span class="pre">StratifiedKFold</span></code>, ensuring that each fold has a representative distribution of the outcome variable. By default, five folds are used to examine which features recur across subsets of the development data.</p></li>
 </ul>
 </li>
 <li><p><strong>Data Scaling</strong> (Optional):</p>
@@ -719,7 +864,7 @@ Missing data can significantly impact model performance and introduce bias, maki
 </li>
 <li><p><strong>Consolidation of Selected Features</strong>:</p>
 <ul class="simple">
-<li><p><strong>Intersection Across Folds</strong>: The selected features from each fold are compared, and only the features that are consistently selected across all folds are retained. This ensures that the final set of features is robust and consistently important across different subsets of the data.</p></li>
+<li><p><strong>Intersection Across Folds</strong>: The selected features from each fold are compared, and only the features that are consistently selected across all folds are retained. The resulting intersection contains features selected in every fold; it can contain fewer than <code>num_features_sel</code> features.</p></li>
 </ul>
 </li>
 <li><p><strong>Finalization</strong>:</p>
@@ -729,7 +874,7 @@ Missing data can significantly impact model performance and introduce bias, maki
 </ul>
 </li>
 </ol>
-<p>By using this approach we can get the selected features that are both relevant to the outcome variable and stable across different data splits, making the model more likely to be generalizable and reliable.</p>
+<p>If the intersection is empty, increase <code>num_features_sel</code> and inspect the feature-selection results.</p>
 <ul class="simple">
 <li><p><strong>Association Analyses:</strong> Use Spearman, point-biserial correlation, and mutual information for data exploration. This is only used for data exploration and not for the subsequent machine learning analyses.</p></li>
 <li><p>Below is a summary for the heatmap plot generation based on Spearman correlation of features:</p></li>
@@ -762,12 +907,15 @@ Missing data can significantly impact model performance and introduce bias, maki
 </section>
 <section id="data-imputation">
 <h2>Data Imputation<a class="headerlink" href="#data-imputation" title="Link to this heading">#</a></h2>
-<p>Impute missing values using KNN for continuous features and one-hot encoding for categorical features.</p>
-<ul class="simple">
-<li><p><strong>Imputation and Encoding:</strong> Handle imputation and encoding fold-wise during cross-validation.</p></li>
-<li><p><strong>Model-Specific Handling:</strong> Note that some models (e.g., CatBoost, LightGBM) handle missingness algorithmically.</p></li>
-</ul>
-<p>Here we apply k-nearest neighbors (KNN) algorithm to impute missing values in continuous variables. This is done in fold-wise as in cross validation so that the informaiton from one fold does not leak to other folds. This means that the training data is split to a number of folds as the same as in cross validation and then the imputation is performed on the fold under test, for all folds. then they are merged back to recreate the training set with imputation. The test set and external datasets are also imputed based on the KNN algorithm.</p>
+<p>Imputation fills missing values; encoding changes how categories are represented. MAIT handles them separately.</p>
+<p><strong>Numerical features:</strong> the imputation block creates two development-data representations:</p>
+<ol>
+<li>For <code>mydata_imputed</code>, stratified folds are formed using <code>cv_folds</code>. A distance-weighted KNN imputer is fitted on each fold's training rows and used to fill the validation rows. The neighbour count is <code>int(sqrt(number of training rows in that fold))</code>. The validation portions are combined and restored to the original row order.</li>
+<li>For final model fitting, a separate distance-weighted KNN imputer with <strong>five neighbours</strong> is fitted on all development rows. It produces <code>mydata_imputed_nocv</code> and transforms the test set and any external validation set using the same fitted imputer.</li>
+</ol>
+<p>These datasets are prepared before the model-evaluation stage. The fold-wise imputation step and the later model cross-validation are separate operations.</p>
+<p><strong>Categorical features:</strong> categorical columns are retained alongside the imputed numerical columns. Earlier preparation handles missing categories, and one-hot encoding creates the numeric representation used by models that require it. CatBoost and LightGBM use their model-specific data paths.</p>
+<p><strong>Example:</strong> if a test sample is missing an age value, the fitted development-set imputer supplies it. The imputer is not fitted again on the test set. Keep categorical feature names and data types consistent across datasets.</p>
 </section>
 <section id="other-selective-operations-on-the-data">
 <h2>Other Selective Operations on the Data<a class="headerlink" href="#other-selective-operations-on-the-data" title="Link to this heading">#</a></h2>
@@ -908,8 +1056,71 @@ You can find more information about these methods and their implementations from
 <img src="https://latex.codecogs.com/svg.image?F1&space;score=2TP/(2TP&plus;FP&plus;FN)" title="F1 score=2TP/(2TP+FP+FN)" />
 </li>
 </ol>
-<p>The function returns a dictionary containing the computed measures. To rigorously evaluate binary classification models, the default criterion involves assessing the mean values of ROC-AUC, PRAUC, and MCC across cross-validation folds. ROC-AUC and PRAUC capture the model’s discrimination capability across various probability thresholds, crucial for imbalanced datasets, while MCC consolidates information from the confusion matrix to provide a balanced assessment of true positives, true negatives, false positives, and false negatives. By collectively considering these metrics, we ensure a comprehensive evaluation of the model’s predictive performance and robustness, facilitating informed model selection decisions.</p>
-<p>In summary, this function is essential for evaluating the performance of binary classification models. The calculated measures provide insights into the model’s predictive capabilities and generalization ability.</p>
+<p>The function returns a dictionary of evaluation measures.</p>
+<h3>Reading the evaluation results</h3>
+<table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Question it answers</th>
+<th>Preferred direction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sensitivity / recall</td>
+<td>Of the observed positive cases, how many were identified?</td>
+<td>Higher</td>
+</tr>
+<tr>
+<td>Specificity</td>
+<td>Of the observed negative cases, how many were identified?</td>
+<td>Higher</td>
+</tr>
+<tr>
+<td>PPV / precision</td>
+<td>Of the positive predictions, how many were correct?</td>
+<td>Higher</td>
+</tr>
+<tr>
+<td>NPV</td>
+<td>Of the negative predictions, how many were correct?</td>
+<td>Higher</td>
+</tr>
+<tr>
+<td>Balanced accuracy</td>
+<td>What is the mean of sensitivity and specificity?</td>
+<td>Higher</td>
+</tr>
+<tr>
+<td>MCC</td>
+<td>How well do predicted and observed labels agree across all four confusion-matrix cells?</td>
+<td>Higher; 1 is perfect agreement, 0 indicates no correlation</td>
+</tr>
+<tr>
+<td>ROC AUC</td>
+<td>How well are positive cases ranked above negative cases?</td>
+<td>Higher; 0.5 is chance-level ranking</td>
+</tr>
+<tr>
+<td>Precision–recall summary</td>
+<td>How does precision vary as recall increases?</td>
+<td>Higher; interpret alongside positive-class prevalence</td>
+</tr>
+<tr>
+<td>Brier score</td>
+<td>How close are predicted probabilities to observed 0/1 outcomes?</td>
+<td>Lower</td>
+</tr>
+<tr>
+<td>F1 score</td>
+<td>What is the harmonic mean of precision and recall?</td>
+<td>Higher</td>
+</tr>
+</tbody>
+</table>
+<p>Sensitivity, specificity, PPV, NPV, balanced accuracy, MCC, and F1 depend on the class-decision threshold. ROC AUC and the probability-based PR summary assess ranking over thresholds. Brier score assesses probability error. The main <code>calculate_metrics</code> function computes PRAUC by trapezoidal integration of the precision–recall curve. Some tuning and optional-analysis blocks use <code>average_precision_score</code> instead; these summaries can differ.</p>
+<p>The default model ranking uses <code>MRPAvg</code>, the average of the cross-validation means for MCC, ROC AUC, and PRAUC. Review the individual metrics as well as this combined score. Compare models on the same dataset and evaluation route; report held-out results separately from cross-validation results.</p>
 </section>
 </section>
 <section id="cross-validation">
@@ -1359,29 +1570,42 @@ as an alternative model we here use logistic regression model but you can modify
 </section>
 <section id="model-calibration-and-conformal-predictions">
 <h2>Model calibration and conformal predictions<a class="headerlink" href="#model-calibration-and-conformal-predictions" title="Link to this heading">#</a></h2>
-<p>Here we applied isotonic regression as the model calibration method. Isotonic regression is a non-parametric approach used to calibrate the predicted probabilities of a classifier. Note that the calibration should be preferrebly done based on an unseen dataset (not the dataset the model is already trained).</p>
-<p>The following steps are followed:</p>
-<ol class="arabic simple">
-<li><p>Test Set Split:
-We split the test set into a calibration set (X_calibration, y_calibration) and a new test set (X_new_test, y_new_test). The calibration set is used to compute the nonconformity scores for Conformal Prediction.</p></li>
-<li><p>Isotonic Regression:
-We calibrate the predicted probabilities using Isotonic Regression to make the predicted probabilities more reliable.</p></li>
-<li><p>Conformal Prediction:
-To understand conformal prediction you can refer to Shafer and Vovk, 2008. Below is the steps performed in the following code:</p></li>
+<p><strong>Purpose:</strong> produce a set of possible binary labels for each sample and report how often the method returns a single label.</p>
+<p><strong>Enable:</strong> <code>calibration_and_conformal_predictions = True</code>. This optional block is inside the section controlled by <code>skip_block</code>; it runs when that section has not been skipped.</p>
+<p><strong>Inputs:</strong> the selected binary classifier, held-out test features, and their observed labels.</p>
+<p>The current implementation follows these steps:</p>
+<ol>
+<li>Split the test set into equal <strong>calibration</strong> and <strong>evaluation</strong> halves, stratified by the outcome and using <code>SEED</code>.</li>
+<li>Obtain the selected classifier's predicted probability <code>p</code> for class 1. The calibration score is <code>1 - p</code> for an observed class 1 and <code>p</code> for an observed class 0.</li>
+<li>For each candidate label in the evaluation half, calculate its score. Its conformal p-value is the fraction of calibration scores greater than or equal to that score.</li>
+<li>Include each label whose p-value is at least <code>alpha = 0.05</code>. A prediction set can be <code>{0}</code>, <code>{1}</code>, <code>{0, 1}</code>, or empty.</li>
+<li>Write all prediction sets to <code>prediction_sets.txt</code>. Retain the single-label sets for the additional metric calculations.</li>
 </ol>
-<p>conformal prediction for binary classification is based on a split-conformal approach. The goal is to provide prediction sets for each test instance, ensuring 95% coverage (i.e., that the true label is included in the prediction set for approximately 95% of instances).</p>
-<p>Non-conformity Scores: These scores are calculated for the calibration set based on the predicted probabilities for the true class: ( s_i = 1 - p_i ), where ( p_i ) is the predicted probability for the true class.</p>
-<p>Threshold Calculation: The 95th percentile of the non-conformity scores from the calibration set is used to determine the threshold for prediction sets.</p>
-<p>Prediction Sets: For each test instance, the non-conformity scores for both classes (class 0 and class 1) are compared to the threshold. The class(es) whose non-conformity scores fall below the threshold are included in the prediction set.</p>
-<p>Coverage and Metrics: The coverage, or proportion of test instances where the true label is in the prediction set, is reported. Additional metrics like Brier Score, MCC, and AUC are also evaluated for confident predictions.</p>
-<p>Coverage is the proportion of test instances for which the true label is included in the prediction set. In this analysis, coverage was calculated as the fraction of confident predictions made by the model:</p>
-<p>The percentage of confident predictions was calculated as the fraction of predictions where the model was able to predict a single class with confidence.</p>
-<ol class="arabic simple" start="4">
-<li><p>Filtering Confident Predictions:
-We filter out the predictions where the p-value is less than alpha (indicating less confidence). Only single-class prediction sets are retained, which means the model is confident enough to assign a label with a clear margin.</p></li>
-<li><p>Evaluation:
-Various metrics like Brier Score, Matthews Correlation Coefficient (MCC), AUC, and PR AUC are computed for the confident predictions only. We also report the percentage of confident predictions, giving insight into how often the model is making confident predictions.</p></li>
-</ol>
+<table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Empirical coverage</td>
+<td>Number of evaluation samples whose prediction set contains the observed label, divided by all evaluation samples.</td>
+</tr>
+<tr>
+<td>Single-label prediction rate</td>
+<td>Number of evaluation samples with exactly one label in the prediction set, divided by all evaluation samples.</td>
+</tr>
+<tr>
+<td>Accuracy on single-label predictions</td>
+<td>Correct single-label predictions divided by the number of single-label predictions.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reading the current output:</strong> the printed <code>Percentage of confident predictions (coverage)</code> is the <strong>single-label prediction rate</strong>, not empirical coverage. For example, returning one label for 80 of 100 samples gives an 80% single-label rate; coverage also depends on whether the sets contain the observed labels.</p>
+<p>The current block uses the classifier's probabilities directly; it does <strong>not</strong> fit an isotonic calibrator. Output labels containing <code>Calibrated for confident predictions</code> refer to calculations using the retained hard class labels. Those results use a different sample subset and prediction representation from the all-sample probability metrics.</p>
+<p><code>alpha = 0.05</code> is the chosen conformal threshold; it is not a measured 95% coverage result. The current p-value calculation uses a simple empirical fraction. Standard finite-sample split-conformal constructions use a finite-sample adjustment and require exchangeability. See <a href="https://arxiv.org/abs/2107.07511">Angelopoulos and Bates' introduction</a> for the method and its assumptions.</p>
 </section>
 <section id="survival-models">
 <h2>Survival Models<a class="headerlink" href="#survival-models" title="Link to this heading">#</a></h2>

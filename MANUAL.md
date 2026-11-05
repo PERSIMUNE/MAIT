@@ -39,6 +39,7 @@ Users should independently assess data quality, study design, model assumptions,
 23. [Report the Python environment](#report-the-python-environment)
 24. [Save the executed pipeline](#save-the-executed-pipeline)
 
+
 ## Introduction
 This manual provides a detailed description of the methods and workflow of MAIT. This pipeline is designed to facilitate the end-to-end process of developing, evaluating, and deploying machine learning models for tabular data, focusing on binary classification but also supporting survival and regression models. The pipeline is implemented in Python using Jupyter Notebooks. This manual offers detailed instructions on using MAIT. For a more intuitive understanding of the pipeline, we recommend exploring the tutorials available on our GitHub page. Additionally, MAIT is discussed in a research paper for further insight.
 
@@ -187,6 +188,34 @@ The pipeline consists of scripts and functions to first prepare the datasets for
 
 ## Load Data and Libraries
 Load the necessary libraries and set parameters for the pipeline. Define the data file location, the variables to be used, and the computational resources (e.g., GPU and CPU).
+
+### Configure a first analysis
+
+Start with the parameters below. Values shown are examples to adapt to your dataset, rather than a complete runnable script.
+
+| Setting | Example | What to supply |
+| --- | --- | --- |
+| Dataset | `mydata = pd.read_csv("study.csv")` | One row per observation, with predictors and outcome in columns. |
+| Binary outcome | `outcome_var = "event"` | The outcome column, encoded as 0 and 1. |
+| Display labels | `class_labels_display = ["No event", "Event"]` | Names corresponding to class 0 and class 1, in that order. |
+| Categorical predictors | `cat_features = ["smoking_status"]` | Predictor columns to treat as categories; use `[]` if none. |
+| Models | `models_to_include = ["LogisticRegression_mdl", "RandomForest_mdl"]` | Model identifiers from the template. |
+| Output folder | `main_folder_name = "study_results"` | The folder in which MAIT saves results. |
+
+Next, choose a [data-splitting route](#data-split), then review feature selection and computing resources. Parameter values can differ between the full template, tutorials, and packaged demo; check the configuration of the script you run.
+
+### Optional analyses at a glance
+
+| Analysis | Enable with | Required inputs | Main outputs and interpretation |
+| --- | --- | --- | --- |
+| Feature selection | `feat_sel = True` | Development predictors, binary outcome, and `num_features_sel` | Features retained in every selection fold; inspect the final feature count. |
+| Decision curve analysis | `do_decision_curve_analysis = True` | Selected classifier and test outcomes | Net-benefit curves over decision thresholds, compared with the configured alternatives. |
+| Conformal predictions | `calibration_and_conformal_predictions = True` | Classifier probabilities and test outcomes | `prediction_sets.txt` and single-label prediction rate; see the uncertainty section for output definitions. |
+| Survival models | `survival_analysis = True` | Event indicator, `time_to_event_column`, and aligned survival-data backup | RSF and Cox model results, concordance, integrated Brier score, and time-dependent explanations. |
+| Regression models | `regression_analysis = True` | Numeric `regression_outcome` and aligned predictor data | Regression predictions, MSE, MAE, R², and SHAP explanations. |
+
+The prediction-stage optional blocks run only when the pipeline reaches that stage. In cross-validation-only mode, the stopping condition skips those held-out evaluation blocks.
+
 ### User-Defined Parameters:
 1. **Data Loading and Processing:**
    - Specify the dataset to be loaded: `mydata = pd.read_csv("combined_data_Azithromycin.csv")`.
@@ -196,7 +225,6 @@ Load the necessary libraries and set parameters for the pipeline. Define the dat
    - Choose the models to include in the analysis: `models_to_include = [...]`.
    - Specify the number of features to select using feature selection: `num_features_sel = 30`.
    - Define categorical features, if any: `cat_features = [...]`.
-   - Set options for model design: `extra_option1 = [...]`.
 
 3. **Survival Analysis (Optional):**
    - Specify parameters if conducting survival analysis: `survival_analysis = True`.
@@ -311,9 +339,27 @@ By following this approach, all datasets are harmonized with respect to both col
 These steps ensure data consistency, handle missing values, and prepare the dataset for further analysis. See also run_pipeline.ipynb if you need to test many different parametrizations and data configurations efficiently.
 
 ## Data Split
-Split the data into training and test sets with stratification based on the target variable to ensure balanced distribution of target classes in both training and test sets.
+Split data according to the question you want to answer. MAIT uses these datasets:
 
-This part of the pipeline handles data splitting and statistical checks for training and test datasets. It configures whether to apply a stratified data split by the outcome variable (e.g., 80% training and 20% test data), with options to split by patient ID or use multiple stratification variables if specified. If the data is already split, it reads the pre-split datasets from CSV files; otherwise, the entire dataset is used for cross-validation. The code includes functions to check for statistical differences between the training and test sets: it uses the Mann-Whitney U test for numerical variables and the Chi-square test for categorical variables, generating results with test statistics and p-values. The statistical checks ensure the training and test sets are similar, aiding in the development of robust machine learning models.
+| Dataset | Purpose | In the pipeline |
+| --- | --- | --- |
+| Development set | Cross-validation, model selection, and final model fitting | `mydata` |
+| Held-out test set | Evaluate the fitted model on samples set aside from development | `testset` |
+| External validation set | Evaluate on a separately supplied dataset, such as another cohort or centre | `extval_data`, with `external_val = True` |
+
+Choose the split configuration before running the analysis:
+
+| Configuration | Behaviour |
+| --- | --- |
+| `data_split = True`, `already_split = False` | Create a random split, stratified by the binary outcome. `train_size_perc = 0.8` assigns 80% to development and 20% to testing. |
+| `data_split = True`, `already_split = True` | Use the development and test subsets you supplied. The template initially reads `Train` and `Test` values from a `subset` column; adapt this block to your dataset and exclude the split indicator from predictors. The later split block checks column names and types. |
+| `data_split = False` | Use the full development dataset for cross-validation. An overlapping placeholder `testset` is created for internal bookkeeping; it is not a held-out evaluation set. |
+| `data_split_by_patients = True` | Split unique patient IDs so repeated samples from one patient stay in the same subset. Set `patient_id_col` to the ID column. This branch uses a random patient-level split. |
+| `data_split_multi_strats = True` | Stratify by the combination of the outcome and `strat_var1`. |
+
+With `data_split = True`, patient-level splitting takes precedence over multiple-variable stratification, which takes precedence over `already_split`. Enable the route that matches your study design.
+
+The pipeline also compares numerical variables using the Mann–Whitney U test and categorical variables using the chi-square test. These summaries describe observed differences; a large p-value does not establish equivalence between datasets. A random subset from the same dataset is a held-out test set, rather than external validation.
 
 ## Feature Selection and Association Analysis
 Select features using Minimum Redundancy Maximum Relevance (mRMR) and conduct association analyses. mRMR is one of the most popular algorithms for feature selection. For more information on its implementation see https://github.com/smazzanti/mrmr.
@@ -327,7 +373,7 @@ MAIT includes a block of code to perform feature selection using a combination o
    - **Column Identification**: Numerical columns and categorical columns are identified for separate processing.
 
 2. **Cross-Validation Setup**:
-   - **Stratified K-Fold Cross-Validation**: The data is split into `cv_folds` folds using `StratifiedKFold`, ensuring that each fold has a representative distribution of the outcome variable. This helps in avoiding data leakage and ensures that feature selection is robust across different subsets of data. By default k=5.
+   - **Stratified K-Fold Cross-Validation**: The data is split into `cv_folds` folds using `StratifiedKFold`, ensuring that each fold has a representative distribution of the outcome variable. By default, five folds are used to examine which features recur across subsets of the development data.
 
 3. **Data Scaling** (Optional):
    - **Robust Scaling**: If `scale_data` is set to `True`, numerical features are scaled using `RobustScaler`, which is less sensitive to outliers compared to other scalers.
@@ -342,13 +388,13 @@ MAIT includes a block of code to perform feature selection using a combination o
    - **Minimum Redundancy Maximum Relevance (mRMR)**: The `mrmr_classif` function is used to select the top `num_features_sel` features based on their relevance to the outcome variable and redundancy among features. This step identifies the most informative features while minimizing redundancy.
 
 7. **Consolidation of Selected Features**:
-   - **Intersection Across Folds**: The selected features from each fold are compared, and only the features that are consistently selected across all folds are retained. This ensures that the final set of features is robust and consistently important across different subsets of the data.
+   - **Intersection Across Folds**: The selected features from each fold are compared, and only the features that are consistently selected across all folds are retained. The resulting intersection contains features selected in every fold; it can contain fewer than `num_features_sel` features.
 
 8. **Finalization**:
    - **Print Results**: The final list of selected features is printed for review.
    - **Dataset Adjustment**: The original dataset (`mydata`) and optionally the external validation dataset (`extval_data`) are updated to include only the selected features along with the outcome variable.
 
-By using this approach we can get the selected features that are both relevant to the outcome variable and stable across different data splits, making the model more likely to be generalizable and reliable.
+If the intersection is empty, increase `num_features_sel` and inspect the feature-selection results.
 
 - **Association Analyses:** Use Spearman, point-biserial correlation, and mutual information for data exploration. This is only used for data exploration and not for the subsequent machine learning analyses.
 
@@ -379,12 +425,18 @@ Visualize the results of the association analyses and the distribution of values
 - **Training and Test Sets:** Overview of the types of variables.
 
 ## Data Imputation
-Impute missing values using KNN for continuous features and one-hot encoding for categorical features.
+Imputation fills missing values; encoding changes how categories are represented. MAIT handles them separately.
 
-- **Imputation and Encoding:** Handle imputation and encoding fold-wise during cross-validation.
-- **Model-Specific Handling:** Note that some models (e.g., CatBoost, LightGBM) handle missingness algorithmically.
+**Numerical features:** the imputation block creates two development-data representations:
 
-Here we apply k-nearest neighbors (KNN) algorithm to impute missing values in continuous variables. This is done in fold-wise as in cross validation so that the informaiton from one fold does not leak to other folds. This means that the training data is split to a number of folds as the same as in cross validation and then the imputation is performed on the fold under test, for all folds. then they are merged back to recreate the training set with imputation. The test set and external datasets are also imputed based on the KNN algorithm.
+1. For `mydata_imputed`, stratified folds are formed using `cv_folds`. A distance-weighted KNN imputer is fitted on each fold's training rows and used to fill the validation rows. The neighbour count is `int(sqrt(number of training rows in that fold))`. The validation portions are combined and restored to the original row order.
+2. For final model fitting, a separate distance-weighted KNN imputer with **five neighbours** is fitted on all development rows. It produces `mydata_imputed_nocv` and transforms the test set and any external validation set using the same fitted imputer.
+
+These datasets are prepared before the model-evaluation stage. The fold-wise imputation step and the later model cross-validation are separate operations.
+
+**Categorical features:** categorical columns are retained alongside the imputed numerical columns. Earlier preparation handles missing categories, and one-hot encoding creates the numeric representation used by models that require it. CatBoost and LightGBM use their model-specific data paths.
+
+**Example:** if a test sample is missing an age value, the fitted development-set imputer supplies it. The imputer is not fitted again on the test set. Keep categorical feature names and data types consistent across datasets.
 
 ## Other Selective Operations on the Data
 Scale the data using robust scaling and handle class imbalance using oversampling techniques.
@@ -485,9 +537,26 @@ def calculate_metrics(y_true, y_pred, y_pred_proba):
 
     <img src="https://latex.codecogs.com/svg.image?F1&space;score=2TP/(2TP&plus;FP&plus;FN)" title="F1 score=2TP/(2TP+FP+FN)" />
 
-The function returns a dictionary containing the computed measures. To rigorously evaluate binary classification models, the default criterion involves assessing the mean values of ROC-AUC, PRAUC, and MCC across cross-validation folds. ROC-AUC and PRAUC capture the model's discrimination capability across various probability thresholds, crucial for imbalanced datasets, while MCC consolidates information from the confusion matrix to provide a balanced assessment of true positives, true negatives, false positives, and false negatives. By collectively considering these metrics, we ensure a comprehensive evaluation of the model's predictive performance and robustness, facilitating informed model selection decisions. 
+The function returns a dictionary of evaluation measures.
 
-In summary, this function is essential for evaluating the performance of binary classification models. The calculated measures provide insights into the model's predictive capabilities and generalization ability.
+### Reading the evaluation results
+
+| Measure | Question it answers | Preferred direction |
+| --- | --- | --- |
+| Sensitivity / recall | Of the observed positive cases, how many were identified? | Higher |
+| Specificity | Of the observed negative cases, how many were identified? | Higher |
+| PPV / precision | Of the positive predictions, how many were correct? | Higher |
+| NPV | Of the negative predictions, how many were correct? | Higher |
+| Balanced accuracy | What is the mean of sensitivity and specificity? | Higher |
+| MCC | How well do predicted and observed labels agree across all four confusion-matrix cells? | Higher; 1 is perfect agreement, 0 indicates no correlation |
+| ROC AUC | How well are positive cases ranked above negative cases? | Higher; 0.5 is chance-level ranking |
+| Precision–recall summary | How does precision vary as recall increases? | Higher; interpret alongside positive-class prevalence |
+| Brier score | How close are predicted probabilities to observed 0/1 outcomes? | Lower |
+| F1 score | What is the harmonic mean of precision and recall? | Higher |
+
+Sensitivity, specificity, PPV, NPV, balanced accuracy, MCC, and F1 depend on the class-decision threshold. ROC AUC and the probability-based PR summary assess ranking over thresholds. Brier score assesses probability error. The main `calculate_metrics` function computes PRAUC by trapezoidal integration of the precision–recall curve. Some tuning and optional-analysis blocks use `average_precision_score` instead; these summaries can differ.
+
+The default model ranking uses `MRPAvg`, the average of the cross-validation means for MCC, ROC AUC, and PRAUC. Review the individual metrics as well as this combined score. Compare models on the same dataset and evaluation route; report held-out results separately from cross-validation results.
 
 ## Cross validation
 Perform cross-validation, report model performance, and visualize results. Also, conduct hyperparameter tuning and feature importance analysis.
@@ -856,38 +925,31 @@ In cost-sensitive model evaluation, we incorporate weights into performance metr
 Cost-sensitive Decision Curve Analysis (CDCA) is used to evaluate the cost-sensitive net benefit of different models across various probability thresholds. The function `calculate_cost_sensitive_net_benefit` computes the net benefit for given weights and thresholds. The `decision_curve_analysis` function generates a plot comparing the net benefits of the selected model, an alternative model, random predictions, and extreme cases (all positive or all negative). It should be noted that the net benefit by itself does not provide an overall assessment as it only relies on true positives and false positives.
 
 ## Model calibration and conformal predictions
-Here we applied isotonic regression as the model calibration method. Isotonic regression is a non-parametric approach used to calibrate the predicted probabilities of a classifier. Note that the calibration should be preferrebly done based on an unseen dataset (not the dataset the model is already trained).
+**Purpose:** produce a set of possible binary labels for each sample and report how often the method returns a single label.
 
-The following steps are followed:
+**Enable:** `calibration_and_conformal_predictions = True`. This optional block is inside the section controlled by `skip_block`; it runs when that section has not been skipped.
 
-1) Test Set Split:
-We split the test set into a calibration set (X_calibration, y_calibration) and a new test set (X_new_test, y_new_test). The calibration set is used to compute the nonconformity scores for Conformal Prediction.
+**Inputs:** the selected binary classifier, held-out test features, and their observed labels.
 
-2) Isotonic Regression:
-We calibrate the predicted probabilities using Isotonic Regression to make the predicted probabilities more reliable.
+The current implementation follows these steps:
 
-3) Conformal Prediction:
-To understand conformal prediction you can refer to Shafer and Vovk, 2008. Below is the steps performed in the following code:
+1. Split the test set into equal **calibration** and **evaluation** halves, stratified by the outcome and using `SEED`.
+2. Obtain the selected classifier's predicted probability `p` for class 1. The calibration score is `1 - p` for an observed class 1 and `p` for an observed class 0.
+3. For each candidate label in the evaluation half, calculate its score. Its conformal p-value is the fraction of calibration scores greater than or equal to that score.
+4. Include each label whose p-value is at least `alpha = 0.05`. A prediction set can be `{0}`, `{1}`, `{0, 1}`, or empty.
+5. Write all prediction sets to `prediction_sets.txt`. Retain the single-label sets for the additional metric calculations.
 
-conformal prediction for binary classification is based on a split-conformal approach. The goal is to provide prediction sets for each test instance, ensuring 95% coverage (i.e., that the true label is included in the prediction set for approximately 95% of instances).
+| Quantity | Meaning |
+| --- | --- |
+| Empirical coverage | Number of evaluation samples whose prediction set contains the observed label, divided by all evaluation samples. |
+| Single-label prediction rate | Number of evaluation samples with exactly one label in the prediction set, divided by all evaluation samples. |
+| Accuracy on single-label predictions | Correct single-label predictions divided by the number of single-label predictions. |
 
-Non-conformity Scores: These scores are calculated for the calibration set based on the predicted probabilities for the true class: ( s_i = 1 - p_i ), where ( p_i ) is the predicted probability for the true class.
+**Reading the current output:** the printed `Percentage of confident predictions (coverage)` is the **single-label prediction rate**, not empirical coverage. For example, returning one label for 80 of 100 samples gives an 80% single-label rate; coverage also depends on whether the sets contain the observed labels.
 
-Threshold Calculation: The 95th percentile of the non-conformity scores from the calibration set is used to determine the threshold for prediction sets.
+The current block uses the classifier's probabilities directly; it does **not** fit an isotonic calibrator. Output labels containing `Calibrated for confident predictions` refer to calculations using the retained hard class labels. Those results use a different sample subset and prediction representation from the all-sample probability metrics.
 
-Prediction Sets: For each test instance, the non-conformity scores for both classes (class 0 and class 1) are compared to the threshold. The class(es) whose non-conformity scores fall below the threshold are included in the prediction set.
-
-Coverage and Metrics: The coverage, or proportion of test instances where the true label is in the prediction set, is reported. Additional metrics like Brier Score, MCC, and AUC are also evaluated for confident predictions.
-
-Coverage is the proportion of test instances for which the true label is included in the prediction set. In this analysis, coverage was calculated as the fraction of confident predictions made by the model:
-
-The percentage of confident predictions was calculated as the fraction of predictions where the model was able to predict a single class with confidence.
-
-4) Filtering Confident Predictions:
-We filter out the predictions where the p-value is less than alpha (indicating less confidence). Only single-class prediction sets are retained, which means the model is confident enough to assign a label with a clear margin.
-
-5) Evaluation:
-Various metrics like Brier Score, Matthews Correlation Coefficient (MCC), AUC, and PR AUC are computed for the confident predictions only. We also report the percentage of confident predictions, giving insight into how often the model is making confident predictions.
+`alpha = 0.05` is the chosen conformal threshold; it is not a measured 95% coverage result. The current p-value calculation uses a simple empirical fraction. Standard finite-sample split-conformal constructions use a finite-sample adjustment and require exchangeability. See [Angelopoulos and Bates' introduction](https://arxiv.org/abs/2107.07511) for the method and its assumptions.
 
 ## Survival Models
 This part of the pipeline is intended to be used in case the data contains a column for time-to-event information as a survival outcome variable. If so, it is possible to develop a random survival forest (RSF) model and a Cox’s proportional hazard’s model (CPH) with elastic net penalty and compare their prediction performance. For survival models we use scikit-survival package and you can read about here: https://scikit-survival.readthedocs.io/en/stable/#
