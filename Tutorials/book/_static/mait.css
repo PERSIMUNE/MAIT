@@ -123,3 +123,24 @@ html {
 
 .mait-badges { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; }
 .mait-badges img { height: 20px; width: auto; }
+
+/* Book opening: typography and navigation, scoped to the introduction. */
+.mait-opening { --mait-accent: #2f6f91; }
+.mait-cover { padding-top: 1.75rem; }
+.mait-eyebrow { color: var(--pst-color-text-muted); font-size: .76rem; font-weight: 650; letter-spacing: .17em; text-transform: uppercase; }
+.bd-article .mait-cover h1 { font-size: clamp(2.6rem, 5vw, 4.1rem); font-weight: 750; line-height: 1.08; letter-spacing: -.045em; margin: 1rem 0 1.25rem; text-wrap: initial; }
+.mait-subtitle { max-width: 38rem; font-size: 1.2rem; line-height: 1.6; color: var(--pst-color-text-muted); }
+.mait-cover-author { font-size: .95rem; font-weight: 600; margin: 1.4rem 0 1.8rem; }
+.mait-cover-art { display: block; width: 100%; height: auto; border-radius: .35rem; margin: 1.25rem 0 2.5rem; }
+.bd-article .mait-intro-summary h2 { font-size: 1.65rem; }
+.mait-start-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1rem; margin: 2rem 0 1.5rem; }
+.mait-start-card { display: flex; flex-direction: column; gap: .65rem; padding: 1.2rem; border: 1px solid var(--pst-color-border); border-radius: .4rem; color: var(--pst-color-text-base); text-decoration: none !important; font-size: .9rem; line-height: 1.6; }
+.mait-start-card:hover, .mait-start-card:focus-visible { border-color: var(--pst-color-link); background: var(--pst-color-surface); }
+.mait-card-number { color: var(--pst-color-text-muted); font-size: .65rem; font-weight: 650; letter-spacing: .1em; }
+.mait-start-card strong { font-size: 1.05rem; line-height: 1.4; }
+.mait-card-arrow { color: var(--pst-color-link); margin-top: auto; font-size: 1.4rem; }
+.mait-code-link { font-size: .88rem; }
+.mait-book-credits { border-top: 1px solid var(--pst-color-border); margin-top: 2.5rem; padding-top: .4rem; font-size: .9rem; }
+.bd-article .mait-book-credits h2 { font-size: 1.25rem; margin-top: 1.3rem; }
+@media(max-width: 900px) { .mait-start-grid { grid-template-columns: 1fr; } .mait-start-card { padding: 1rem 1.2rem; } }
+@media print { .mait-cover { break-after: page; } .mait-start-grid { display: block; } }

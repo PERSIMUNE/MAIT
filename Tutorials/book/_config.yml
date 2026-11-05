@@ -1,7 +1,7 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: How to use medical artificial intelligence toolbox (MAIT)
+title: Machine Learning with MAIT
 author: Ramtin Zargari Marandi
 logo: _static/logo-cropped.png
 
@@ -35,6 +35,7 @@ html:
 
 sphinx:
   config:
+    html_show_copyright: false
     html_static_path: ["_static"]
     html_css_files: ["mait.css"]
     html_extra_path: ['MAIT_Tutorial_BreastCancer_pub.html',
