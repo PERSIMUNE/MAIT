@@ -1,5 +1,12 @@
 # How to use medical artificial intelligence toolbox (MAIT)
 
+<p class="mait-badges">
+<a href="https://pypi.org/project/mait-pipeline/"><img alt="PyPI version" src="https://img.shields.io/pypi/v/mait-pipeline" /></a>
+<a href="https://pypistats.org/packages/mait-pipeline"><img alt="Package downloads per day" src="https://img.shields.io/pypi/dd/mait-pipeline?label=package%20downloads%2Fday" /></a>
+<a href="https://scholar.google.com/scholar?cites=8130668980657492766&amp;hl=en"><img alt="Google Scholar citations: 3" src="https://img.shields.io/badge/Google%20Scholar%20citations-3-3986bc" /></a>
+<a href="https://github.com/PERSIMUNE/MAIT/blob/main/LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg" /></a>
+</p>
+
 MAIT (medical artificial intelligence toolbox) is designed to streamline studies involving machine learning, with a particular focus on binary classification and explainable AI, while also extending its utility to precision medicine. It also allows the development of survival and regression models, alongside facilitating comparisons between machine learning and statistical models.
 
 MAIT performs model evaluation and interpretation and presents the results in formats suitable for publication, including figures and tables. Moreover, MAIT offers essential data processing functionalities such as quality checks, imputation, scaling, exploration through association plots, and data splitting.

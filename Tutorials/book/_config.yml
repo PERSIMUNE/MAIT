@@ -3,7 +3,7 @@
 
 title: How to use medical artificial intelligence toolbox (MAIT)
 author: Ramtin Zargari Marandi
-logo: logo.png
+logo: _static/mait-logo.svg
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html

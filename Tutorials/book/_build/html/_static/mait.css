@@ -120,3 +120,6 @@ html {
 @media (max-width: 767px) {
   .bd-article { font-size: 1rem; line-height: 1.65; }
 }
+
+.mait-badges { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; }
+.mait-badges img { height: 20px; width: auto; }

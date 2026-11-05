@@ -1,8 +1,12 @@
 # MAIT — Medical Artificial Intelligence Toolbox
 
+<img src="assets/mait-logo.svg" alt="MAIT — data, model, explanation" width="300" />
+
 [![PyPI](https://img.shields.io/pypi/v/mait-pipeline)](https://pypi.org/project/mait-pipeline/)
+[![Package downloads per day](https://img.shields.io/pypi/dd/mait-pipeline?label=package%20downloads%2Fday)](https://pypistats.org/packages/mait-pipeline)
+[![Google Scholar citations: 3](https://img.shields.io/badge/Google%20Scholar%20citations-3-3986bc)](https://scholar.google.com/scholar?cites=8130668980657492766&hl=en)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Paper](https://img.shields.io/badge/arXiv-2501.04547-B31B1B)](https://arxiv.org/abs/2501.04547)
+
 
 MAIT is a Python workflow for explainable machine learning on tabular research data. The original pipeline supports binary classification, survival modelling, and regression. The current alpha package provides a ready-to-run classification demo with Logistic Regression and Random Forest.
 
