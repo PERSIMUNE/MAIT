@@ -1,13 +1,14 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "mait-pipeline"
-version = "0.1.0a3"
+version = "0.1.0a4"
 description = "Medical Artificial Intelligence Toolbox: experimental packaging of the existing MAIT pipeline"
 requires-python = ">=3.10"
-license = {file = "LICENSE"}
+license = "MIT"
+license-files = ["LICENSE"]
 readme = "PACKAGING.md"
 authors = [{name = "Ramtin Zargari Marandi"}]
 maintainers = [{name = "MAIT contributors"}]

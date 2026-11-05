@@ -36,7 +36,7 @@ On Windows PowerShell, use `.venv-mait\Scripts\Activate.ps1` instead. This activ
 ### 2. Install MAIT and its analysis dependencies
 
 ```bash
-python -m pip install "mait-pipeline[analysis]==0.1.0a3"
+python -m pip install "mait-pipeline[analysis]==0.1.0a4"
 ```
 
 The analysis extra is needed to run the pipeline. Installing `mait-pipeline` alone installs the export tools.
