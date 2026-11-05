@@ -1,6 +1,6 @@
 # MAIT — Medical Artificial Intelligence Toolbox
 
-<img src="assets/MAITlogo-cropped.png" alt="MAIT logo" width="300" />
+<p align="center"><img src="assets/MAITlogo-cropped.png" alt="MAIT logo" width="180" /></p>
 
 [![PyPI](https://img.shields.io/pypi/v/mait-pipeline)](https://pypi.org/project/mait-pipeline/)
 [![Package downloads per day](https://img.shields.io/pypi/dd/mait-pipeline?label=package%20downloads%2Fday)](https://pypistats.org/packages/mait-pipeline)
@@ -122,12 +122,6 @@ MAIT is intended for research and methodological exploration. It has not been va
 
 Users should independently assess data quality, study design, model assumptions, validation, and applicable legal and ethical requirements before relying on results. No commitment to ongoing maintenance or support is made unless separately agreed in writing.
 
-<details>
-<summary>Animated MAIT logo</summary>
-
-![Animated MAIT logo](MAITlogo.gif)
-
-</details>
 
 ## Example results
 
