@@ -8,8 +8,8 @@ title: Machine Learning with MAIT
 <p class="mait-eyebrow">A practical research companion</p>
 <h1>Machine Learning<br>with MAIT</h1>
 <p class="mait-subtitle">A practical guide to classification, survival analysis, regression, and model interpretation</p>
-<p class="mait-cover-author">Ramtin Zargari Marandi</p>
-<img class="mait-cover-art" src="_static/mait-book-illustration.png" alt="Illustration of data points flowing through a branching model into predictions and feature explanations" width="1536" height="1024" fetchpriority="high" />
+<p class="mait-cover-author">Ramtin Zargari Marandi, PhD</p>
+<img class="mait-cover-art" src="_static/mait-book-illustration.png" alt="Illustration of data points flowing through a branching model into predictions and feature explanations" width="480" height="320" style="width:480px;max-width:100%;height:auto;object-fit:contain" fetchpriority="high" />
 </div>
 <div class="mait-intro-summary">
 <h2>From research data to interpretable models</h2>
@@ -30,7 +30,7 @@ title: Machine Learning with MAIT
 </p>
 <div class="mait-book-credits">
 <h2>About this project</h2>
-<p>MAIT was developed by Ramtin Zargari Marandi during his postdoctoral work at PERSIMUNE–CHIP, Rigshospitalet, Copenhagen University Hospital, with contributions from Anne Svane Frahm, Jens D. Lundgren, Maja Milojevic, and Daniel Dawson Murray.</p>
+<p>MAIT was developed by Ramtin Zargari Marandi, PhD during his postdoctoral work at PERSIMUNE–CHIP, Rigshospitalet, Copenhagen University Hospital, with contributions from Anne Svane Frahm, PhD, Jens D. Lundgren, MD, DMSc, Maja Milojevic, PhD, and Daniel Dawson Murray, PhD.</p>
 <p>If MAIT contributes to your research, please cite <a href="https://doi.org/10.48550/arXiv.2501.04547">the MAIT methods paper</a>. Full <a href="https://github.com/PERSIMUNE/MAIT/blob/main/CITATION.cff">citation details</a> are available in the repository.</p>
 </div>
 </section>

@@ -2,7 +2,7 @@
 # Learn more at https://jupyterbook.org/customize/config.html
 
 title: Machine Learning with MAIT
-author: Ramtin Zargari Marandi
+author: Ramtin Zargari Marandi, PhD
 logo: _static/logo-cropped.png
 
 # Force re-execution of notebooks on each build.
