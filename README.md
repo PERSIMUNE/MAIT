@@ -10,6 +10,8 @@
 
 MAIT is a Python workflow for explainable machine learning on tabular research data. The original pipeline supports binary classification, survival modelling, and regression. The current alpha package provides a ready-to-run classification demo with Logistic Regression and Random Forest.
 
+<p align="center"><img src="MAITlogo.gif" alt="Original animated MAIT logo" width="260" loading="lazy" /></p>
+
 **Research software:** MAIT has not been validated for clinical decision-making, diagnosis, or treatment. Dependencies retain their own licenses; some have usage restrictions. Read the [third-party notices](THIRD_PARTY_NOTICES.md) before using or redistributing the analysis environment.
 
 ## Run your first analysis

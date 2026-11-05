@@ -9,6 +9,8 @@
 
 MAIT (medical artificial intelligence toolbox) is designed to streamline studies involving machine learning, with a particular focus on binary classification and explainable AI, while also extending its utility to precision medicine. It also allows the development of survival and regression models, alongside facilitating comparisons between machine learning and statistical models.
 
+<p align="center"><img src="https://raw.githubusercontent.com/PERSIMUNE/MAIT/main/MAITlogo.gif" alt="Original animated MAIT logo" width="260" loading="lazy" /></p>
+
 MAIT performs model evaluation and interpretation and presents the results in formats suitable for publication, including figures and tables. Moreover, MAIT offers essential data processing functionalities such as quality checks, imputation, scaling, exploration through association plots, and data splitting.
 
 The data splitting feature is particularly advantageous for projects aiming to create prognostic or diagnostic tools, ensuring a portion of the dataset is reserved for external validation. Without data splitting, MAIT remains valuable for exploring associations, such as predictive feature discovery.
