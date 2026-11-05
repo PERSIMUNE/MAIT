@@ -1,0 +1,26 @@
+
+/* Match the MAIT book while retaining Streamlit's light/dark theme colors. */
+[data-testid="stAppViewContainer"], [data-testid="stSidebar"],
+[data-testid="stMarkdownContainer"], [data-testid="stWidgetLabel"],
+[data-testid="stButton"] button, [data-testid="stDownloadButton"] button,
+input, textarea, [data-baseweb="select"] {
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.block-container { max-width: 1140px; padding-top: 2.5rem; padding-bottom: 4rem; }
+.mait-app-eyebrow { font-size: .72rem; letter-spacing: .14em; font-weight: 600; opacity: .65; margin: 0 0 .65rem; }
+h1.main-header { font-family: "Open Sans", sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; line-height: 1.15; letter-spacing: -.035em; padding: 0; margin: 0 0 1rem; }
+.mait-app-intro { max-width: 48rem; font-size: 1.05rem; line-height: 1.75; opacity: .8; margin-bottom: 2rem; }
+.mait-step-label { font-size: .7rem; letter-spacing: .12em; font-weight: 600; opacity: .65; border-top: 1px solid rgba(128,128,128,.25); padding-top: 1.5rem; margin-bottom: .4rem; }
+h2.section-header { font-family: "Open Sans", sans-serif; font-size: 1.6rem; font-weight: 600; margin: 1rem 0 1.4rem; letter-spacing: -.025em; padding: 0; }
+[data-testid="stMarkdownContainer"] h3 { font-family: "Open Sans", sans-serif; font-weight: 600; font-size: 1.12rem; margin-top: .8rem; }
+.info-box, .warning-box { background: var(--secondary-background-color); color: inherit; padding: 1rem 1.25rem; border-radius: .4rem; border: 1px solid rgba(128,128,128,.25); border-left: 3px solid #397c9e; margin: 0 0 1.5rem; font-size: .9rem; line-height: 1.7; }
+.warning-box { border-left-color: #b87a24; }
+[data-testid="stSidebar"] [data-testid="stImage"] { margin: .25rem 0 1.5rem; }
+[data-testid="stSidebar"] [role="radiogroup"] { gap: .35rem; }
+[data-testid="stSidebar"] [role="radiogroup"] label { padding: .5rem .35rem; border-radius: .35rem; }
+[data-testid="stSidebar"] [role="radiogroup"] label:hover { background: rgba(128,128,128,.09); }
+[data-testid="stMetric"] { border: 1px solid rgba(128,128,128,.22); border-radius: .4rem; padding: .8rem 1rem; }
+[data-testid="stMetricValue"] { font-size: 1.45rem; }
+[data-testid="stButton"] button, [data-testid="stDownloadButton"] button { border-radius: .35rem; font-weight: 600; }
+[data-testid="stExpander"] { border-radius: .4rem; }
+@media(max-width: 640px) { .block-container { padding: 2rem 1.1rem; } .mait-app-intro { font-size: .95rem; } }

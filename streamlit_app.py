@@ -1,3 +1,4 @@
+import base64
 import streamlit as st
 import pandas as pd
 import os
@@ -11,67 +12,62 @@ from pathlib import Path
 # Set page configuration
 st.set_page_config(
     page_title="MAIT Pipeline Configuration",
-    page_icon="",
+    page_icon=str(Path(__file__).resolve().parent / "assets" / "MAITlogo-cropped.png"),
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
-st.markdown("""
-<style>
-    .main-header {
-        font-size: 2.5rem;
-        color: #1e88e5;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    .section-header {
-        font-size: 1.5rem;
-        color: #2e7d32;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-    }
-    .info-box {
-        background-color: #e3f2fd;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border-left: 4px solid #1e88e5;
-        margin: 1rem 0;
-    }
-    .warning-box {
-        background-color: #fff3e0;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border-left: 4px solid #ff9800;
-        margin: 1rem 0;
-    }
-</style>
-""", unsafe_allow_html=True)
+# Keep fonts local so the interface also works without a font service.
+APP_ROOT = Path(__file__).resolve().parent
+
+
+def load_interface_styles():
+    css = (APP_ROOT / "assets" / "streamlit.css").read_text(encoding="utf-8")
+    fonts = {400: "47ed1cfaa7ff", 600: "733eb93b167e"}
+    faces = []
+    for weight, suffix in fonts.items():
+        font = APP_ROOT / "Tutorials" / "book" / "_static" / "fonts" / f"open-sans-{suffix}.ttf"
+        encoded = base64.b64encode(font.read_bytes()).decode("ascii")
+        faces.append(
+            "@font-face { font-family: 'Open Sans'; font-style: normal; "
+            f"font-weight: {weight}; font-display: swap; "
+            f"src: url(data:font/ttf;base64,{encoded}) format('truetype'); }}"
+        )
+    return "<style>" + "\n".join(faces) + css + "</style>"
+
+
+st.markdown(load_interface_styles(), unsafe_allow_html=True)
+
 
 def main():
-    # Header
-    st.markdown('<h1 class="main-header"> MAIT Pipeline Configuration Interface</h1>', unsafe_allow_html=True)
-    
-    # Introduction
-    st.markdown("""
-    <div class="info-box">
-        <strong>Welcome to MAIT (Medical Artificial Intelligence Toolbox)!</strong><br>
-        This interface helps you configure and run MAIT pipelines for binary classification, survival modeling, and regression analysis.
-        Configure your parameters below and export a ready-to-run Python script for your pipeline.
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<p class="mait-app-eyebrow">MEDICAL ARTIFICIAL INTELLIGENCE TOOLBOX</p>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">Configure your analysis</h1>', unsafe_allow_html=True)
+    st.markdown('<p class="mait-app-intro">Turn your data and model choices into a Python analysis script. Work through the settings, then review and export your configuration.</p>', unsafe_allow_html=True)
 
-    # Sidebar for navigation
-    st.sidebar.title("Navigation")
-    page = st.sidebar.selectbox("Choose a section:", [
-        "Data Configuration",
-        "Model Selection", 
-        "Feature Engineering",
-        "Training Parameters",
-        "Output Settings",
-        "Advanced Options",
+    # All sections stay visible, with the current section clearly selected.
+    st.sidebar.image(str(APP_ROOT / "assets" / "MAITlogo-cropped.png"), width=140)
+    st.sidebar.markdown("### Analysis setup")
+    st.sidebar.caption("Choose a section to review its settings.")
+    sections = [
+        "Data Configuration", "Model Selection", "Feature Engineering",
+        "Training Parameters", "Output Settings", "Advanced Options",
         "Finalize and Export"
-    ])
+    ]
+    page = st.sidebar.radio("Configuration sections", sections, label_visibility="collapsed")
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("[Quick start](https://persimune.github.io/MAIT/QuickStart.html) · [Manual](https://persimune.github.io/MAIT/MANUAL.html) · [GitHub](https://github.com/PERSIMUNE/MAIT)")
+    st.sidebar.caption("Developed by Ramtin Zargari Marandi, PhD")
+    descriptions = {
+        "Data Configuration": "Choose your dataset, identify variables, and set the training/test split.",
+        "Model Selection": "Choose the models you want to compare and any additional analysis tasks.",
+        "Feature Engineering": "Review feature selection, categorical variables, and preprocessing.",
+        "Training Parameters": "Set tuning, cross-validation, and computing resources.",
+        "Output Settings": "Choose where results are saved and how figures and labels appear.",
+        "Advanced Options": "Review additional validation options and manage saved configurations.",
+        "Finalize and Export": "Check your settings and export a script to run in your MAIT analysis environment."
+    }
+    st.markdown(f'<div class="mait-step-label">SECTION {sections.index(page) + 1} OF {len(sections)}</div>', unsafe_allow_html=True)
+    st.caption(descriptions[page])
 
     # Initialize session state for configuration
     if 'config' not in st.session_state:
@@ -272,7 +268,7 @@ def data_configuration_page():
                 st.info(f"🗑️ Will drop {len(columns_to_drop)} column(s): {', '.join(columns_to_drop)}")
     
     # Debug info section (collapsible)
-    with st.expander("🔍 Current Configuration Status", expanded=False):
+    with st.expander("Current configuration", expanded=False):
         col_debug1, col_debug2 = st.columns(2)
         
         with col_debug1:
@@ -569,7 +565,7 @@ def output_settings_page():
     """)
 
 def advanced_options_page():
-    st.markdown('<h2 class="section-header">🔬 Advanced Options</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-header">Advanced Options</h2>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="warning-box">
@@ -627,7 +623,7 @@ def advanced_options_page():
                 st.error(f"Error loading configuration: {e}")
 
 def generate_run_page():
-    st.markdown('<h2 class="section-header"> Generate Python Script & Setup Instructions</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-header">Review and export</h2>', unsafe_allow_html=True)
     
     # Configuration summary
     st.subheader("Configuration Summary")
@@ -666,11 +662,11 @@ def generate_run_page():
     col4, col5 = st.columns(2)
     
     with col4:
-        if st.button("💾 Save Executable Python File", type="primary"):
+        if st.button("Export Python script", type="primary"):
             generate_notebook()
     
     with col5:
-        if st.button(" Get Setup Instructions", type="secondary"):
+        if st.button("View setup instructions", type="secondary"):
             run_pipeline()
     
     # Additional options
@@ -733,7 +729,7 @@ def generate_notebook():
         st.info(f"📁 Saved to: {output_filename}")
         
         # Show configuration summary
-        with st.expander("📋 Configuration Summary", expanded=False):
+        with st.expander("Configuration summary", expanded=False):
             config = st.session_state.config
             col1, col2 = st.columns(2)
             
@@ -773,7 +769,7 @@ def generate_notebook():
         )
         
         # Instructions
-        with st.expander("📖 Usage Instructions", expanded=True):
+        with st.expander("Run your exported script", expanded=True):
             st.markdown(f"""
 **How to use your exported Python script:**
 
@@ -994,7 +990,7 @@ jupyter notebook mait_pipeline_{config['main_folder_name']}.ipynb
     """)
     
     # Troubleshooting
-    with st.expander("🔧 Troubleshooting", expanded=False):
+    with st.expander("Troubleshooting", expanded=False):
         st.markdown("""
         **Common Issues:**
         

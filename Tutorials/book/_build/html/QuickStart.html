@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>QuickStart - minimal configuration guide &#8212; Machine Learning with MAIT</title>
+    <title>Quick start &#8212; Machine Learning with MAIT</title>
   
   
   
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
-  <link rel="stylesheet" href="_static/mait.css?v=20261105b" />
+  <link rel="stylesheet" href="_static/mait.css?v=20261105c" />
   </head>
   
   
@@ -170,7 +170,7 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">QuickStart - minimal configuration guide</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MANUAL.html">MAIT 1.0.0 Manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MAIT_Tutorial_BreastCancer_pub.html">MAIT 1.0.0 - Tutorial: Breast cancer prediction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="MAIT_Tutorial_Dementia_pub.html">MAIT 1.0.0 - Tutorial: Dementia prediction</a></li>
@@ -355,7 +355,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>QuickStart - minimal configuration guide</h1>
+    <h1>Quick start</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -365,14 +365,9 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#easy-configuration-with-streamlit-app">🚀 Easy Configuration with Streamlit App</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-configuration-alternative-method">Manual Configuration (Alternative Method)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-settings-mandatory-for-all-tasks">General Settings (Mandatory for All Tasks)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-classification-mandatory-parameters">Binary Classification (Mandatory Parameters)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#survival-analysis-mandatory-parameters">Survival Analysis (Mandatory Parameters)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-mandatory-parameters">Regression (Mandatory Parameters)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resource-configuration">Resource Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-notes">Additional Notes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-with-the-app">Configure with the app</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-a-tutorial-manually">Configure a tutorial manually</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continue-your-analysis">Continue your analysis</a></li>
 </ul>
             </nav>
         </div>
@@ -383,170 +378,112 @@
                 
 <div id="searchbox"></div>
                 <article class="bd-article">
-<section class="tex2jax_ignore mathjax_ignore" id="quickstart-minimal-configuration-guide">
-<h1>QuickStart - minimal configuration guide<a class="headerlink" href="#quickstart-minimal-configuration-guide" title="Link to this heading">#</a></h1>
-<p>You can copy one of the tutorial notebooks found in this documentation and customize it for your project. The customization includes setting serveral parameters depending the type of the analysis.</p>
-<section id="easy-configuration-with-streamlit-app">
-<h2>🚀 Easy Configuration with Streamlit App<a class="headerlink" href="#easy-configuration-with-streamlit-app" title="Link to this heading">#</a></h2>
-<p><strong>NEW: Use our interactive configuration interface!</strong></p>
-<p>Instead of manually setting parameters, you can use our Streamlit-based configuration interface:</p>
-<ul class="simple">
-<li><p><strong>Online version</strong>: <a href="https://maitconfig.streamlit.app/" target="_blank">https://maitconfig.streamlit.app/</a></p></li>
-<li><p><strong>Local version</strong>: Run <code class="docutils literal notranslate"><span class="pre">streamlit</span> <span class="pre">run</span> <span class="pre">streamlit_app.py</span></code> in your MAIT directory</p></li>
-</ul>
-<p>The Streamlit app provides:</p>
-<ul class="simple">
-<li><p>✅ Interactive parameter configuration with validation</p></li>
-<li><p>✅ Real-time preview of your settings</p></li>
-<li><p>✅ Export ready-to-run Python scripts</p></li>
-<li><p>✅ Built-in help and documentation</p></li>
-<li><p>✅ No manual coding required</p></li>
-</ul>
-<p>Simply configure your pipeline through the web interface and download the generated Python script!</p>
-</section>
-<hr class="docutils" />
-<section id="manual-configuration-alternative-method">
-<h2>Manual Configuration (Alternative Method)<a class="headerlink" href="#manual-configuration-alternative-method" title="Link to this heading">#</a></h2>
-<section id="general-settings-mandatory-for-all-tasks">
-<h2>General Settings (Mandatory for All Tasks)<a class="headerlink" href="#general-settings-mandatory-for-all-tasks" title="Link to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p><strong>Specify Main Directory</strong>:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">main_folder_name</span> <span class="pre">=</span> <span class="pre">'results_&lt;ProjectName&gt;'</span></code></p></li>
-</ul>
-</li>
-</ol>
-</section>
-<hr class="docutils" />
-<section id="binary-classification-mandatory-parameters">
-<h2>Binary Classification (Mandatory Parameters)<a class="headerlink" href="#binary-classification-mandatory-parameters" title="Link to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p><strong>Outcome Variable</strong>:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">outcome_var</span> <span class="pre">=</span> <span class="pre">&quot;target&quot;</span></code></p></li>
-</ul>
-</li>
-</ol>
-<p>you must also specify the names of categorical variables (features) if available in your dataset, like <code class="docutils literal notranslate"><span class="pre">cat_features</span> <span class="pre">=</span> <span class="pre">[&quot;race&quot;,</span> <span class="pre">&quot;gender&quot;]</span></code>.
-Also if you need some variables not to be included like <code class="docutils literal notranslate"><span class="pre">columns_to_drop</span> <span class="pre">=</span> <span class="pre">[&quot;irrelevant</span> <span class="pre">feature</span> <span class="pre">X&quot;,</span> <span class="pre">&quot;irrelevant</span> <span class="pre">feature</span> <span class="pre">Y&quot;]</span></code>, and also to make sure continuous variables are also defined like <code class="docutils literal notranslate"><span class="pre">continuous_features</span> <span class="pre">=</span> <span class="pre">[&quot;age&quot;,&quot;weight&quot;]</span></code>.</p>
-<ol class="arabic" start="2">
-<li><p><strong>Class Labels</strong>:</p>
-<ul class="simple">
-<li><p>Positive Class: <code class="docutils literal notranslate"><span class="pre">class_1</span> <span class="pre">=</span> <span class="pre">&quot;malignant&quot;</span></code></p></li>
-<li><p>Negative Class: <code class="docutils literal notranslate"><span class="pre">class_0</span> <span class="pre">=</span> <span class="pre">&quot;benign&quot;</span></code></p></li>
-</ul>
-<p>also replace 0 and 1 here based on your dataset <code class="docutils literal notranslate"><span class="pre">class_label_dict</span> <span class="pre">=</span> <span class="pre">{0:class_0,</span> <span class="pre">1:class_1}</span></code>, maybe in your dataset they’re like -1 and 1 instead.</p>
-</li>
-<li><p><strong>Data Split</strong>:</p>
-<ul class="simple">
-<li><p>Enable/Disable: <code class="docutils literal notranslate"><span class="pre">data_split</span> <span class="pre">=</span> <span class="pre">True</span></code></p></li>
-</ul>
-</li>
-<li><p><strong>Training Size</strong>:</p>
-<ul class="simple">
-<li><p>If <code class="docutils literal notranslate"><span class="pre">data_split</span> <span class="pre">=</span> <span class="pre">True</span></code>:</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">train_size_perc</span> <span class="pre">=</span> <span class="pre">0.8</span></code></p></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>Already Split Data</strong> (If Applicable):</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">already_split</span> <span class="pre">=</span> <span class="pre">False</span></code></p></li>
-<li><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, specify subsets:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">testset</span> <span class="o">=</span> <span class="n">mydata</span><span class="p">[</span><span class="n">mydata</span><span class="p">[</span><span class="s1">&#39;subset&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Test&#39;</span><span class="p">]</span>
-<span class="n">mydata</span> <span class="o">=</span> <span class="n">mydata</span><span class="p">[</span><span class="n">mydata</span><span class="p">[</span><span class="s1">&#39;subset&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Train&#39;</span><span class="p">]</span>
-</pre></div>
+<div class="mait-quickstart"><span id="quickstart-minimal-configuration-guide"></span>
+<h1 id="quick-start">Quick start</h1>
+<div class="mait-guide-lead">
+<p class="mait-eyebrow">YOUR FIRST ANALYSIS</p>
+<p>Prepare your data, configure an analysis, and export a Python script. Start with the interactive app or adapt a worked tutorial.</p>
+<a class="mait-primary-link" href="https://maitconfig.streamlit.app/">Open the configuration app <span aria-hidden="true">↗</span></a>
+<a class="mait-secondary-link" href="Executed_tutorials.html">Browse tutorials →</a>
 </div>
-</li>
-</ul>
-</li>
-<li><p><strong>Classification Models</strong>:</p>
-<ul class="simple">
-<li><p>Specify at least two models:</p></li>
-</ul>
-</li>
+<div class="mait-guide-route" aria-label="Analysis workflow">
+<div><span>01</span><strong>Prepare</strong><p>Choose your dataset and outcome.</p></div>
+<div><span>02</span><strong>Configure</strong><p>Select models and analysis settings.</p></div>
+<div><span>03</span><strong>Export &amp; run</strong><p>Run the script in your analysis environment.</p></div>
+</div>
+<span id="easy-configuration-with-streamlit-app"></span>
+<h2 id="configure-with-the-app">Configure with the app</h2>
+<p>The <a href="https://maitconfig.streamlit.app/">MAIT configuration app</a> guides you through data settings, model selection, feature engineering, training, and outputs. It prepares a Python script; run that script in your local MAIT analysis environment.</p>
+<ol>
+<li><strong>Set up your data.</strong> Upload a CSV to preview its columns, or enter a file path. Choose the outcome and categorical features, then exclude any columns you do not want to use.</li>
+<li><strong>Choose your settings.</strong> Work through the sections in the sidebar. Select models, review the data split, and set the training and output options.</li>
+<li><strong>Export your analysis.</strong> Open <strong>Finalize and Export</strong>, review the summary, and choose <strong>Export Python script</strong>, then <strong>Download Python Script</strong>. Save it in your MAIT directory and follow the setup instructions to run it.</li>
 </ol>
-</section>
-<hr class="docutils" />
-<section id="survival-analysis-mandatory-parameters">
-<h2>Survival Analysis (Mandatory Parameters)<a class="headerlink" href="#survival-analysis-mandatory-parameters" title="Link to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p><strong>Enable Survival Analysis</strong>:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">survival_analysis</span> <span class="pre">=</span> <span class="pre">True</span></code></p></li>
-</ul>
-</li>
-<li><p><strong>Time-to-Event Column</strong>:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">time_to_event_column</span> <span class="pre">=</span> <span class="pre">&quot;max_time_difference_days&quot;</span></code></p></li>
-</ul>
-</li>
-</ol>
-</section>
-<hr class="docutils" />
-<section id="regression-mandatory-parameters">
-<h2>Regression (Mandatory Parameters)<a class="headerlink" href="#regression-mandatory-parameters" title="Link to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p><strong>Enable Regression Analysis</strong>:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">regression_analysis</span> <span class="pre">=</span> <span class="pre">True</span></code></p></li>
-</ul>
-</li>
-<li><p><strong>Outcome Variable</strong>:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">regression_outcome</span> <span class="pre">=</span> <span class="pre">&quot;regression_outcome_var&quot;</span></code></p></li>
-</ul>
-</li>
-</ol>
-</section>
-<hr class="docutils" />
-<section id="resource-configuration">
-<h2>Resource Configuration<a class="headerlink" href="#resource-configuration" title="Link to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p><strong>CPU/GPU Settings</strong>:</p>
-<ul class="simple">
-<li><p>Enable GPU (if available): <code class="docutils literal notranslate"><span class="pre">GPU_avail</span> <span class="pre">=</span> <span class="pre">True</span></code></p></li>
-<li><p>CPUs for Training: <code class="docutils literal notranslate"><span class="pre">n_cpu_model_training</span> <span class="pre">=</span> <span class="pre">20</span></code></p></li>
-<li><p>CPUs for Hyperparameter Tuning: <code class="docutils literal notranslate"><span class="pre">n_cpu_for_tuning</span> <span class="pre">=</span> <span class="pre">20</span></code></p></li>
-</ul>
-</li>
-</ol>
-</section>
-<hr class="docutils" />
-<section id="additional-notes">
-<h2>Additional Notes<a class="headerlink" href="#additional-notes" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>Recommended</strong>: Use the <a href="https://maitconfig.streamlit.app/" target="_blank">Streamlit configuration app</a> for easier setup and automatic parameter validation</p></li>
-<li><p>Each task (classification, survival, regression) has specific mandatory parameters. Only include the settings relevant to the task you are running.</p></li>
-<li><p>Omitting any of the above parameters will result in errors or crashes during execution.</p></li>
-<li><p>For further details, refer to the full pipeline manual.</p></li>
-</ul>
-</section>
-</section>
-
-    <script type="text/x-thebe-config">
-    {
-        requestKernel: true,
-        binderOptions: {
-            repo: "binder-examples/jupyter-stacks-datascience",
-            ref: "master",
-        },
-        codeMirrorConfig: {
-            theme: "abcdef",
-            mode: "python"
-        },
-        kernelOptions: {
-            name: "python3",
-            path: "./."
-        },
-        predefinedOutput: true
-    }
-    </script>
-    <script>kernelName = 'python3'</script>
-
-                </article>
+<p>For an example, choose <strong>File Path → Use Demo Data</strong>. Set the outcome to <code>heart_disease</code>, select <code>gender</code> and <code>smoking_status</code> as categorical features, and exclude <code>patient_id</code>.</p>
+<aside class="mait-guide-note"><strong>Using your own data?</strong> The data path in the exported script must exist on the computer where you run it. An upload previews the data in the app; keep a local copy for the analysis.</aside>
+<h3 id="run-the-app-locally">Run the app locally</h3>
+<p>From a copy of the <a href="https://github.com/PERSIMUNE/MAIT">MAIT repository</a>, install the interface requirements in a Python environment, then launch it:</p>
+<pre><code class="language-bash">python -m pip install -r streamlit_requirements.txt
+python -m streamlit run streamlit_app.py
+</code></pre>
+<p>These requirements install the configuration interface. Use the <a href="https://github.com/PERSIMUNE/MAIT#how-to-use">analysis setup instructions</a> for running the exported pipeline.</p>
+<span id="manual-configuration-alternative-method"></span>
+<h2 id="configure-a-tutorial-manually">Configure a tutorial manually</h2>
+<p>Prefer to work in a notebook? Copy a <a href="Executed_tutorials.html">worked tutorial</a> and edit its configuration block. The examples below highlight settings to review; retain the tutorial’s other settings and imports.</p>
+<span id="general-settings-mandatory-for-all-tasks"></span>
+<h3 id="data-and-output">Data and output</h3>
+<p>Use column names exactly as they appear in your dataset. Separate categorical and continuous predictors, and exclude identifiers or variables that should not enter the model.</p>
+<pre><code class="language-python">main_folder_name = &quot;results_my_project&quot;
+outcome_var = &quot;target&quot;
+cat_features = [&quot;race&quot;, &quot;gender&quot;]
+continuous_features = [&quot;age&quot;, &quot;weight&quot;]
+columns_to_drop = [&quot;patient_id&quot;]
+</code></pre>
+<span id="binary-classification-mandatory-parameters"></span>
+<h3 id="binary-classification">Binary classification</h3>
+<p>Define the negative and positive class labels and map them to the values used in your outcome column. In this example, the data are encoded as <code>0</code> and <code>1</code>; adapt the keys if your encoding differs.</p>
+<pre><code class="language-python">class_0 = &quot;benign&quot;
+class_1 = &quot;malignant&quot;
+class_label_dict = {0: class_0, 1: class_1}
+</code></pre>
+<p>Select the classification models in the tutorial’s model configuration. Start with a small selection to check the workflow before expanding your comparison.</p>
+<h3 id="training-and-test-data">Training and test data</h3>
+<p>For an 80% training / 20% test split:</p>
+<pre><code class="language-python">data_split = True
+train_size_perc = 0.8
+already_split = False
+</code></pre>
+<p>For a predefined split, enable <code>already_split</code> and follow the <a href="MANUAL.html">manual’s data-splitting instructions</a>. For repeated observations, review patient-level splitting before training.</p>
+<span id="survival-analysis-mandatory-parameters"></span>
+<span id="regression-mandatory-parameters"></span>
+<h3 id="survival-analysis-and-regression">Survival analysis and regression</h3>
+<p>Use a tutorial appropriate to your task and review these additional settings:</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Settings to review</th>
+<th>What they specify</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Survival analysis</td>
+<td><code>survival_analysis = True</code></td>
+<td>Enable the survival workflow.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>time_to_event_column = &quot;max_time_difference_days&quot;</code></td>
+<td>Name of the time-to-event column; also check the tutorial’s event/outcome coding.</td>
+</tr>
+<tr>
+<td>Regression</td>
+<td><code>regression_analysis = True</code></td>
+<td>Enable the regression workflow.</td>
+</tr>
+<tr>
+<td></td>
+<td><code>regression_outcome = &quot;regression_outcome_var&quot;</code></td>
+<td>Name of the continuous outcome column.</td>
+</tr>
+</tbody>
+</table>
+<span id="resource-configuration"></span>
+<h3 id="computing-resources">Computing resources</h3>
+<p>Set CPU counts to suit your computer. Enable GPU use only when your hardware and the selected models support it.</p>
+<pre><code class="language-python">GPU_avail = False
+n_cpu_model_training = 1
+n_cpu_for_tuning = 1
+</code></pre>
+<span id="additional-notes"></span>
+<h2 id="continue-your-analysis">Continue your analysis</h2>
+<div class="mait-guide-next">
+<a href="Executed_tutorials.html"><strong>Explore worked examples →</strong><span>See the workflow and its outputs.</span></a>
+<a href="MANUAL.html"><strong>Read the methods and settings →</strong><span>Understand configuration and model evaluation.</span></a>
+</div>
+</div>
+</article>
               
 
               
@@ -591,12 +528,9 @@ Also if you need some variables not to be included like <code class="docutils li
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-settings-mandatory-for-all-tasks">General Settings (Mandatory for All Tasks)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#binary-classification-mandatory-parameters">Binary Classification (Mandatory Parameters)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#survival-analysis-mandatory-parameters">Survival Analysis (Mandatory Parameters)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-mandatory-parameters">Regression (Mandatory Parameters)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resource-configuration">Resource Configuration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-notes">Additional Notes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-with-the-app">Configure with the app</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-a-tutorial-manually">Configure a tutorial manually</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#continue-your-analysis">Continue your analysis</a></li>
 </ul>
   </nav></div>
 

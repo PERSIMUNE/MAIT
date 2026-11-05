@@ -144,3 +144,25 @@ html {
 .bd-article .mait-book-credits h2 { font-size: 1.25rem; margin-top: 1.3rem; }
 @media(max-width: 900px) { .mait-start-grid { grid-template-columns: 1fr; } .mait-start-card { padding: 1rem 1.2rem; } }
 @media print { .mait-cover { break-after: page; } .mait-start-grid { display: block; } }
+
+/* Quick start: a short route into configuration and worked examples. */
+.mait-guide-lead { padding: 1.25rem 1.5rem 1.5rem; border-left: 3px solid var(--pst-color-link); background: var(--pst-color-surface); border-radius: 0 .4rem .4rem 0; margin: 1.5rem 0; }
+.mait-guide-lead > p:not(.mait-eyebrow) { font-size: 1.12rem; line-height: 1.7; }
+.mait-primary-link { display: inline-block; background: #286587; color: white !important; border-radius: .3rem; padding: .65rem 1rem; font-size: .9rem; font-weight: 600; text-decoration: none !important; margin: .3rem .8rem .3rem 0; }
+.mait-primary-link:hover { background: #1e526f; }
+.mait-secondary-link { display: inline-block; font-size: .9rem; padding: .6rem 0; }
+.mait-guide-route { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1.25rem; margin: 2rem 0 2.5rem; }
+.mait-guide-route > div { border-top: 1px solid var(--pst-color-border); padding-top: 1rem; }
+.mait-guide-route span { display: block; font-size: .75rem; color: var(--pst-color-text-muted); margin-bottom: .45rem; }
+.mait-guide-route strong { font-size: 1.05rem; }
+.mait-guide-route p { font-size: .88rem; color: var(--pst-color-text-muted); margin-top: .4rem; }
+.mait-quickstart h2 { margin-top: 2.6rem; font-size: 1.7rem; }
+.mait-quickstart h3 { font-size: 1.2rem; margin-top: 2rem; }
+.mait-quickstart li { margin-bottom: .8rem; padding-left: .2rem; }
+.mait-guide-note { border: 1px solid var(--pst-color-border); border-radius: .4rem; padding: 1rem 1.25rem; font-size: .9rem; margin: 1.5rem 0; }
+.mait-quickstart table { display: block; overflow-x: auto; width: 100%; font-size: .9rem; margin: 1.5rem 0; border-collapse: collapse; }
+.mait-quickstart td, .mait-quickstart th { padding: .8rem; text-align: left; border-bottom: 1px solid var(--pst-color-border); }
+.mait-guide-next { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.mait-guide-next a { display: flex; flex-direction: column; gap: .5rem; padding: 1.25rem; border: 1px solid var(--pst-color-border); border-radius: .4rem; text-decoration: none; font-size: .9rem; }
+.mait-guide-next span { color: var(--pst-color-text-muted); }
+@media(max-width: 600px) { .mait-guide-route, .mait-guide-next { grid-template-columns: 1fr; } .mait-guide-lead { padding: 1rem; } }
