@@ -1,0 +1,25 @@
+/* MAIT documentation: readable typography within the existing book theme. */
+html {
+  --pst-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --pst-font-family-heading: var(--pst-font-family-base);
+  --pst-font-family-monospace: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+.bd-article {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.bd-article h1, .bd-article h2, .bd-article h3, .bd-article h4 {
+  font-weight: 650;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+.bd-article h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); letter-spacing: -0.025em; margin-bottom: 1.25rem; }
+.bd-article h2 { font-size: 1.65rem; margin-top: 2.25rem; }
+.bd-article h3 { font-size: 1.3rem; margin-top: 1.75rem; }
+.bd-article p { margin-bottom: 1.15rem; }
+.bd-article a { text-underline-offset: 0.18em; }
+.bd-article pre { font-size: 0.875rem; line-height: 1.55; border-radius: 0.4rem; }
+.bd-sidebar-primary .nav-link { line-height: 1.45; padding-top: 0.4rem; padding-bottom: 0.4rem; }
+@media (max-width: 767px) {
+  .bd-article { font-size: 1rem; line-height: 1.65; }
+}
