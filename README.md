@@ -6,6 +6,7 @@
 [![Package downloads per day](https://img.shields.io/pypi/dd/mait-pipeline?label=package%20downloads%2Fday)](https://pypistats.org/packages/mait-pipeline)
 [![Google Scholar citations: 3](https://img.shields.io/badge/Google%20Scholar%20citations-3-3986bc)](https://scholar.google.com/scholar?cites=8130668980657492766&hl=en)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Hugging Face Space](https://img.shields.io/badge/Hugging%20Face-MAIT-ffd21e)](https://huggingface.co/spaces/ramtinzm/MAIT)
 
 
 MAIT is a Python workflow for explainable machine learning on tabular research data. The original pipeline supports binary classification, survival modelling, and regression. The current alpha package provides a ready-to-run classification demo with Logistic Regression and Random Forest.
