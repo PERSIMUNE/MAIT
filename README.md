@@ -5,10 +5,13 @@
 [![PyPI](https://img.shields.io/pypi/v/mait-pipeline)](https://pypi.org/project/mait-pipeline/)
 [![Package downloads per day](https://img.shields.io/pypi/dd/mait-pipeline?label=package%20downloads%2Fday)](https://pypistats.org/packages/mait-pipeline)
 [![Hugging Face Space](https://img.shields.io/badge/Hugging%20Face-MAIT-ffd21e)](https://huggingface.co/spaces/ramtinzm/MAIT)
+[![Run on Kaggle](https://img.shields.io/badge/Kaggle-Run%20notebook-20BEFF?logo=kaggle&logoColor=white)](https://www.kaggle.com/code/remyz5/mait-explainable-ai-with-mixed-clinical-data)
 [![Google Scholar citations: 3](https://img.shields.io/badge/Google%20Scholar%20citations-3-3986bc)](https://scholar.google.com/scholar?cites=8130668980657492766&hl=en)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 MAIT is a Python workflow for explainable machine learning on tabular research data. The original pipeline supports binary classification, survival modelling, and regression. The current alpha package provides a ready-to-run classification demo with Logistic Regression and Random Forest.
+
+**Try MAIT in your browser:** the [Kaggle notebook](https://www.kaggle.com/code/remyz5/mait-explainable-ai-with-mixed-clinical-data) demonstrates mixed clinical data and MAIT’s SHAP plot for continuous and categorical features on free CPU hardware.
 
 ## Run your first analysis
 
