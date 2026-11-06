@@ -35,3 +35,7 @@ This Space introduces MAIT and links to its interactive Streamlit configuration 
 Developed by Ramtin Zargari Marandi, PhD, during his postdoctoral work at PERSIMUNE–CHIP, Rigshospitalet, Copenhagen University Hospital. Full project credits and citation information are available in the linked documentation and repository.
 
 The Space uses static HTML and does not require paid compute. Its source is maintained in the MAIT repository under `community/huggingface`. The MAIT license and the Open Sans font license are included alongside the page.
+
+## Related tools
+
+[DAIMS](https://huggingface.co/spaces/ramtinzm/DAIMS) · [ExplaineR](https://huggingface.co/spaces/ramtinzm/ExplaineR)
