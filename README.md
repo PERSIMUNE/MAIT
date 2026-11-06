@@ -12,8 +12,6 @@ MAIT is a Python workflow for explainable machine learning on tabular research d
 
 ## Run your first analysis
 
-The package demo has been tested on **Apple Silicon macOS with Python 3.11**. Other operating systems and Python versions remain unverified for this packaged workflow.
-
 ### 1. Create a separate Python environment
 
 With Python 3.11 installed, open a terminal and run:
