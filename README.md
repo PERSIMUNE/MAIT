@@ -15,11 +15,12 @@ MAIT is an open-source Python toolbox for building, evaluating, and interpreting
 
 | What you want to do | Where to start |
 | --- | --- |
-| See how mixed clinical predictors appear in a SHAP plot | [Worked example with the UCI Cleveland heart disease dataset](examples/cleveland-heart-disease.md) |
 | Run a short example in the browser | [Quick Kaggle demonstration](https://www.kaggle.com/code/remyz5/mait-explainable-ai-with-mixed-clinical-data) |
-| Explore the original, editable analysis cells | [Full Kaggle notebook](https://www.kaggle.com/code/remyz5/mait-full-notebook-mixed-clinical-data) |
-| Run classification, regression, or survival analysis on your own CSV | [Local Streamlit app](LOCAL_APP.md) |
+| Run classification, regression, or survival analysis on your own data | [Local Streamlit app](LOCAL_APP.md) |
 | Configure an analysis or open a saved results archive online | [Hosted configuration app](https://maitconfig.streamlit.app/) |
+| Work through the four tutorials on breast cancer, dementia, azithromycin, and ciprofloxacin | [MAIT book](https://persimune.github.io/MAIT/intro.html) · [Tutorial notebooks](Tutorials/) |
+| Explore the original, editable analysis cells | [Full Kaggle notebook](https://www.kaggle.com/code/remyz5/mait-full-notebook-mixed-clinical-data) |
+| See how mixed clinical predictors appear in a SHAP plot | [Worked example with the UCI Cleveland heart disease dataset](examples/cleveland-heart-disease.md) |
 
 ## Run your first analysis
 

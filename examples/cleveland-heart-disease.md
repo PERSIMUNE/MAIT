@@ -23,7 +23,7 @@ The figure shows CatBoost explanations for the development cross-validation obse
 
 ## Adapt the example
 
-For your own tabular CSV, select the outcome, identify categorical predictors, and exclude identifiers and fields that would be unavailable at prediction time. Use **Run & Results** to configure and run binary classification on your computer. The local app also offers separate regression and survival workflows. [Local Streamlit setup](../LOCAL_APP.md)
+For your own data, select the outcome, identify categorical predictors, and exclude identifiers and fields that would be unavailable at prediction time. Use **Run & Results** to configure and run binary classification on your computer. The local app also offers separate regression and survival workflows. [Local Streamlit setup](../LOCAL_APP.md)
 
 For dataset checks and documentation before modelling, see [DAIMS](https://github.com/PERSIMUNE/DAIMS). For SHAP-based interpretation of models in R, see [ExplaineR](https://github.com/PERSIMUNE/explainer).
 
