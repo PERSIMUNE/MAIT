@@ -25,6 +25,12 @@ python -m streamlit run streamlit_app.py --server.address 127.0.0.1
 
 If Streamlit and the analysis dependencies are installed in different environments, set `MAIT_ANALYSIS_PYTHON` to the full path of the Python 3.11 analysis interpreter before launching. The app checks the interpreter and required packages before enabling **Run MAIT**.
 
+The local installation includes CatBoost and Feyn. **Run MAIT** supports CatBoost for classification. For QLattice, export a script and run it in the analysis environment. For LightGBM, use script export and install the additional package in that environment:
+
+```bash
+python -m pip install lightgbm
+```
+
 ## First analysis
 
 1. In **Data Configuration**, try the bundled example or load your CSV. Select the outcome, categorical predictors, and columns to exclude.

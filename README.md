@@ -46,7 +46,15 @@ On Windows PowerShell, use `.venv-mait\Scripts\Activate.ps1` instead. This activ
 python -m pip install "mait-pipeline[analysis]==0.1.0a4"
 ```
 
-The analysis extra is needed to run the pipeline. Installing `mait-pipeline` alone installs the export tools.
+The base `mait-pipeline` install provides the export tools. The `[analysis]` extra installs the analysis dependencies, including **CatBoost** and **Feyn** (used by QLattice). The local Streamlit setup installs this extra too.
+
+For an exported script that uses **LightGBM**, install both extras in the environment where you will run it:
+
+```bash
+python -m pip install "mait-pipeline[analysis,lightgbm]==0.1.0a4"
+```
+
+In Streamlit, CatBoost can run directly through the local app. LightGBM and QLattice are available through script export. The hosted app prepares scripts and displays saved results.
 
 ### 3. Run the bundled demo
 
@@ -97,8 +105,6 @@ Python users can also call `from mait import export_demo` and `export_demo("./my
 If `mait` is not found, activate the environment where you installed it. If analysis dependencies are missing, check that you installed the `[analysis]` extra. If the destination already exists, choose a new folder; the demo does not overwrite it.
 
 The local app runs analyses on your computer. When opening a public GitHub issue, share your operating system, Python and MAIT versions, and a redacted error message. Use synthetic or public data for any example you attach.
-
-LightGBM is an optional extra that requires a native OpenMP runtime on macOS.
 
 ## Research using MAIT
 

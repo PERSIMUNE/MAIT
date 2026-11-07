@@ -269,15 +269,16 @@ def model_selection_page():
     # Available models
     available_models = {
         "RandomForest_mdl": "Random Forest - Ensemble method with decision trees",
-        "LightGBM_mdl": "LightGBM - Gradient boosting framework",
-        "CatBoost_mdl": "CatBoost - Gradient boosting for categorical features",
+        "LightGBM_mdl": "Gradient boosting · Script export · Install the LightGBM extra",
+        "CatBoost_mdl": "Gradient boosting for categorical features · Local runner and script export · Included in the analysis setup",
         "LogisticRegression_mdl": "Logistic Regression - Linear model for classification",
-        "QLattice_mdl": "QLattice - Symbolic regression (requires Feyn)",
+        "QLattice_mdl": "Symbolic modelling · Script export · Feyn is included in the analysis setup",
         "NaiveBayes_mdl": "Naive Bayes - Probabilistic classifier",
         "HistGBC_mdl": "Histogram-based Gradient Boosting - Fast gradient boosting"
     }
     
     st.subheader("Select Models to Include")
+    st.caption("The local runner supports CatBoost, Random Forest, and Logistic Regression. Export a script to run other models in your Python environment.")
     
     # Create columns for better layout
     col1, col2 = st.columns(2)
@@ -655,6 +656,11 @@ def validate_configuration():
     
     return errors
 
+def analysis_install_command(config):
+    extras = 'analysis,lightgbm' if 'LightGBM_mdl' in config['models_to_include'] else 'analysis'
+    return f'python -m pip install "mait-pipeline[{extras}]==0.1.0a4"'
+
+
 def generate_notebook():
     """Generate a complete Python script with the current configuration"""
     try:
@@ -722,7 +728,7 @@ def generate_notebook():
 
 2. **Install required packages** (if not already installed):
    ```bash
-   pip install -r requirements.txt
+   {analysis_install_command(config)}
    ```
 
 3. **Run the script directly**:
@@ -773,6 +779,9 @@ def run_pipeline():
     - ✅ Ready to run without manual editing
     """)
     
+    st.write("Install the analysis packages in the Python environment where you will run the script.")
+    st.code(analysis_install_command(config), language="bash")
+
     # Step 2: Execution instructions
     st.markdown("### Step 2: Run Your Pipeline")
     
@@ -816,7 +825,7 @@ jupyter notebook mait_pipeline_{config['main_folder_name']}.ipynb
         st.markdown("""
         **Common Issues:**
         
-        1. **Missing packages**: Install requirements with `pip install -r requirements.txt`
+        1. **Missing packages**: Run the installation command above in your analysis environment
         2. **Data file not found**: Ensure your data file is in the same directory as the script
         3. **Permission errors**: Check file permissions and disk space
         4. **Memory issues**: Reduce dataset size or increase system memory

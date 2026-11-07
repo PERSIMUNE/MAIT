@@ -43,7 +43,7 @@ script = export_demo("./my-export")
 
 The installed demo completed on Apple Silicon macOS with Python 3.11, including a fresh analysis-environment installation and installation of the uploaded TestPyPI wheel. Other platforms, model combinations, survival analysis, regression, and equivalence to historical versions remain unverified. This small demonstration does not establish clinical predictive performance.
 
-The analysis extra still includes legacy dependencies that will be separated as MAIT becomes a modular library. LightGBM is excluded; its separate `lightgbm` extra also needs a native OpenMP runtime on macOS.
+The analysis extra still includes legacy dependencies that will be separated as MAIT becomes a modular library. CatBoost and Feyn are included in `[analysis]`. For a script that uses LightGBM, install `mait-pipeline[analysis,lightgbm]`.
 
 The packaged template is synchronized with the repository tutorial template and checked automatically. See the [source repository](https://github.com/PERSIMUNE/MAIT) for methods, tutorials, limitations, and release instructions.
 
