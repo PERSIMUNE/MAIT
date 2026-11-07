@@ -9,16 +9,17 @@
 [![Google Scholar citations: 3](https://img.shields.io/badge/Google%20Scholar%20citations-3-3986bc)](https://scholar.google.com/scholar?cites=8130668980657492766&hl=en)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-MAIT is a Python workflow for explainable machine learning on tabular research data. The original pipeline supports binary classification, survival modelling, and regression. The current alpha package provides a ready-to-run classification demo with Logistic Regression and Random Forest.
+MAIT is an open-source Python toolbox for building, evaluating, and interpreting models on tabular research data. Use it for binary classification, numeric prediction with regression, or time-to-event analysis with censoring. Its classification workflow includes SHAP plots that display continuous measurements and categorical findings together.
 
-**Try MAIT in your browser on free Kaggle CPU hardware:**
+## Choose how to start
 
-- [Full MAIT notebook](https://www.kaggle.com/code/remyz5/mait-full-notebook-mixed-clinical-data): follow the original preparation, modelling, evaluation, and interpretation cells using mixed clinical data.
-- [Quick demonstration](https://www.kaggle.com/code/remyz5/mait-explainable-ai-with-mixed-clinical-data): run the packaged pipeline and explore its SHAP plot for continuous and categorical features.
-
-## Use the local app
-
-Configure an analysis, run MAIT, and explore performance tables, SHAP figures, and data summaries through the [local Streamlit app](LOCAL_APP.md). Start with the example dataset or upload your own CSV, then open **Run & Results**. The public [configuration app](https://maitconfig.streamlit.app/) also supports viewing saved results archives.
+| What you want to do | Where to start |
+| --- | --- |
+| See how mixed clinical predictors appear in a SHAP plot | [Worked example with the UCI Cleveland heart disease dataset](examples/cleveland-heart-disease.md) |
+| Run a short example in the browser | [Quick Kaggle demonstration](https://www.kaggle.com/code/remyz5/mait-explainable-ai-with-mixed-clinical-data) |
+| Explore the original, editable analysis cells | [Full Kaggle notebook](https://www.kaggle.com/code/remyz5/mait-full-notebook-mixed-clinical-data) |
+| Run classification, regression, or survival analysis on your own CSV | [Local Streamlit app](LOCAL_APP.md) |
+| Configure an analysis or open a saved results archive online | [Hosted configuration app](https://maitconfig.streamlit.app/) |
 
 ## Run your first analysis
 
