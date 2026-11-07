@@ -83,7 +83,7 @@ mait export-demo ./my-mait-export
 
 Python users can also call `from mait import export_demo` and `export_demo("./my-mait-export")`. This is an export API, not yet a modular model-fitting API.
 
-## Help and further reading
+## Documentation and troubleshooting
 
 | Need | Where to go |
 | --- | --- |
@@ -96,7 +96,9 @@ Python users can also call `from mait import export_demo` and `export_demo("./my
 
 If `mait` is not found, activate the environment where you installed it. If analysis dependencies are missing, check that you installed the `[analysis]` extra. If the destination already exists, choose a new folder; the demo does not overwrite it.
 
-When reporting a failure, include the operating system, Python and MAIT versions (`python --version`, `mait --version`), command, and error message. Do not include confidential data. LightGBM is a separate optional extra and requires a native OpenMP runtime on macOS; it is not needed by the bundled demo.
+The local app runs analyses on your computer. When opening a public GitHub issue, share your operating system, Python and MAIT versions, and a redacted error message. Use synthetic or public data for any example you attach.
+
+LightGBM is an optional extra that requires a native OpenMP runtime on macOS.
 
 ## Research using MAIT
 
