@@ -33,25 +33,44 @@ def validate_analysis(data, config, positive_class):
     outcome = data[target]
     if outcome.isna().any():
         errors.append('Remove rows with missing outcomes before running.')
-    classes = outcome.dropna().unique().tolist()
-    if len(classes) != 2:
-        errors.append('In-app execution currently requires a binary outcome with exactly two classes.')
-    if positive_class not in classes:
-        errors.append('Select the positive outcome class.')
+    task = config.get('analysis_type', 'classification')
+    if task not in {'classification', 'regression', 'survival'}:
+        return ['Choose a supported analysis type.']
     folds = int(config.get('cv_folds', 3))
     if not 3 <= folds <= 10:
         errors.append('Use between 3 and 10 cross-validation folds.')
-    if len(classes) == 2 and outcome.value_counts().min() < max(10, 2 * folds):
-        errors.append('Each outcome class needs at least max(10, twice the CV folds) observations for this workflow.')
-    models = config.get('models_to_include', [])
-    if len(set(models)) < 2:
-        errors.append('Choose at least two models for MAIT’s model-comparison step.')
-    if set(models) - SUPPORTED_MODELS:
-        errors.append('Local execution currently supports Logistic Regression, Random Forest, and CatBoost. Export other model configurations.')
+    import numpy as np
+    import pandas as pd
+
+    duration = config.get('duration_column') if task == 'survival' else None
+    if task == 'survival':
+        if duration not in data.columns or duration == target:
+            return errors + ['Select a follow-up time column distinct from the event column.']
+        times = pd.to_numeric(data[duration], errors='coerce')
+        if not np.isfinite(times).all() or (times <= 0).any():
+            errors.append('Follow-up times must be finite numbers greater than zero.')
+    if task == 'regression':
+        values = pd.to_numeric(outcome, errors='coerce')
+        if len(data) < 30 or not np.isfinite(values).all() or values.nunique() < 2:
+            errors.append('Regression needs at least 30 rows with finite numeric outcomes that vary.')
+    else:
+        classes = outcome.dropna().unique().tolist()
+        if len(classes) != 2:
+            errors.append('Choose an outcome with exactly two classes.')
+        elif outcome.value_counts().min() < max(10, 2 * folds):
+            errors.append('Each outcome class needs at least 10 observations and twice the number of folds.')
+        if positive_class not in classes:
+            errors.append('Select the event value.' if task == 'survival' else 'Select the positive outcome class.')
+    if task == 'classification':
+        models = config.get('models_to_include', [])
+        if len(set(models)) < 2:
+            errors.append('Choose at least two models for MAIT’s model-comparison step.')
+        if set(models) - SUPPORTED_MODELS:
+            errors.append('Local classification supports Logistic Regression, Random Forest, and CatBoost.')
     for key in ['survival_analysis', 'regression_analysis', 'external_val', 'ext_val_demo',
                 'already_split', 'data_split_by_patients', 'data_split_multi_strats', 'demo_configs']:
         if config.get(key):
-            errors.append(f'Turn off {key.replace("_", " ")} for in-app binary classification; use export for this option.')
+            errors.append(f'Turn off {key.replace("_", " ")} for this local workflow; use export for this option.')
     if not config.get('data_split', True):
         errors.append('Enable a training/test split for the results dashboard.')
     fraction = float(config.get('train_size_perc', .8))
@@ -63,17 +82,16 @@ def validate_analysis(data, config, positive_class):
     categorical = config.get('cat_features', [])
     if (set(dropped) | set(categorical)) - set(data.columns):
         errors.append('Some selected columns are absent from this dataset; review Data Configuration.')
-    if target in dropped or target in categorical or set(dropped) & set(categorical):
+    outcomes = {target, duration} if duration else {target}
+    if outcomes & (set(dropped) | set(categorical)) or set(dropped) & set(categorical):
         errors.append('The outcome, excluded columns, and categorical predictors must not overlap.')
-    predictors = [c for c in data.columns if c != target and c not in dropped]
+    predictors = [c for c in data.columns if c not in outcomes and c not in dropped]
     if not predictors:
         errors.append('Keep at least one predictor column.')
-    import pandas as pd
     for column in predictors:
         if column not in categorical:
             try:
                 values = pd.to_numeric(data[column].dropna(), errors='raise')
-                import numpy as np
                 if not np.isfinite(values).all():
                     errors.append(f'Replace infinite values in “{column}” before running.')
             except (ValueError, TypeError):
@@ -194,29 +212,43 @@ def start_analysis(data, config, positive_class, python_executable=None):
         raise ValueError(message)
     root = Path(tempfile.mkdtemp(prefix='mait-analysis-'))
     target = config['outcome_var']
-    labels = data[target].unique().tolist()
-    negative = next(x for x in labels if x != positive_class)
+    task = config.get('analysis_type', 'classification')
     prepared = data.copy()
-    prepared[target] = (prepared[target] == positive_class).astype(int)
+    labels = {}
+    if task != 'regression':
+        negative = next(x for x in data[target].unique() if x != positive_class)
+        labels = {'positive_class': str(positive_class), 'negative_class': str(negative)}
+        prepared[target] = (prepared[target] == positive_class).astype(int)
+    else:
+        prepared[target] = prepared[target].astype(float)
+    if task == 'survival':
+        prepared[config['duration_column']] = prepared[config['duration_column']].astype(float)
     prepared.to_csv(root / 'input.csv', index=False)
     settings = dict(config)
-    settings.update(class_labels_display=[str(negative), str(positive_class)],
+    settings.update(
                     n_cpu_model_training=min(2, max(1, int(config.get('n_cpu_model_training', 1)))),
                     n_cpu_for_tuning=min(2, max(1, int(config.get('n_cpu_for_tuning', 1)))),
                     fig_file_format='png', demo_configs=False)
+    if task == 'classification':
+        settings['class_labels_display'] = [str(negative), str(positive_class)]
     settings.setdefault('n_rep_feature_permutation', 5)
     (root / 'config.json').write_text(json.dumps(settings, indent=2, default=str))
     record = {'rows': len(data), 'columns': len(data.columns), 'outcome': target,
-              'positive_class': str(positive_class), 'negative_class': str(negative),
-              'created': time.strftime('%Y-%m-%d %H:%M:%S'), 'models': settings['models_to_include']}
+              **labels, 'analysis_type': task, 'duration_column': config.get('duration_column'),
+              'created': time.strftime('%Y-%m-%d %H:%M:%S')}
     (root / 'run.json').write_text(json.dumps(record, indent=2))
-    source = configured_source(settings, root / 'input.csv', root / 'results')
-    (root / 'analysis.py').write_text(source + '\n' + RESULT_EXPORT)
-    portable = _configure(source, {
-        'mydata': 'pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "input.csv"))',
-        'main_folder_name': 'os.path.join(os.path.dirname(os.path.abspath(__file__)), "results")',
-    })
-    (root / 'reproduce.py').write_text(portable + '\n' + RESULT_EXPORT)
+    if task == 'classification':
+        source = configured_source(settings, root / 'input.csv', root / 'results')
+        portable = _configure(source, {
+            'mydata': 'pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "input.csv"))',
+            'main_folder_name': 'os.path.join(os.path.dirname(os.path.abspath(__file__)), "results")',
+        })
+        source += '\n' + RESULT_EXPORT
+        portable += '\n' + RESULT_EXPORT
+    else:
+        source = portable = files('mait').joinpath('continuous.py').read_text()
+    (root / 'analysis.py').write_text(source)
+    (root / 'reproduce.py').write_text(portable)
     (root / 'LICENSE.txt').write_text(files('mait').joinpath('data/SOURCE_LICENSE.txt').read_text())
     environment = os.environ.copy()
     environment.update(MPLBACKEND='Agg', MPLCONFIGDIR=str(root / 'matplotlib-cache'),

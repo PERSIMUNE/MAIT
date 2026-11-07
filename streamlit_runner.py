@@ -93,8 +93,16 @@ def results_dashboard(archive):
     summary = record('analysis_summary.json')
     st.subheader('Analysis results')
     if run:
-        st.caption(f"Run saved {run.get('created', '')} · Outcome: {run.get('outcome', '')} · Positive class: {run.get('positive_class', '')}")
-    overview, shap, data, downloads = st.tabs(['Performance', 'SHAP & interpretation', 'Data summaries', 'Downloads'])
+        details = [f"Run saved {run.get('created', '')}", f"Outcome: {run.get('outcome', '')}"]
+        if run.get('positive_class') is not None:
+            details.append(f"Event value: {run['positive_class']}" if run.get('analysis_type') == 'survival'
+                           else f"Positive class: {run['positive_class']}")
+        if run.get('duration_column'):
+            details.append(f"Follow-up time: {run['duration_column']}")
+        st.caption(' · '.join(details))
+    interpretation = ('Feature importance' if summary.get('analysis_type') in {'regression', 'survival'}
+                      else 'SHAP & interpretation')
+    overview, shap, data, downloads = st.tabs(['Performance', interpretation, 'Data summaries', 'Downloads'])
     with overview:
         if summary:
             c1, c2, c3 = st.columns(3)
@@ -109,13 +117,13 @@ def results_dashboard(archive):
             show_table(artifacts[selected], '.csv')
         cv = next((n for n in artifacts if Path(n).name == 'aggregated_results_all.xlsx'), None)
         if cv:
-            with st.expander('Compare cross-validation results'):
+            with st.expander('Compare cross-validation results', expanded=bool(summary.get('analysis_type'))):
                 st.caption('Development-set cross-validation; these are separate from held-out test results.')
                 show_table(artifacts[cv], '.xlsx')
-        figures = sorted(n for n in artifacts if Path(n).name.startswith('ROC_CM_') and Path(n).suffix.lower() in {'.png', '.tif', '.tiff'})
+        figures = sorted(n for n in artifacts if Path(n).name.startswith(('ROC_CM_', 'performance_')) and Path(n).suffix.lower() in {'.png', '.tif', '.tiff'})
         if figures:
             selected = st.selectbox('Performance figure', figures,
-                                   format_func=lambda x: Path(x).stem.replace('ROC_CM_', ''), key='performance-figure')
+                                   format_func=lambda x: Path(x).stem.removeprefix('ROC_CM_').removeprefix('performance_'), key='performance-figure')
             show_figure(selected, artifacts[selected])
         if not metrics and not cv and not figures:
             st.info('This archive does not contain recognised performance tables or figures.')
@@ -135,7 +143,7 @@ def results_dashboard(archive):
                 st.caption('Continuous values use a colour scale; categories use discrete colours and marker shapes. SHAP contributions describe the model, not causal effects.')
             show_figure(selected, artifacts[selected])
         else:
-            st.info('No SHAP figures were found in this archive.')
+            st.info('No interpretation figures were found in this archive.')
     with data:
         tables = sorted(n for n in artifacts if Path(n).suffix.lower() in {'.csv', '.xlsx'} and not Path(n).name.startswith('test_performance_') and Path(n).name != 'input.csv')
         if tables:
@@ -145,7 +153,7 @@ def results_dashboard(archive):
             st.info('No data-summary tables were found.')
     with downloads:
         st.download_button('Download results archive', archive, 'mait-results.zip', 'application/zip', type='primary')
-        st.caption('Includes the prepared dataset (outcome encoded as 0/1), reproduce.py, settings, logs, figures, tables, and fitted model. Model files are downloaded only; the dashboard does not load them.')
+        st.caption('Includes the prepared dataset, reproduce.py, settings, logs, figures, tables, and fitted model. Model files are downloaded only; the dashboard does not load them.')
         if 'config.json' in by_name:
             st.download_button('Download run settings', by_name['config.json'], 'mait-config.json', 'application/json')
             with st.expander('Settings used for this run'):
@@ -180,7 +188,7 @@ def monitor_job():
 
 def run_results_page():
     st.header('Run & explore')
-    st.caption('Run the configured binary-classification workflow locally, or open an existing MAIT results archive.')
+    st.caption('Run classification, regression, or survival analysis locally, or open a saved MAIT results archive.')
     config = st.session_state.config
     data = st.session_state.get('analysis_data')
     job = st.session_state.get('analysis_job')
@@ -190,13 +198,44 @@ def run_results_page():
             st.info('Choose example data or upload a CSV in Data Configuration first.')
         else:
             st.write(f"**{st.session_state.get('dataset_name', 'Dataset')}** · {len(data):,} rows · {len(data.columns):,} columns")
-            if st.button('Use quick CPU settings', disabled=running):
-                quick_settings(config)
-                st.rerun()
-            target = config.get('outcome_var')
-            classes = data[target].dropna().unique().tolist() if target in data.columns else []
-            positive = st.selectbox('Positive outcome class', classes, index=None, placeholder='Choose the class to predict',
-                                    help='This class is encoded as 1. The other class is encoded as 0.', key='runner-positive')
+            task = st.selectbox('Analysis type', ['classification', 'regression', 'survival'],
+                                format_func=lambda value: {'classification': 'Binary classification',
+                                                           'regression': 'Regression', 'survival': 'Survival analysis'}[value],
+                                disabled=running)
+            positive = None
+            if task == 'classification':
+                if st.button('Use quick CPU settings', disabled=running):
+                    quick_settings(config)
+                    st.rerun()
+                target = config.get('outcome_var')
+            else:
+                config = {'analysis_type': task, 'data_split': True}
+                target = st.selectbox('Event indicator' if task == 'survival' else 'Numeric outcome',
+                                      list(data.columns), index=None, key=f'{task}-target')
+                duration = None
+                if task == 'survival':
+                    duration = st.selectbox('Follow-up time', [c for c in data if c != target], index=None)
+                    config['duration_column'] = duration
+                candidates = [c for c in data if c not in {target, duration}]
+                config['outcome_var'] = target
+                excluded = st.multiselect('Exclude columns', candidates,
+                                          default=[c for c in st.session_state.config['columns_to_drop'] if c in candidates],
+                                          key=f'{task}-drop')
+                config['columns_to_drop'] = excluded
+                available = [c for c in candidates if c not in excluded]
+                config['cat_features'] = st.multiselect(
+                    'Categorical predictors', available,
+                    default=[c for c in st.session_state.config['cat_features'] if c in available],
+                    key=f'{task}-categorical')
+                config['train_size_perc'] = st.slider('Development fraction', .5, .9, .8, .05, key=f'{task}-split')
+                config['cv_folds'] = st.number_input('Cross-validation folds', 3, 10, 3, key=f'{task}-folds')
+                st.caption('Compares Cox proportional hazards and random survival forest.' if task == 'survival'
+                           else 'Compares linear regression and random forest regression.')
+            if task != 'regression':
+                classes = data[target].dropna().unique().tolist() if target in data.columns else []
+                positive = st.selectbox('Event value' if task == 'survival' else 'Positive outcome class',
+                                        classes, index=None, key='runner-positive' if task == 'classification' else 'runner-event',
+                                        help='The selected value is encoded as 1. The other value becomes 0.')
             try:
                 errors = validate_analysis(data, config, positive)
             except (ValueError, TypeError):

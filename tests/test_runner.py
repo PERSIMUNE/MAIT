@@ -28,6 +28,20 @@ class RunnerTests(unittest.TestCase):
         self.assertTrue(validate_analysis(self.data, dict(self.config, regression_analysis=True), 'yes'))
         self.assertTrue(validate_analysis(self.data, dict(self.config, models_to_include=['CatBoost_mdl']), 'yes'))
 
+    def test_survival_rejects_invalid_times_and_outcome_leakage(self):
+        data = self.data.assign(followup=range(1, 41))
+        config = dict(self.config, analysis_type='survival', duration_column='followup')
+        self.assertEqual(validate_analysis(data, config, 'yes'), [])
+        self.assertTrue(validate_analysis(data, dict(config, cat_features=['followup']), 'yes'))
+        data.loc[0, 'followup'] = 0
+        self.assertTrue(validate_analysis(data, config, 'yes'))
+
+    def test_regression_accepts_numeric_outcome_without_positive_class(self):
+        data = self.data.assign(outcome=range(40))
+        config = dict(self.config, analysis_type='regression')
+        self.assertEqual(validate_analysis(data, config, None), [])
+        self.assertTrue(validate_analysis(self.data, config, None))
+
     def test_literal_configuration_cannot_inject_python(self):
         malicious = 'target"; raise RuntimeError("injected") #'
         source = configured_source(dict(self.config, outcome_var=malicious), "a'quoted.csv", "results'quoted")

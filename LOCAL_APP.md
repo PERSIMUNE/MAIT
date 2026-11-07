@@ -1,6 +1,6 @@
 # Run MAIT through the local app
 
-The Streamlit app can configure and run binary-classification analyses and present the results in a dashboard. Analyses run on the computer hosting the app. The public configuration app can also open results archives; execution is enabled by the local launcher.
+The Streamlit app can configure and run classification, regression, and survival analyses and present the results in a dashboard. The local launcher enables execution on your computer. The public app configures analyses and opens results archives.
 
 ## Install and launch
 
@@ -28,19 +28,20 @@ If Streamlit and the analysis dependencies are installed in different environmen
 ## First analysis
 
 1. In **Data Configuration**, try the bundled example or load your CSV. Select the outcome, categorical predictors, and columns to exclude.
-2. Review model selection, preprocessing, and training settings. In **Run & Results**, **Use quick CPU settings** selects CatBoost and logistic regression, three CV folds, no tuning or feature selection, and five permutation repeats.
-3. Select the **positive outcome class**. The app records this choice and encodes it as 1; the other class becomes 0.
-4. Click **Run MAIT**. Progress and the live log update automatically. You can cancel a running analysis.
-5. Explore **Performance**, **SHAP & interpretation**, **Data summaries**, and **Downloads**.
+2. Open **Run & Results** and choose **Analysis type**.
+   - **Binary classification** uses your classification settings. Choose the positive class. **Use quick CPU settings** selects CatBoost and logistic regression, three CV folds, and five permutation repeats.
+   - **Regression** uses a numeric outcome and compares linear regression and random forest regression. Results include MAE, RMSE, R², and an observed-versus-predicted plot.
+   - **Survival analysis** uses a follow-up time column and a binary event indicator. Choose the value that means the event occurred. The other value represents censoring. The app compares Cox proportional hazards and random survival forest and shows the concordance index and survival curves.
+3. Click **Run MAIT**. Progress and the live log update automatically. You can cancel a running analysis.
+4. Explore **Performance**, **Data summaries**, and **Downloads**. Classification includes SHAP figures. Regression and survival show held-out permutation importance for the original predictors.
 
-Each run has a separate temporary folder, dataset snapshot, and settings snapshot. Changing the configuration does not relabel a completed run. The output folder setting remains relevant to exported scripts; in-app runs always use their own folder and PNG figures, with up to two CPU workers.
+Each run has a separate temporary folder and saves a snapshot of the data and settings. Regression and survival have their own predictor, split, and cross-validation controls in **Run & Results**. They use fixed model settings and fit preprocessing within each training fold. Use one row per independent observation. Custom splits and external validation are available in the full workflows.
 
-The runner currently supports Logistic Regression, Random Forest, and CatBoost, with at least two models, a binary outcome, and a standard training/test split. Survival, regression, external validation, custom/grouped splits, other model families, and GPU settings remain available through script export and the full notebooks. The runner reports unsupported selections before starting.
 
 ## Results and reproducibility
 
 The dashboard separates development cross-validation from held-out test performance. CatBoost's mixed-feature SHAP plot is labelled as development CV; final-model SHAP figures are labelled as test results. The dashboard reads saved outputs without refitting models.
 
-Download the results archive before closing or restarting the app. It includes the prepared input dataset (outcome encoded as 0/1), settings, logs, fitted model, figures, tables, the original run script, and a portable `reproduce.py`. Extract the archive and run `python reproduce.py` in the same analysis environment to reproduce the workflow. The original source license is included.
+Download the results archive before closing or restarting the app. It includes the prepared input dataset (class and event outcomes encoded as 0/1), settings, logs, fitted model, figures, tables, the original run script, and a portable `reproduce.py`. Extract the archive and run `python reproduce.py` in the same analysis environment to reproduce the workflow. The original source license is included.
 
 You can reopen the archive in **Open saved results**. Existing MAIT Kaggle results archives are supported too. Archives are inspected without extracting their paths; model pickles and scripts are never loaded or executed by the viewer. Local temporary run files are not a durable run-history service.

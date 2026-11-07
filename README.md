@@ -71,7 +71,7 @@ The small bundled dataset demonstrates software operation. Its performance resul
 
 The packaged command currently runs the bundled demo. For your own dataset, use the [Streamlit configuration interface](https://maitconfig.streamlit.app/) and [configuration walkthrough](QUICK_START_DEMO.md), or adapt the [tutorial notebooks](Tutorials/).
 
-The public app prepares scripts and displays saved results. The [local app](LOCAL_APP.md) can also execute binary-classification analyses in your Python 3.11 analysis environment. Survival, regression, other model combinations, and historical numerical equivalence are not validated by the package demo.
+The public app prepares scripts and displays saved results. The [local app](LOCAL_APP.md) can also run classification, regression, and survival analyses in your Python 3.11 analysis environment. Survival, regression, other model combinations, and historical numerical equivalence are not validated by the package demo.
 
 To export the demo without executing it:
 
