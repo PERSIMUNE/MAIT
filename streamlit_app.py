@@ -7,11 +7,12 @@ import subprocess
 import sys
 import time
 import re
+import hashlib
 from pathlib import Path
 
 # Set page configuration
 st.set_page_config(
-    page_title="MAIT Pipeline Configuration",
+    page_title="MAIT — Configure & Explore",
     page_icon=str(Path(__file__).resolve().parent / "assets" / "MAITlogo-cropped.png"),
     layout="wide",
     initial_sidebar_state="expanded"
@@ -19,6 +20,9 @@ st.set_page_config(
 
 # Keep fonts local so the interface also works without a font service.
 APP_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(APP_ROOT / "src"))
+from streamlit_runner import run_results_page, local_execution_enabled
+from mait.runner import configured_source
 
 
 def load_interface_styles():
@@ -41,8 +45,8 @@ st.markdown(load_interface_styles(), unsafe_allow_html=True)
 
 def main():
     st.markdown('<p class="mait-app-eyebrow">MEDICAL ARTIFICIAL INTELLIGENCE TOOLBOX</p>', unsafe_allow_html=True)
-    st.markdown('<h1 class="main-header">Configure your analysis</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="mait-app-intro">Turn your data and model choices into a Python analysis script. Work through the settings, then review and export your configuration.</p>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">Configure, run and explore</h1>', unsafe_allow_html=True)
+    st.markdown('<p class="mait-app-intro">Choose your data and analysis settings, run MAIT locally, and explore its results. You can also export a script or open a saved results archive.</p>', unsafe_allow_html=True)
 
     # All sections stay visible, with the current section clearly selected.
     st.sidebar.image(str(APP_ROOT / "assets" / "MAITlogo-cropped.png"), width=140)
@@ -51,7 +55,7 @@ def main():
     sections = [
         "Data Configuration", "Model Selection", "Feature Engineering",
         "Training Parameters", "Output Settings", "Advanced Options",
-        "Finalize and Export"
+        "Finalize and Export", "Run & Results"
     ]
     page = st.sidebar.radio("Configuration sections", sections, label_visibility="collapsed")
     st.sidebar.markdown("---")
@@ -64,7 +68,8 @@ def main():
         "Training Parameters": "Set tuning, cross-validation, and computing resources.",
         "Output Settings": "Choose where results are saved and how figures and labels appear.",
         "Advanced Options": "Review additional validation options and manage saved configurations.",
-        "Finalize and Export": "Check your settings and export a script to run in your MAIT analysis environment."
+        "Finalize and Export": "Check your settings and export a script to run in your MAIT analysis environment.",
+        "Run & Results": "Run a local analysis or explore saved performance tables, SHAP plots, and data summaries."
     }
     st.markdown(f'<div class="mait-step-label">SECTION {sections.index(page) + 1} OF {len(sections)}</div>', unsafe_allow_html=True)
     st.caption(descriptions[page])
@@ -88,6 +93,8 @@ def main():
         advanced_options_page()
     elif page == "Finalize and Export":
         generate_run_page()
+    elif page == "Run & Results":
+        run_results_page()
 
 def init_default_config():
     """Initialize default configuration"""
@@ -109,29 +116,28 @@ def init_default_config():
         'already_split': False,
         
         # Model Selection
-        'models_to_include': ["RandomForest_mdl", "LightGBM_mdl", "LogisticRegression_mdl"],
+        'models_to_include': ["CatBoost_mdl", "LogisticRegression_mdl"],
         
         # Feature Engineering
-        'feat_sel': True,
+        'feat_sel': False,
         'num_features_sel': 30,
         'merged_rare_categories': True,
         'rarity_threshold': 0.05,
         'remove_outliers': False,
-        'filter_highly_mis_feats': True,
         'exclude_highly_missing_columns': True,
         'exclude_highly_missing_rows': True,
         
         # Training Parameters
-        'hp_tuning': True,
+        'hp_tuning': False,
         'n_iter_hptuning': 10,
-        'cv_folds': 5,
+        'cv_folds': 3,
         'tun_score': 'roc_auc',
         'oversampling': False,
         'scale_data': False,
         
         # Resource Configuration
-        'n_cpu_for_tuning': 4,
-        'n_cpu_model_training': 4,
+        'n_cpu_for_tuning': 2,
+        'n_cpu_model_training': 2,
         'GPU_avail': False,
         
         # Output Settings
@@ -149,143 +155,83 @@ def init_default_config():
         'test_only_best_cvmodel': True
     }
 
+def accept_dataset(df, name):
+    digest = hashlib.sha256(df.to_csv(index=False).encode()).hexdigest()
+    config = st.session_state.config
+    if st.session_state.get('dataset_digest') != digest:
+        for key in ['categorical_features', 'columns_to_drop', 'runner-positive']:
+            st.session_state.pop(key, None)
+        if config['outcome_var'] not in df.columns:
+            config['outcome_var'] = ''
+        config['cat_features'] = [c for c in config['cat_features'] if c in df.columns]
+        config['columns_to_drop'] = [c for c in config['columns_to_drop'] if c in df.columns]
+        st.session_state['dataset_digest'] = digest
+    st.session_state['analysis_data'] = df.copy()
+    st.session_state['dataset_name'] = name
+    st.session_state.available_columns = df.columns.tolist()
+    config['data_file'] = name
+
+
 def data_configuration_page():
-    st.markdown('<h2 class="section-header"> Data Configuration</h2>', unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="info-box">
-        <strong>Demo Data Available:</strong><br>
-        Use <code>demo_medical_data.csv</code> for testing. It contains 50 synthetic patients with cardiovascular risk factors 
-        for binary classification (heart_disease). Suggested categorical features: gender, smoking_status.
-    </div>
-    """, unsafe_allow_html=True)
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.subheader("Dataset Information")
-        
-        # File upload or path
-        data_option = st.radio("Data Source:", ["Upload File", "File Path"])
-        
-        if data_option == "Upload File":
-            uploaded_file = st.file_uploader("Choose a CSV file", type=['csv'])
-            if uploaded_file:
-                st.session_state.config['data_file'] = uploaded_file.name
-                # Preview data
-                df = pd.read_csv(uploaded_file)
-                st.write("Data Preview:")
-                st.dataframe(df.head())
-                
-                # Auto-populate column options
-                st.session_state.available_columns = df.columns.tolist()
-        else:
-            data_path = st.text_input("Enter file path:", value=st.session_state.config.get('data_file', ''))
-            
-            # Add demo file suggestion
-            if st.button("Use Demo Data"):
-                data_path = "demo_medical_data.csv"
-                st.session_state.config['data_file'] = data_path
-                st.rerun()
-            
-            st.session_state.config['data_file'] = data_path
-            
-            if data_path and os.path.exists(data_path):
-                try:
-                    df = pd.read_csv(data_path)
-                    st.success(f" File found! Shape: {df.shape}")
-                    st.dataframe(df.head())
-                    st.session_state.available_columns = df.columns.tolist()
-                except Exception as e:
-                    st.error(f"Error reading file: {e}")
-    
-    with col2:
-        st.subheader("Variable Configuration")
-        
-        # Outcome variable
-        if 'available_columns' in st.session_state:
-            outcome_var = st.selectbox(
-                "Outcome Variable (Target):", 
-                [''] + st.session_state.available_columns,
-                index=0 if not st.session_state.config['outcome_var'] else st.session_state.available_columns.index(st.session_state.config['outcome_var']) + 1
-            )
-            st.session_state.config['outcome_var'] = outcome_var
-        else:
-            outcome_var = st.text_input("Outcome Variable:", value=st.session_state.config['outcome_var'])
-            st.session_state.config['outcome_var'] = outcome_var
-        
-        # Categorical features
-        if 'available_columns' in st.session_state:
-            # Filter out outcome variable and columns to drop from available options
-            available_for_cat = [col for col in st.session_state.available_columns 
-                               if col != st.session_state.config['outcome_var'] 
-                               and col not in st.session_state.config['columns_to_drop']]
-            
-            # Initialize widget state if not exists or validate current selection
-            if "categorical_features" not in st.session_state:
-                # Get current categorical features, ensuring they're still valid
-                valid_cat_features = [f for f in st.session_state.config['cat_features'] if f in available_for_cat]
-                st.session_state["categorical_features"] = valid_cat_features
-            
-            cat_features = st.multiselect(
-                "Categorical Features:", 
-                available_for_cat,
-                key="categorical_features",
-                help="Select all columns that contain categorical data (e.g., gender, smoking_status, race)"
-            )
-            
-            # Update configuration from the widget
-            st.session_state.config['cat_features'] = cat_features
-            
-            # Show current selection
-            if cat_features:
-                st.info(f"✅ Selected {len(cat_features)} categorical feature(s): {', '.join(cat_features)}")
-        
-        # Columns to drop
-        if 'available_columns' in st.session_state:
-            # Filter out outcome variable from available options
-            available_for_drop = [col for col in st.session_state.available_columns 
-                                if col != st.session_state.config['outcome_var']]
-            
-            # Initialize widget state if not exists or validate current selection
-            if "columns_to_drop" not in st.session_state:
-                # Get current columns to drop, ensuring they're still valid
-                valid_cols_to_drop = [f for f in st.session_state.config['columns_to_drop'] if f in available_for_drop]
-                st.session_state["columns_to_drop"] = valid_cols_to_drop
-            
-            columns_to_drop = st.multiselect(
-                "Columns to Drop:", 
-                available_for_drop,
-                key="columns_to_drop",
-                help="Select columns that should be excluded from the analysis"
-            )
-            
-            # Update configuration from the widget
-            st.session_state.config['columns_to_drop'] = columns_to_drop
-            
-            # Show current selection
-            if columns_to_drop:
-                st.info(f"🗑️ Will drop {len(columns_to_drop)} column(s): {', '.join(columns_to_drop)}")
-    
-    # Debug info section (collapsible)
-    with st.expander("Current configuration", expanded=False):
-        col_debug1, col_debug2 = st.columns(2)
-        
-        with col_debug1:
-            st.write("**Current Settings:**")
-            st.write(f"• Data file: `{st.session_state.config['data_file']}`")
-            st.write(f"• Outcome variable: `{st.session_state.config['outcome_var']}`")
-            if 'available_columns' in st.session_state:
-                st.write(f"• Total columns available: {len(st.session_state.available_columns)}")
-        
-        with col_debug2:
-            st.write("**Feature Selection:**")
-            st.write(f"• Categorical features: {st.session_state.config['cat_features']}")
-            st.write(f"• Columns to drop: {st.session_state.config['columns_to_drop']}")
-            if 'available_columns' in st.session_state:
-                remaining_cols = len(st.session_state.available_columns) - len(st.session_state.config['columns_to_drop']) - (1 if st.session_state.config['outcome_var'] else 0)
-                st.write(f"• Features for modeling: ~{remaining_cols}")
-    
+    st.header('Data configuration')
+    sources = ['Example data', 'Upload CSV']
+    if local_execution_enabled():
+        sources.append('Local file')
+    source = st.radio('Data source', sources, horizontal=True)
+    if source == 'Example data':
+        df = pd.read_csv(APP_ROOT / 'demo_medical_data.csv')
+        accept_dataset(df, 'demo_medical_data.csv')
+        st.caption('Bundled example: 50 synthetic records for trying the workflow.')
+        if not st.session_state.config['outcome_var']:
+            st.session_state.config.update(outcome_var='heart_disease', cat_features=['gender', 'smoking_status'], columns_to_drop=['patient_id'])
+    elif source == 'Upload CSV':
+        uploaded = st.file_uploader('Choose a CSV file', type=['csv'])
+        if uploaded:
+            try:
+                if uploaded.size > 50 * 1024 * 1024:
+                    raise ValueError('Use a CSV smaller than 50 MB in this interface.')
+                accept_dataset(pd.read_csv(uploaded), uploaded.name)
+            except (ValueError, pd.errors.ParserError, UnicodeError) as error:
+                st.error(f'Cannot read this CSV: {error}')
+                return
+    else:
+        path = st.text_input('CSV path on this computer')
+        if st.button('Load local dataset'):
+            try:
+                accept_dataset(pd.read_csv(Path(path).expanduser()), path)
+            except (OSError, ValueError, pd.errors.ParserError) as error:
+                st.error(str(error))
+    df = st.session_state.get('analysis_data')
+    if df is None:
+        st.info('Load a CSV to choose its outcome and predictor types.')
+        return
+    st.caption('Current dataset: ' + st.session_state.get('dataset_name', ''))
+    c1, c2, c3 = st.columns(3)
+    c1.metric('Rows', len(df))
+    c2.metric('Columns', len(df.columns))
+    c3.metric('Missing values', int(df.isna().sum().sum()))
+    with st.expander('Preview data', expanded=True):
+        st.dataframe(df.head(10), hide_index=True, width='stretch')
+    config = st.session_state.config
+    columns = df.columns.tolist()
+    options = [''] + columns
+    previous = config.get('outcome_var', '')
+    target = st.selectbox('Outcome variable (target)', options, index=options.index(previous) if previous in options else 0)
+    if target != previous:
+        st.session_state.pop('runner-positive', None)
+    config['outcome_var'] = target
+    available = [c for c in columns if c != target]
+    for key in ['categorical_features', 'columns_to_drop']:
+        current = st.session_state.get(key, config['cat_features'] if key == 'categorical_features' else config['columns_to_drop'])
+        st.session_state[key] = [c for c in current if c in available]
+    c1, c2 = st.columns(2)
+    with c1:
+        config['columns_to_drop'] = st.multiselect('Exclude columns', available, key='columns_to_drop', help='Exclude identifiers and fields unavailable at prediction time.')
+    allowed_cat = [c for c in available if c not in config['columns_to_drop']]
+    st.session_state['categorical_features'] = [c for c in st.session_state['categorical_features'] if c in allowed_cat]
+    with c2:
+        config['cat_features'] = st.multiselect('Categorical predictors', allowed_cat, key='categorical_features')
+
     # Data Split Configuration
     st.subheader("Data Split Configuration")
     
@@ -433,9 +379,6 @@ def feature_engineering_page():
         remove_outliers = st.checkbox("Remove Outliers", value=st.session_state.config['remove_outliers'])
         st.session_state.config['remove_outliers'] = remove_outliers
         
-        filter_missing = st.checkbox("Filter Highly Missing Features", value=st.session_state.config['filter_highly_mis_feats'])
-        st.session_state.config['filter_highly_mis_feats'] = filter_missing
-        
         exclude_missing_cols = st.checkbox("Exclude Highly Missing Columns", value=st.session_state.config['exclude_highly_missing_columns'])
         st.session_state.config['exclude_highly_missing_columns'] = exclude_missing_cols
         
@@ -492,6 +435,10 @@ def training_parameters_page():
         st.session_state.config['test_only_best_cvmodel'] = test_best_only
     
     with col2:
+        repeats = st.number_input('Permutation importance repeats', min_value=5, max_value=100,
+                                  value=st.session_state.config.get('n_rep_feature_permutation', 5),
+                                  help='More repeats give a more stable estimate but take longer.')
+        st.session_state.config['n_rep_feature_permutation'] = int(repeats)
         st.subheader("Resource Configuration")
         
         n_cpu_tuning = st.number_input(
@@ -722,11 +669,9 @@ def generate_notebook():
         output_filename = f"mait_pipeline_{st.session_state.config['main_folder_name']}.py"
         
         # Save the Python script
-        with open(output_filename, 'w', encoding='utf-8') as f:
-            f.write(python_content)
         
         st.success(f"✅ Python script exported successfully!")
-        st.info(f"📁 Saved to: {output_filename}")
+
         
         # Show configuration summary
         with st.expander("Configuration summary", expanded=False):
@@ -773,7 +718,7 @@ def generate_notebook():
             st.markdown(f"""
 **How to use your exported Python script:**
 
-1. **Download the script** using the button above or find it in your current directory as `{output_filename}`
+1. **Download the script** using the button above as `{output_filename}`
 
 2. **Install required packages** (if not already installed):
    ```bash
@@ -806,135 +751,12 @@ def generate_notebook():
         st.error(f"⚠️ Error generating script: {e}")
 
 def generate_python_script(config):
-    """Generate a complete Python script based on the template with user configuration injected."""
+    """Export the maintained pipeline using safe configuration assignments."""
     try:
-        # Read the Python template
-        template_path = "Tutorials/mait_template.py"
-        if not os.path.exists(template_path):
-            return None, "Python template not found. Please ensure mait_template.py exists in the Tutorials directory."
-        
-        with open(template_path, 'r', encoding='utf-8') as f:
-            template_content = f.read()
-        
-        # Create configuration replacements based on user input
-        replacements = create_configuration_replacements(config)
-        
-        # Apply replacements to the template
-        modified_content = template_content
-        
-        # Apply replacements line by line to ensure accuracy
-        lines = modified_content.split('\n')
-        modified_lines = []
-        
-        for line in lines:
-            modified_line = line
-            for old_value, new_value in replacements.items():
-                if old_value in line and not line.strip().startswith('#'):
-                    modified_line = line.replace(old_value, new_value)
-                    break
-            modified_lines.append(modified_line)
-        
-        modified_content = '\n'.join(modified_lines)
-        
-        # Add user configuration header
-        header_comment = f'''# MAIT Pipeline - Exported by Streamlit Configuration Interface
-# Exported on {time.strftime("%Y-%m-%d %H:%M:%S")}
-# 
-# This file contains your custom MAIT pipeline configuration.
-# All parameters have been set according to your Streamlit interface selections.
-# 
-# CONFIGURATION SUMMARY:
-# - Data file: {config['data_file']}
-# - Outcome variable: {config['outcome_var']}
-# - Selected models: {', '.join([m.replace('_mdl', '') for m in config['models_to_include']])}
-# - Feature selection: {'Enabled' if config['feat_sel'] else 'Disabled'} ({config['num_features_sel']} features)
-# - Data split: {config['train_size_perc']:.0%} training / {1-config['train_size_perc']:.0%} testing
-# - Cross validation: {config['cv_folds']} folds
-# - Hyperparameter tuning: {'Enabled' if config['hp_tuning'] else 'Disabled'}
-# - GPU support: {'Yes' if config['GPU_avail'] else 'No'}
-# - Output folder: {config['main_folder_name']}
-#
-# To run this script:
-# 1. Ensure your data file is in the same directory
-# 2. Install required packages: pip install -r requirements.txt
-# 3. Run: python {config['main_folder_name']}_pipeline.py
-# 
-# ==================================================================================
+        return configured_source(config, config['data_file'], config['main_folder_name']), None
+    except (OSError, ValueError, SyntaxError) as error:
+        return None, str(error)
 
-'''
-        
-        final_content = header_comment + modified_content
-        
-        return final_content, None
-        
-    except Exception as e:
-        return None, f"Error generating Python script: {str(e)}"
-
-def create_configuration_replacements(config):
-    """Create a dictionary of replacements to apply to the template"""
-    
-    replacements = {}
-    
-    # Data configuration
-    replacements['mydata = pd.read_csv("combined_data_Azithromycin.csv")'] = f'mydata = pd.read_csv("{config["data_file"]}")  # Data file from Streamlit config'
-    replacements['outcome_var = "azm_sr"'] = f'outcome_var = "{config["outcome_var"]}"  # Outcome variable from Streamlit config'
-    replacements['cat_features = []'] = f'cat_features = {config["cat_features"]}  # Categorical features from Streamlit config'
-    replacements['columns_to_drop = []'] = f'columns_to_drop = {config["columns_to_drop"]}  # Columns to drop from Streamlit config'
-    
-    # Model selection
-    models_str = ', '.join([f'"{m}"' for m in config["models_to_include"]])
-    replacements['models_to_include = ["QLattice_mdl", "NaiveBayes_mdl", "RandomForest_mdl", "LightGBM_mdl", "CatBoost_mdl", "LogisticRegression_mdl", "HistGBC_mdl"]'] = f'models_to_include = [{models_str}]  # Models from Streamlit config'
-    
-    # Results folder
-    replacements["main_folder_name = 'results_Azithromycin'"] = f"main_folder_name = '{config['main_folder_name']}'  # Output folder from Streamlit config"
-    
-    # Class labels
-    class_labels_str = str(config['class_labels_display'])
-    replacements["class_labels_display = ['non-resistant', 'resistant']"] = f"class_labels_display = {class_labels_str}  # Class labels from Streamlit config"
-    
-    # Data split settings
-    replacements['data_split = True'] = f'data_split = {config["data_split"]}  # Data split setting from Streamlit config'
-    replacements['train_size_perc = 0.8'] = f'train_size_perc = {config["train_size_perc"]}  # Training size from Streamlit config'
-    replacements['data_split_by_patients = False'] = f'data_split_by_patients = {config["data_split_by_patients"]}  # Patient split from Streamlit config'
-    replacements['data_split_multi_strats = False'] = f'data_split_multi_strats = {config["data_split_multi_strats"]}  # Multi-strat from Streamlit config'
-    replacements['already_split = False'] = f'already_split = {config["already_split"]}  # Already split from Streamlit config'
-    
-    # Feature selection
-    replacements['feat_sel = True'] = f'feat_sel = {config["feat_sel"]}  # Feature selection from Streamlit config'
-    replacements['num_features_sel = 30'] = f'num_features_sel = {config["num_features_sel"]}  # Number of features from Streamlit config'
-    
-    # External validation
-    replacements['external_val = False'] = f'external_val = {config["external_val"]}  # External validation from Streamlit config'
-    replacements['ext_val_demo = False'] = f'ext_val_demo = {config["ext_val_demo"]}  # External validation demo from Streamlit config'
-    
-    # Processing settings
-    replacements['merged_rare_categories = True'] = f'merged_rare_categories = {config["merged_rare_categories"]}  # Merge rare categories from Streamlit config'
-    replacements['rarity_threshold = 0.05'] = f'rarity_threshold = {config["rarity_threshold"]}  # Rarity threshold from Streamlit config'
-    replacements['remove_outliers = False'] = f'remove_outliers = {config["remove_outliers"]}  # Remove outliers from Streamlit config'
-    
-    # Resource configuration
-    replacements['GPU_avail = True'] = f'GPU_avail = {config["GPU_avail"]}  # GPU availability from Streamlit config'
-    replacements['hp_tuning = True'] = f'hp_tuning = {config["hp_tuning"]}  # Hyperparameter tuning from Streamlit config'
-    replacements['n_cpu_for_tuning = 20'] = f'n_cpu_for_tuning = {config["n_cpu_for_tuning"]}  # CPUs for tuning from Streamlit config'
-    replacements['n_cpu_model_training = 20'] = f'n_cpu_model_training = {config["n_cpu_model_training"]}  # CPUs for training from Streamlit config'
-    replacements['n_iter_hptuning = 10'] = f'n_iter_hptuning = {config["n_iter_hptuning"]}  # Tuning iterations from Streamlit config'
-    
-    # Cross validation
-    replacements['cv_folds = 5'] = f'cv_folds = {config["cv_folds"]}  # CV folds from Streamlit config'
-    replacements['test_only_best_cvmodel = True'] = f'test_only_best_cvmodel = {config["test_only_best_cvmodel"]}  # Test best model from Streamlit config'
-    
-    # Missing data handling
-    replacements['exclude_highly_missing_columns = True'] = f'exclude_highly_missing_columns = {config["exclude_highly_missing_columns"]}  # Exclude missing columns from Streamlit config'
-    replacements['exclude_highly_missing_rows = True'] = f'exclude_highly_missing_rows = {config["exclude_highly_missing_rows"]}  # Exclude missing rows from Streamlit config'
-    
-    # Analysis types
-    replacements['survival_analysis = False'] = f'survival_analysis = {config["survival_analysis"]}  # Survival analysis from Streamlit config'
-    replacements['regression_analysis = False'] = f'regression_analysis = {config["regression_analysis"]}  # Regression analysis from Streamlit config'
-    
-    # Demo settings (turn off for real use)
-    replacements['demo_configs = True'] = 'demo_configs = False  # Demo configs disabled for real use'
-    
-    return replacements
 
 def run_pipeline():
     """Provide clear instructions for running the pipeline manually"""

@@ -1,0 +1,4 @@
+# Install from the repository using Python 3.11.
+-r streamlit_requirements.txt
+-e .[analysis]
+pillow

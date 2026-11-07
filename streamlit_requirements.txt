@@ -4,3 +4,5 @@ numpy>=1.21.0
 plotly>=5.15.0
 pyyaml>=6.0
 openpyxl>=3.0.0
+
+pillow>=10
